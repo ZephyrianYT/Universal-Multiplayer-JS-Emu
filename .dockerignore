@@ -1,0 +1,10 @@
+.git
+.gitignore
+.github
+roms
+cache
+index.cdn-old.html
+.claude
+node_modules
+.env
+UniversalMultiplayer.json

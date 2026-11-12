@@ -1,0 +1,17 @@
+{
+  "name": "retro-hub",
+  "version": "1.2.0",
+  "description": "Self-hosted private retro game hub with browser netplay (EmulatorJS + WebRTC streaming)",
+  "license": "GPL-3.0-only",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "ws": "^8.22.2"
+  }
+}
