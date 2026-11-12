@@ -1,3 +1,5 @@
+(CURRENTLY IN WIP)
+
 # Retro Hub
 
 A self-hosted, private retro game hub with built-in browser multiplayer. Run it in Docker on your home server, share a link with friends, and play N64, SNES, PS1, GBA and more together in the browser — no installs, no sign-ups, no ROMs sent to anyone.
