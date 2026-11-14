@@ -1,6 +1,6 @@
 {
   "name": "retro-hub",
-  "version": "1.2.0",
+  "version": "0.1.9.0",
   "description": "Self-hosted multiplayer game hub: friends join from a browser link and play retro and console games together over WebRTC netplay (EmulatorJS + native emulators).",
   "keywords": [
     "emulator",

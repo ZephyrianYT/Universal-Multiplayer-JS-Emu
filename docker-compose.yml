@@ -2,7 +2,7 @@
 services:
   retro-hub:
     build: .                      # Unraid: /mnt/user/appdata/retro-hub/src
-    image: retro-hub:1.2.0
+    image: retro-hub:0.1.9.0
     # No build needed: delete the two lines above and use the published image instead:
     # image: ghcr.io/<github-user>/<repo>:latest
     container_name: retro-hub
