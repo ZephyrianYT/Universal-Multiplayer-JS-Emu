@@ -1,5 +1,9 @@
 # Retro Hub
 
+**Host your own retro game night: friends join from a browser link and play together, no installs needed.**
+
+Self-hosted multiplayer emulator hub with browser netplay. Plays NES, SNES, Genesis, N64, PS1, GBA, DS and PSP in the browser, and PS2, GameCube, Wii, PS3, Xbox 360, Switch, 3DS, Dreamcast and PC games through native emulators, all streamed to friends over WebRTC. Free and open source (GPL-3.0). Bring your own legally owned games.
+
 Retro Hub is a self-hosted game hub for playing retro and modern console games with friends. One person (the **owner**) runs the hub on their PC or home server. Friends open a link in their browser, make an account with one click, and join a lobby.
 
 - **Browser consoles** (NES through PS1, N64, GBA, DS, PSP and more) run inside the host's browser with [EmulatorJS](https://emulatorjs.org). The host streams video and audio to the guests over WebRTC, and the guests send back only their controller input.
