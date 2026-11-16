@@ -1,4 +1,3 @@
-<p align="center"><img src="assets/icon/retrohub-256.png" width="128" alt="Retro Hub duck mascot"></p>
 
 # Retro Hub
 
