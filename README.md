@@ -1,3 +1,5 @@
+Use 0.1.9 atm, 0.2.1 has a pipeline issue
+
 # Retro Hub
 
 Retro Hub is a self-hosted game hub for playing retro and modern console games with friends. One person (the **owner**) runs the hub on their PC or home server. Friends open a link in their browser, make an account with one click, and join a lobby.
