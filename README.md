@@ -1,4 +1,4 @@
-
+FAST FIX FOR BROWSER NOT CONNECTING WITH TUNNEL (Go to ur browser retrohub loads in, load your local http://localhost:8080 in the search/url address bar)
 # Retro Hub
 
 **Play retro games with your friends from a link.** You run Retro Hub on your PC, friends open the link in their browser, and you play together: co-op, races, or side by side as ghosts. Nothing to install for your friends, and no games are ever uploaded anywhere.
