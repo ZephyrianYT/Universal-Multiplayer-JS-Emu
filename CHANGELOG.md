@@ -1,6 +1,79 @@
 # Changelog
 
-## 0.2.1 - 2026-11-15
+## 1.22.0 - 2026-11-16
+
+Released as **Retro Hub 0.2.3** (fresh install), together with 1.21.1 below.
+
+### Desktop shortcut and the Retro Hub icon
+- **Desktop shortcut on first run**: the Retro Hub window (or `launch.py` in a terminal: *Would you like to create a RetroHub desktop shortcut? (Y/n)*) offers a shortcut with the Retro Hub icon, once. The answer is kept in `.retrohub-config.json`. **Settings → Desktop shortcut**, `--create-shortcut` and `--setup` make one any time.
+  - Windows: `RetroHub.lnk` on the real Desktop (also a OneDrive Desktop), opening `launch.bat`, with `retrohub.ico`.
+  - Linux: `RetroHub.desktop` on the Desktop and in the app menu, with `retrohub.png`.
+  - macOS: a small `RetroHub.app` on the Desktop, with `retrohub.icns`.
+  - The path is shown afterwards, and the shortcut and its icon are checked on disk.
+- **The Retro Hub icon**: the mascot, a red-and-white chibi duck in a purple bandana, in `assets/icon/` (SVG source, PNG sizes, `.ico`, `.icns`). It's on the shortcut, the Retro Hub window and the browser tab.
+
+### Docs
+- **README.md** is now a short start guide; the full guide (every setting, the scanner rules, the updater, security, internals) is **README-ADVANCED.md**.
+
+### Updates
+- **Update in place**: Retro Hub window > Server > **Check for updates** (also checked quietly when the window opens; `UPDATE_CHECK=off` turns that off). It installs the newest GitHub release into this folder and keeps everything that's yours: `.env`, library folders, hidden games, `emulators/` (your builds and `apps.json`), `roms/`, `cache/`. Every replaced file is copied to `backup/<date-time>/` first.
+- Every update is safety-checked before anything changes: downloaded only from GitHub, SHA-256 against the checksum GitHub publishes, a Microsoft Defender scan, and a check of the zip itself. An older release isn't installed unless you say so.
+- **What's new**: the first time a browser opens a new version, it shows what changed since the version it last saw.
+
+### Library scanner: one entry per game
+- **Disc games show one entry.** A `.cue`, `.ccd`, `.gdi` (Dreamcast) or `.m3u` (multi-disc) is the game; the tracks, subchannel and audio files it names (`.bin` `.img` `.sub` `.wav` `.raw` …) and the discs an `.m3u` lists are hidden. In the browser the hub sends such a game as one zip (built as it's sent), which EmulatorJS unpacks and boots. The size shown is the whole game's.
+- **Wii U games extracted to a folder** show as one game named from `meta.xml` (or the folder), not every `.rpx` inside; their `[Update]` and `[DLC]` folders and archives aren't listed. `.wua` `.wux` `.wud` are listed as before.
+- **Not listed any more**: BIOS and system files (`scph*.bin`, `gba_bios.bin`, `disksys.rom`, `syscard*.pce`, `neogeo.zip`, `pgm.zip` and other arcade BIOS sets), Switch updates and DLC (by title id), a 3DS `.cia` next to a `.3ds` / `.cci` of the same game, and `.zip` / `.7z` files in a console whose emulator can't open them (Cemu, PCSX2, Dolphin …).
+- **Fixed: games missing from the library.** `.chd` games in the PS2, PSP and Saturn folders and `.rvz` games in the Wii folder were dropped (they were taken for PS1 / GameCube files). Each console now has its own list of game file types.
+- **RetroAchievements**: library games in a `.zip` are matched by the ROM inside (header rules as before), and arcade sets by their name, as RetroAchievements does.
+
+### Setup warnings
+- The Server tab shows what would stop the hub finding games or emulators, with a button that fixes each: an emulators or ROM folder that's missing, empty or inside another Retro Hub folder; console folders that can't be reached (unplugged drive); consoles that share a folder.
+
+### Library
+- **Scan progress**: while the library is scanned for the first time, the Server library tab shows how many games it has found so far.
+- **Favorites**: right-click a game (or press **F** on it) to star it. Favorites come first in every sort; they're kept in your browser.
+- **Hide games** (owner): right-click > **Hide from the library** for BIOS files, duplicates and bad dumps. Nothing on disk changes; **Show hidden** brings them back. Hidden games aren't shown to anyone else. Saved in `library-hidden.json` (Docker: in the `/cache` volume).
+- **Console is remembered**: pick melonDS for a DS game once and DS games default to it (with a note saying so). Picking the game's own console again goes back to the default.
+
+### Playing together
+- **↻ Play again** (host): back to the lobby with the same game and settings; everyone readies up again. Matches used to have no way back to the lobby. A game file picked on your own computer (the host's game, a Ghost / Race player's ROM) comes back too: it is kept in your browser during the reload, never sent anywhere.
+- **Connection check**: joining a Co-op lobby with an estimated ping of 150 ms or more says so first, and suggests Ghost or Race mode when it's very high.
+- **Rejoin after a reload**: reloading the page (or reopening a closed tab within 30 s) puts you back in your seat, and the host keeps their library game. Closing the tab no longer gives the seat up at once: it's held for 30 s like a dropped connection. **Leave** still frees it right away.
+
+### Offsite links: speedrun.com and RetroAchievements
+- **Leaderboards on speedrun.com** in the Race / Speedrun panel: opens the game's page on speedrun.com (world records, rules, run submission) in a new tab. The hub looks the game up through speedrun.com's public API only when you point at the link (or tab to it), sending just the game's name (region tags removed); if it can't find the game, the link opens speedrun.com's search.
+- **RetroAchievements**: the 🏆 panel links to the game's page and your profile on retroachievements.org, and the 🏆 dialog has a sign-up link for players without an account.
+- Links to other sites have their own look (an **Offsite · site name** tag, dashed border, ↗) so they can't be mistaken for part of the hub. They open in a new tab and don't pass on the hub's address.
+
+## 1.21.1 - 2026-11-16
+
+### Fixes
+- **Native emulators weren't found after updating.** A `.env` copied from an older Retro Hub folder kept `EMULATORS_DIR` pointing at that folder's (now empty) `emulators/`. A configured emulators folder that is missing or empty now falls back to this install's `emulators/` (with a warning in the log).
+- **Settings > Consoles… failed and emulator choices were ignored.** `apps.py` was missing the per-console emulator choice (`prefer` in `emulators/apps.json`) that the Consoles window reads and writes. It's back: the chosen emulator is used first when installed.
+- **The hub froze while it scanned the library.** The scan read every folder synchronously, so a big library (or one on a network drive) stopped lobbies, chat and streams for as long as it took, every 30 s, and every native launch forced a full rescan. The scan now runs in the background (first one at startup), folders are read in parallel, and launches use the last scan (rescanning only for a game it doesn't know yet).
+- **"Console" in Host a game now picks the emulator for library games.** Any console that takes the game's file type can be chosen: a GBA game in the browser or VBA-M, a DS game in the browser or melonDS. Consoles that can't run the picked game are greyed out. It used to work only for VBA-M link.
+
+### Game Boy, Game Boy Color and GBA are separate consoles
+- **Game Boy Color is its own console** with its own library folder (Settings > Consoles…, or Library folders in the hub). `.gb` / `.dmg` are Game Boy, `.gbc` / `.cgb` Game Boy Color, `.gba` GBA. A `.gbc` in the Game Boy folder is listed as Game Boy Color unless that console has a folder of its own.
+- When two consoles share a folder (GBA and VBA-M link, DS and melonDS), each game is listed once, under the browser console; pick the native one under **Console** when hosting.
+- Save states made for `.gbc` games before this update are under Game Boy; they don't show in Game Boy Color lobbies.
+
+## 1.21.0 - 2026-11-16
+
+### Setup: Retro Hub installs what it needs (Windows)
+- **`launch.bat` checks for Python 3 and Node.js** before anything else. If one is missing it asks, then downloads it from python.org / nodejs.org, checks it and installs it, and carries on without a new window.
+- **The Retro Hub window checks for Node.js and guest-controller support** (the ViGEmBus driver and the `vgamepad` Python package) when it opens, and offers to install what's missing. Saying No isn't asked again at startup; **Apps > Check requirements** runs the check any time.
+- **Every download is safety-checked before it's used** (`setup/deps.ps1`): official host only, SHA-256 against the publisher's checksum (python.org, nodejs.org, PyPI; ViGEmBus publishes none), a valid publisher signature on installers (Python Software Foundation, OpenJS Foundation, Nefarius Software Solutions), and a Microsoft Defender scan. A failed check deletes the download and stops that item.
+
+### Consoles window
+- **Settings > Consoles…** (also in the Apps tab) opens one window with every console: pick the folder its games are in and, for native consoles, which emulator runs them, before starting the hub. Folders go to `library-folders.json` (the same file as the hub's **Library folders** menu), emulator choices to `emulators/apps.json` (`prefer`).
+- The browser consoles' list moved from `server.mjs` to `core/browser-systems.json`, so the window and the server read the same list.
+
+### Fixes
+- **The window's Apps tab now uses the Emulators folder from Settings.** It always read `./emulators`, so emulators in a folder set in `.env` showed as not installed there (the hub itself found them).
+
+## 1.20.0 - 2026-11-15
 
 Community requests.
 
