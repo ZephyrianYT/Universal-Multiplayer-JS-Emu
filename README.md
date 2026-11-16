@@ -1,9 +1,5 @@
 # Retro Hub
 
-**Host your own retro game night: friends join from a browser link and play together, no installs needed.**
-
-Self-hosted multiplayer emulator hub with browser netplay. Plays NES, SNES, Genesis, N64, PS1, GBA, DS and PSP in the browser, and PS2, GameCube, Wii, PS3, Xbox 360, Switch, 3DS, Dreamcast and PC games through native emulators, all streamed to friends over WebRTC. Free and open source (GPL-3.0). Bring your own legally owned games.
-
 Retro Hub is a self-hosted game hub for playing retro and modern console games with friends. One person (the **owner**) runs the hub on their PC or home server. Friends open a link in their browser, make an account with one click, and join a lobby.
 
 - **Browser consoles** (NES through PS1, N64, GBA, DS, PSP and more) run inside the host's browser with [EmulatorJS](https://emulatorjs.org). The host streams video and audio to the guests over WebRTC, and the guests send back only their controller input.
@@ -256,6 +252,24 @@ Below the ping legend in **Hosting now**, **Check for Emus** asks the hub which 
 
 The summary reads *N of M loaded*, and the owner also sees the emulators folder path. The check runs `apps.py status`, so it needs Python on the hub PC. Any signed-in player can run it.
 
+### Race / speedrun mode
+
+Pick **Race / Speedrun** when hosting (or in the lobby's *Mode*). It is Single-Player Ghost plus a timer: everyone runs their own copy, the 3-2-1 starts every game together, and the **hub** times everyone with one clock (a split is stamped when it reaches the hub, minus half that player's ping, so nobody's PC clock matters).
+
+- **Splits**: the host types split names in the lobby (one per line, up to 40; remembered per game). With none, the run is just a finish time.
+- In the game, the timer panel (top right) shows your splits, the difference to your personal best (green ahead, red behind, gold for a best segment) and the standings. **F6** splits (the last split finishes), **F7** undoes, **Forfeit** gives up. The hub posts each finish and a final result in chat.
+- **Alone it's a speedrun timer**: personal bests and best segments are kept in this browser per game + console + split names. **Reset** restarts the clock for another attempt (reset your game too).
+- **Racing with friends**: they show as ghosts over your game, or press **📺 Pop out everyone** (or drag a player's chip onto the screen) for a picture-in-picture window per player.
+- **LiveSplit**: *PB, LiveSplit & pop-outs* downloads your splits as a `.lss` file, and **Mirror to LiveSplit on this PC** drives LiveSplit through its server (LiveSplit: *Control → Start Server*, WebSocket, default `ws://localhost:16834/livesplit`): start on GO, split, undo, reset. The page may only connect to `localhost` for this.
+
+### RetroAchievements
+
+**🏆 RetroAchievements** in the top bar takes your RetroAchievements username and **Web API key** (retroachievements.org → Settings → Authentication; it can only read). They stay in this browser; the hub passes them to the RetroAchievements Web API (`core/net/retroachievements.mjs`) and stores nothing. In a match the **🏆** button lists the game's achievements, your progress and rarity, and polls every minute: new unlocks pop up and (optionally) go to the lobby chat.
+
+- The game is found by its **ROM hash** (RetroAchievements' rules: copier headers skipped, N64 byte order fixed) for cartridge consoles, else by title. Library games are hashed by the hub, a file from your computer is hashed in your browser. Zipped games, disc consoles, DS, PSP and arcade match by title.
+- **Unlocking happens in an emulator with RetroAchievements built in** (RetroArch, PCSX2, Dolphin, DuckStation, PPSSPP, melonDS…) signed in to your account, so native games can earn them. EmulatorJS has no RetroAchievements support: for browser games the panel shows the set and your progress only.
+- Game lists (with hashes) are cached a day in `cache/retroachievements/`, badges for good.
+
 ### Owner tools
 
 - **Unlock library**: enter `ADMIN_PASSWORD`. The **Library folders** menu opens straight away (see [section 7](#7-the-rom-library)). Accounts listed in `ADMIN_KEYS` are owners automatically.
@@ -314,6 +328,14 @@ How it works:
 - **Changing** folders only works for the owner **in a browser on the hub's own computer**, not through a tunnel or from another device, because it browses that PC's disks. Owners elsewhere can see the menu, but its buttons are disabled.
 - Not available in Docker. Mount volumes into `/roms/<console>` instead.
 
+### Cover art
+
+Besides covers next to the ROM (above, always used first), the owner can:
+
+- **Auto covers**: in the library, *Covers: auto (libretro)* fetches box art from the libretro-thumbnails project (`thumbnails.libretro.com`, the set RetroArch uses) in the background, matched by file name: exact No-Intro names in one request, others by title against that console's list (USA / World / Europe preferred). Saved in `cache/covers/<console>/`; misses are retried after a day. Off by default.
+- **Your own cover**: right-click a game → *Set cover from an image file…*, or drop a PNG / JPEG / WebP onto it. It replaces the auto cover; *Remove my cover* undoes it.
+- **TheCoverProject**: right-click → *Find a cover on TheCoverProject* opens its search for that game. The site sits behind a browser check that automated tools must not get around, so the hub doesn't download from it; save the scan and drop it on the game. Wrap-around scans (back, spine, front) show their front half.
+
 ### Who can use the library
 
 The library, its ROM downloads and its covers are owner-only by default. `LIBRARY_ACCESS=all` shares it with every signed-in account. The server adds an account prefix to each library file name, so EmulatorJS keeps separate in-game saves per account.
@@ -360,6 +382,18 @@ Other emulators, or emulators installed elsewhere, can be registered in the Apps
 Limits: co-op only (no ghost mode); only the owner, on the hub PC, can host native games; no native emulators in Docker.
 
 ---
+
+### Headless: play the native game in the page
+
+**Play in this page** (under the hosting steps, on by default) keeps the emulator's window just off the right edge of the desktop instead of as a second window on screen (`apps.py run --headless`). You still pick it once with **Share the window** (the browser requires that click); after that it plays in the page, and Chrome / Edge keep the focus on the page.
+
+- Your keyboard drives your seat through a virtual controller (map it once in the emulator's controller settings); a gamepad on this PC works in the emulator directly. Some emulators need *background input* turned on for that (Dolphin).
+- **🪟 Emulator window** in the top bar brings the real window back (for its menus, or VBA-M's *Start Network Link*) and sends it off-screen again. Windows go back on screen before the emulator is closed, so it never saves an off-screen position.
+- Needs Windows and virtual gamepads (ViGEmBus + `vgamepad`, see `requirements-native.txt`): in keyboard mode guests' keys only reach a focused window, so the emulator opens normally. If the picture stays black, use **🪟 Emulator window** and turn headless off for that emulator.
+
+### GBA and Game Boy link cable (VBA-M)
+
+Link play runs in **VBA-M**, never in EmulatorJS (its GBA and GB cores can't link). Everyone runs their own Retro Hub and ROM on the same network; see the **GBA / Game Boy link cable** panel. When you pick a GBA, GB or GBC game from the library and VBA-M is installed, **Play in → VBA-M link cable** hosts a link session straight from *Host a game* (remembered; games in VBA-M's own folders default to it). GB / GBC link depends on your VBA-M version's network link support.
 
 ## 9. Playing over the internet
 
