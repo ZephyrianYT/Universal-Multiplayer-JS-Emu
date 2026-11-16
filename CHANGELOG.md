@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.20.0 - 2026-11-15
+## 0.2.1 - 2026-11-15
 
 Community requests.
 
