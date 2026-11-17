@@ -1,5 +1,65 @@
 # Changelog
 
+## 1.23.0 - 2026-11-16
+
+Released as **Retro Hub 0.2.5** (fresh install).
+
+### 🎸 Guitars and drum kits (Guitar Hero, Rock Band)
+- **🎸 Instruments** (☰ menu, a lobby's *Sound, controls & stream*, the Shuffler): set a controller to **Guitar** or **Drums** and press each part once (frets / pads, strum, kick, Start, Star Power, whammy, tilt). Works with PS3, Wii and Rock Band / Guitar Hero dongles that browsers see as "non-standard"; Xbox 360 instruments usually work as they are. A live **Test** shows each part lighting up. Saved per device in your browser.
+- Friends' instruments reach the host's PC as a virtual Xbox 360 controller laid out like a 360 guitar / drum kit, so they can be mapped to the emulated guitar or drums in **RPCS3, PCSX2 and Dolphin**: `emulators/INSTRUMENTS.md` has the button table and where to set it in each emulator. These games run in the native emulators only (EmulatorJS can't run PS2 / Wii / PS3 games).
+- **Fixed: controllers could stop responding while the window was covered** (the browser stops drawing frames but still says the page is visible): gamepads are now polled every 50 ms whenever frames stop.
+
+### Streamer Mode (Co-op Netplay lobbies)
+- **Waiting room**: with *Streamer Mode* on (Match card), everyone who opens the invite link watches the stream in the waiting room and lines up for a seat. **Sit out** to just watch.
+- **"You're up!"**: a free seat is offered to the next in line with a chime (and a notification in a background tab); **Take controller**, Enter or any gamepad button within 10 s, otherwise they're marked away and skipped (they can rejoin the line).
+- **↻ Rotate seats** (button, in-game ↻, or **Ctrl+Shift+R** in the hub's tab) sends the seated viewers to the back of the line and offers their seats to the next ones. **👑** keeps a player (winner stays). Optional **turn timer** (3-30 min, 15 s warning; it only moves people on when someone is waiting).
+- **Host controls per seat**: 🎮 mute that player's inputs (anything held is released), ⤺ send them back to the waiting room. When a seat changes hands its buttons are released, so nothing stays stuck.
+- **Hide the code, invite link and passwords on my screen** blurs them (and your account ID) for streaming; copy buttons still work.
+- **OBS overlay**: a Browser Source with `http://localhost:<port>/overlay/queue` shows *Now playing* (with turn time) and *Up next* on a transparent background. Only reachable from the hub's own PC; `?room=CODE`, `?side=right`, `?scale=1.5` optional.
+
+### 🔀 Shuffle lobbies (Co-op) and the memory saver
+- **🔀 Shuffle** is a mode in *Host a game*: pick 2-8 games (each one you pick is added to the list; consoles can be mixed), set the swap times, open the lobby. Friends join as usual and play P2-P4 on the stream; the host runs every game, so swaps can't get out of sync and guests need no files.
+- Everyone sees which game is on (title and a banner at each swap); the host has ✓ Beaten (F8), ⤳ Swap (F9), ⏸ Hold (F10). The first game waits for GO. When all are beaten the chat says so with the time and swaps. Works with Streamer Mode and viewer effects.
+- **Memory saver** (Shuffler and Shuffle lobbies, on by default): with 2 or more big consoles (PS1, N64, DS, PSP, Saturn, Sega CD, Jaguar, arcade) only one of them is loaded at a time; the others are saved and loaded again on their turn (a few seconds). Small consoles always stay loaded and swap instantly.
+- The solo Shuffler and Shuffle lobbies share one engine (`public/shuffler-core.js`).
+
+### 🔀 Shuffler (new, solo)
+- **Shuffler** (link in *Host a game*, or `/shuffle.html`): load 2-8 games (your files, or the server library for the owner; consoles can be mixed). One plays; after a random 15-45 s (you choose) it freezes and another takes over exactly where you left it.
+- **✓ Beaten** (F8) takes the game out of the pool, **⤳ Swap** (F9) swaps now, **⏸ Hold** (F10) stops swaps until pressed again. The last game left isn't swapped away. Beat them all for the win screen: total time, swaps, time in each game.
+- Optional countdown (off = surprise swaps), swap sound, volume. Keyboard and gamepad work as in a lobby (P1).
+- How: every game boots once in its own frame with its own emulator and is paused while it waits, so swaps are instant, need no save states, and different consoles mix freely. Big consoles (PS1, N64, DS…) use memory each; the page warns from 4.
+
+### 🎲 Viewer effects (Streamer Mode)
+- Turn on **Viewer effects** in the Streamer Mode box: viewers start with 3 points, earn 1 every 30 s while they're in the lobby (up to 30) and spend them in the **🎲 Effects** panel (lobby, or 🎲 in the match top bar). Works on any game, no game-specific setup.
+- **Controls**: Invert controls, Swap A/B, Freeze controls. **Speed** (browser games): Double speed, Slow motion, Pause. **Rewind 10 s** (browser games; the host's page keeps a few snapshots). **Picture**: Upside down, Mirror, Black & white, Invert colors, Tiny screen (on everyone's view and the host's screen, so a stream captured from the host shows it).
+- One effect per kind at a time, a cooldown per effect, one effect every 8 s per viewer; the host chooses which effects are allowed and can fire any of them for free to test. A banner on the game shows what's running and who sent it; chat logs it too.
+- Native emulator games: control effects apply to guests' seats and picture effects to the hub page's view; speed, pause and rewind are browser-only.
+
+### Quality of life
+- **Fixed: the lobby chat and stream settings showed at the bottom of the hub page** (under the footer, unusable there) and made the page scroll sideways. They only appear in a lobby / match now.
+- **Smaller top bar**: below 1100 px wide, *Keyboard shortcuts*, *Calibrate controllers*, *Library folders*, *Export account* and *Switch account* move into a **☰** menu (on a phone the bar went from about a quarter of the screen to two short rows); on phones 🏆 shows without its label.
+- The 🏆 achievements panel closes with **Esc**, and the 👥 Friends and 🏆 panels no longer open on top of each other.
+- The *Ghost mode* banner in a lobby wraps on phones instead of being cut off.
+
+### Lobby Browser
+- A **Lobby Browser** tab (next to *Play*) lists every lobby the hub knows in one table: this hub's, other hubs' on your network, and the shared lobby pool's. The tab shows how many there are.
+- **Search** games, hosts and players (`Mario|Zelda` for either), filter by console, mode, minimum players, open seats, no password, not started, friends in it, or this hub only. Click a column to sort; lobbies with friends in them come first and are marked 👥. Click a row to see who's in it.
+- **⏳ Wait for a seat**: on a full lobby (or from the join dialog when it says *full*), the page joins by itself the moment a seat opens, with a sound and a notification if the tab is in the background. Works with lobby passwords.
+- **🔔 Alert me**: turns the current filters into an alert. When a new lobby like that opens you get a pop-up with Join, a sound, and (if you allow it) a system notification. Only lobbies that open after you turn it on count; it's kept in your browser and works while the page is open.
+
+### Friends
+- **👥 Friends** in the top bar: add a friend by their account ID (the *#XXXX-XXXX-XXXX-XXXX* next to their name), or press **＋ Friend** on a player in a lobby.
+- Once you've **both** added each other you see them online on this hub, which lobby they're in and whether they're playing: **Join** opens the usual join dialog (password if the lobby has one). From your own lobby, **Invite** sends them a pop-up with a Join button (friends only, at most 6 a minute and once per 20 s per friend).
+- Someone who added you shows under *Added you* (Add back / Ignore). **Appear offline** hides you from everyone.
+- Lists are kept in your browser, per account; the hub only holds them in memory while the page is open, and works on this hub only.
+
+### Off Site Games tab
+- A new **Off Site Games** tab next to **Play**: games that run on other websites, by category, with search. Each one is an *Offsite* link (new tab, no referrer) and the tab says plainly that lobbies, netplay, saves and achievements don't apply there.
+- The default list (`core/offsite-games.json`, 15 games checked one by one) has only free / open-source games, officially free data, or ports that use your own game files. Owners can use their own list: copy it to `offsite-games.json` in the main folder (the updater keeps it). Only `https://` links are shown; mark a game `"touch": true` to list it under *Phone / tablet friendly*.
+
+### Internet mode opens on localhost
+- With the Cloudflare Tunnel, the hub now opens **on localhost** for the host (window and `launch.py`): native emulators and Library folders only work from the hub PC's own address. Invite links still use the public address, and the window's **Copy link** copies it; the address line shows both.
+
 ## 1.22.0 - 2026-11-16
 
 Released as **Retro Hub 0.2.3** (fresh install), together with 1.21.1 below.
