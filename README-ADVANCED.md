@@ -89,7 +89,7 @@ On Windows you don't have to install these by hand: `launch.bat` offers Python a
 ## 3. Installing (fresh install)
 
 1. Install Node.js and Python (see above).
-2. Unzip `retro-hub-<release>-fresh-install.zip` (for example `retro-hub-0.2.3-fresh-install.zip`) anywhere, for example `C:\Games\retro-hub`. The path can contain spaces.
+2. Unzip `retro-hub-<release>-fresh-install.zip` (for example `retro-hub-0.2.4-fresh-install.zip`) anywhere, for example `C:\Games\retro-hub`. The path can contain spaces.
 3. Double-click **`launch.bat`** (Windows). On macOS or Linux, run `python3 RetroHub.pyw` (or `./launch.sh` for the console launcher).
 4. The first time, the window asks **Would you like to create a RetroHub desktop shortcut?** Yes puts a RetroHub shortcut with the duck icon on your Desktop (see [Desktop shortcut](#desktop-shortcut)).
 5. In the window, press **▶ Start**.
