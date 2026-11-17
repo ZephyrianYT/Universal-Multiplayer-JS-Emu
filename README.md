@@ -1,4 +1,5 @@
-FAST FIX FOR BROWSER NOT CONNECTING WITH TUNNEL (Go to ur browser retrohub loads in, load your local http://localhost:8080 in the search/url address bar)
+<p align="center"><img src="assets/icon/retrohub-256.png" width="128" alt="Retro Hub duck mascot"></p>
+
 # Retro Hub
 
 **Play retro games with your friends from a link.** You run Retro Hub on your PC, friends open the link in their browser, and you play together: co-op, races, or side by side as ghosts. Nothing to install for your friends, and no games are ever uploaded anywhere.
@@ -35,7 +36,19 @@ Disc games show up once (the `.cue` or `.m3u`, not every track), and BIOS files 
 2. **Copy invite link** and send it to your friends. Set a lobby password if you like (send it separately).
 3. When everyone is ready, press **Start match**. After the game, **↻ Play again** brings everyone back to the lobby.
 
-**Friends on the same Wi-Fi** can use the *Copy Wi-Fi link* button. **Friends anywhere** need the Internet mode: in the window, pick **Internet (Cloudflare Tunnel)** before pressing Start. It's free, no account needed.
+**Friends on the same Wi-Fi** can use the *Copy Wi-Fi link* button. **Friends anywhere** need the Internet mode: in the window, pick **Internet (Cloudflare Tunnel)** before pressing Start. It's free, no account needed. The hub still opens on localhost for you; invite links use the public address.
+
+**Streaming?** Turn on **Streamer Mode** in a Co-op lobby: viewers wait in line and take turns in the seats (↻ Rotate, 👑 winner stays, optional turn timer), 🎲 **viewer effects** let viewers spend points on things like inverted controls, double speed or an upside-down screen, and `http://localhost:8080/overlay/queue` is an OBS overlay with who's playing and who's next.
+
+**🔀 Shuffler** (link under *Host a game*): load 2-8 games and it jumps between them at random, right where you left each one. Mark games beaten (F8) until you've beaten them all. With friends: pick the **🔀 Shuffle** mode in *Host a game*.
+
+**🎸 Guitar Hero / Rock Band**: these run in the native emulators on the host's PC. Friends set up their guitar or drum kit once in **🎸 Instruments** (☰ menu) and play along; the host maps them in the emulator (`emulators/INSTRUMENTS.md`).
+
+**Lobby Browser** (tab next to *Play*): every lobby on this hub and nearby hubs, with search and filters. Full? **⏳ Wait for a seat** joins you when one opens. **🔔 Alert me** tells you when a lobby you'd like opens.
+
+**👥 Friends**: add friends by the ID next to their name (or **＋ Friend** in a lobby). Once you've both added each other you see when they're on, join their lobby, or invite them to yours.
+
+**Off Site Games** (the tab next to *Play*) links to games that run on other websites, in a new tab.
 
 ## Big consoles (PS2, GameCube, Switch…)
 
