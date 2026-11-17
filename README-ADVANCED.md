@@ -128,9 +128,10 @@ The question comes once (the answer is saved as `"promptedDesktopShortcut": true
 
 **Server → Check for updates** (also checked quietly when the window opens) installs the newest GitHub release of `UPDATE_REPO` into this folder (`setup/update.py`):
 
-- **Kept**: `.env`, `library-folders.json`, `library-hidden.json`, `.retrohub-config.json`, `emulators/` (your builds and `apps.json`; only its README files update), `roms/`, `cache/`, `run/`, `node_modules/`.
+- **Kept**: `.env`, `library-folders.json`, `library-hidden.json`, `.retrohub-config.json`, `emulators/` (your builds and `apps.json`; only its README / KEYBOARD / INSTRUMENTS docs update), `roms/`, `cache/`, `run/`, `node_modules/`.
 - **Backed up**: every file it replaces goes to `backup/<date-time>-before-<release>/` first.
 - **Checked** before anything changes: downloaded only from GitHub over HTTPS, SHA-256 against the checksum GitHub publishes for the file, a Microsoft Defender scan (Windows), and the zip itself (no paths outside its folder, must contain `server.mjs`, `package.json`, `apps.py`). A failed check deletes the download and changes nothing.
+- **Newer?** It compares release numbers: this install's (`"release"` in `package.json`) against the newest release's name or tag (e.g. `RetroHub0.3.0`, `v0.3.0`). Release zips may have the Retro Hub folder at any depth.
 - An older version than the one installed isn't installed unless you confirm. The hub is stopped first; the window restarts itself afterwards.
 - From a terminal: `python setup/update.py check` / `apply` (`--force` for an older release).
 
@@ -394,6 +395,16 @@ The **Lobby Browser** tab (next to *Play*) is one table of every lobby: this hub
 - **Appear offline** hides you from everyone (no presence, no requests, no invites).
 - **Privacy**: lists live in each browser, per account (export the account to move it; the list stays in that browser). The page sends the list over its own socket ({t:"friends"}); the hub keeps it in memory only while that page is open and stores nothing. Invites: friends only, 6 a minute, once per 20 s per friend.
 - Same hub only: friends on other hubs don't show.
+
+### Co-op ROM hacks
+
+Hacks that put 2-4 players into one N64 game, played in **Project64** on the hub's PC and streamed to friends like any native game.
+
+- Pick the base ROM from the server library in **Host a game**. If `core/coop-hacks.json` knows it, the host form says **✓ Recognized** and offers **🤝 Patch for co-op: <hack>**. A close-but-wrong ROM (a retail OoT for a Debug ROM hack, the PAL Debug ROM, an already-patched build) gets a note instead.
+- The patch file is found by SHA-256 next to the ROM, in the console folder up to 3 levels (e.g. `N64/Patches/...`) or in `patches/` in the hub folder; **add the file…** in the host form saves it there (only files whose checksum is in the list). Nothing is downloaded.
+- When the game starts, the server writes the patched copy to `cache/coop/` (reused next time), writes the hack's required cheats to `emulators/project64/.../Config/Cheats-User/Retro Hub co-op <id>.cht` with `On By Default=1`, and launches Project64 with the copy.
+- `ports` in the list sends each online seat to the controller the hack reads (`null` = not used). Map controllers 2-4 in Project64 (Options > Configure Controller Plugin, Plugged in) to the hub's virtual controllers.
+- Formats: IPS, BPS (source/target checksums checked), UPS, PPF 1/2/3. Code: `core/library/romhack.mjs`, `GET /api/coop`, `POST /api/coop/patch-file`, `coop` in `POST /api/native/launch` (owner, from the hub's PC).
 
 ### Off Site Games
 
