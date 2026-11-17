@@ -1,5 +1,39 @@
 # Changelog
 
+## 1.24.0 - 2026-11-17
+
+Released as **Retro Hub 0.3.0** (fresh install).
+
+### 🤝 Co-op ROM hacks (Project64)
+- Pick a game from the server library in **Host a game**: when it's the base ROM of a known co-op hack, it says **✓ Recognized** and shows **🤝 Patch for co-op** next to it. One click sets the lobby up; when the game starts, the hub patches a copy (`cache/coop/`, your ROM is never changed), switches on the hack's Project64 cheats if it needs them, and plays it in **Project64**. Friends join as usual and play on the stream.
+- Each online seat goes to the controller the hack reads (e.g. a hack where player 2 is controller 4), and seats a hack doesn't use stay out of the game.
+- In the list (`core/coop-hacks.json`): **Super Mario 64 Splitscreen Multiplayer** (Kaze Emanuar, 2 players) and **Duke Nukem 64 co-op up to 4 players** (G. Allaux), both tested in Project64 3.0; **OoT Multiplayer 2P / 4P** (spinout182, cheat list by jmanx990 and Sho') for the Debug ROM with header 917D18F6-69BC5453 (not tested yet: the PAL Debug ROM crashes with it, so that one is refused with an explanation, as are retail OoT and already-patched builds).
+- Retro Hub doesn't host or download patches. It finds them by checksum next to the ROM, in the console's folders (e.g. `N64/Patches/`) or in the hub's `patches/` folder (kept by the updater), or you add the file from the host form; a file that isn't a listed patch is refused.
+- Patch formats: IPS, BPS, UPS and PPF. N64 dumps in any byte order (.z64, .v64, .n64) are recognized. Only the owner, on the hub's own PC.
+- Project64 needs controllers 2-4 set to **Plugged in** (Options > Configure Controller Plugin) for friends' controllers.
+
+### 🎨 Themes
+- **🎨 Theme** in the top bar (in the ☰ menu on small screens): **Coal** (the original), **Midnight**, **Synthwave**, **Forest**, **Crimson**, **Pocket** (handheld green) and **Paper** (light mode). It applies to every Retro Hub page in that browser, including the sign-in page and the Shuffler, straight away and without a flash on load; other open tabs follow. Kept in your browser.
+
+### Home button
+- Click **Retro Hub** (top left) to get back to the home screen: on the hub page it goes to the **Play** tab at the top; in a lobby it asks first, then leaves the lobby; on the Shuffler page it goes back to the hub.
+
+### Updater fixes
+- **Fixed: updates failed with "The update zip doesn't look like Retro Hub"** when a release zip had its folder inside another folder (as the 0.2.5 zip does). The updater now finds the Retro Hub folder wherever it is in the zip.
+- **Fixed: "Check for updates" could never tell whether a release was newer** on a fresh install. It now compares release numbers (this install's and the release's name, e.g. *RetroHub0.3.0*) and says *up to date* or offers the update.
+- A damaged download now stops before any file is changed (everything is read and checked first), downloads can't be redirected away from GitHub, and `emulators/INSTRUMENTS.md` is updated too. `.retrohub-config.json` (first-run answers) is always kept.
+
+### Off Site Games
+- 5 more games, picked from the CC0 **AwesomeDecompGames** list (github.com/SubmitGame/awesome-decomp-games) and checked one by one with the same rules as before (free data, or your own game files): **Diablo** (diabloweb, free shareware or your own MPQ), **Halo: Combat Evolved** (your own Xbox disc image), **Half-Life / Counter-Strike 1.6** (WebXash, your own Steam files), **Quake** (NetQuake.io, free Episode 1 or your own pak1.pak) and **Doom multiplayer** (Silent Space Marine, shareware). Games that serve commercial game data themselves were left out.
+
+### Fixes
+- **No-Intro BIOS files** like `[BIOS] CX4 (World).zip` no longer show up as games in the SNES (and other) library.
+- **Stop didn't close a native emulator that was stuck** (e.g. on an error pop-up) while a lobby was open: it now ends the program after 5 s if it doesn't close by itself.
+- **Native emulators unpacked with Windows' "Extract All"** are found: the hub now looks two folders deep (e.g. `emulators/ryujinx/ryujinx-canary-…-win_x64/publish/Ryujinx.exe`).
+
+### Known issue
+- **PSP in the browser**: EmulatorJS's PPSSPP core starts and runs but can show a black screen (seen with Daxter). Every other browser console was booted with a real game for this release: NES, SNES, GB, GBC, GBA, Genesis, N64, DS, PS1, Sega CD, Saturn and arcade.
+
 ## 1.23.0 - 2026-11-16
 
 Released as **Retro Hub 0.2.5** (fresh install).
