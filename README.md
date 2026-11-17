@@ -1,4 +1,3 @@
-
 # Retro Hub
 
 **Play retro games with your friends from a link.** You run Retro Hub on your PC, friends open the link in their browser, and you play together: co-op, races, or side by side as ghosts. Nothing to install for your friends, and no games are ever uploaded anywhere.
@@ -12,7 +11,7 @@
 
 ## Get started (Windows)
 
-1. **Unzip** `retro-hub-0.2.3-fresh-install.zip` anywhere (for example `C:\Games\retro-hub`).
+1. **Unzip** `retro-hub-0.2.4-fresh-install.zip` anywhere (for example `C:\Games\retro-hub`).
 2. **Double-click `launch.bat`.**
    - Missing Python or Node.js? It offers to download and install them for you, and checks every download first.
    - It asks whether you want a **desktop shortcut** with the Retro Hub duck. Say yes, and next time just click the duck.
