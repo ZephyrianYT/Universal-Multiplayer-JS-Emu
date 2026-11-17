@@ -1,5 +1,3 @@
-(Updater may be Broken in current iteration, please be patient)
-
 # Retro Hub
 
 **Play retro games with your friends from a link.** You run Retro Hub on your PC, friends open the link in their browser, and you play together: co-op, races, or side by side as ghosts. Nothing to install for your friends, and no games are ever uploaded anywhere.
@@ -57,6 +55,10 @@ Drop a portable build of the emulator into its folder in `emulators/` (for examp
 ## Staying up to date
 
 The Retro Hub window checks for new versions when it opens. Press **Update…** (or **Check for updates**): your settings, games and emulators are kept, and replaced files are backed up first.
+
+## Make it yours
+
+**🎨 Theme** in the top bar (☰ on phones) switches the colors: Coal, Midnight, Synthwave, Forest, Crimson, Pocket or Paper (light). Click **Retro Hub** at the top left any time to get back to the home screen.
 
 ## Need help?
 
