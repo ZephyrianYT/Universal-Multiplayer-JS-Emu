@@ -328,6 +328,81 @@ Pick **Race / Speedrun** when hosting (or in the lobby's *Mode*). It is Single-P
 - **Console is remembered**: picking another console for a library game (melonDS for a DS game, VBA-M for GBA) becomes the default for that console's games, with a note saying so. Consoles that can't run the picked game are greyed out under **Console**.
 - **What's new**: the first time a browser opens a new version, it shows the changelog since the version it last saw.
 
+### Streamer Mode
+
+For streams where viewers take turns playing. **Co-op Netplay** lobbies only (in Ghost / Race everyone runs their own copy, so it turns off).
+
+- Turn it on in the lobby's **Match** card. From then on everyone who joins lands in the **waiting room**: a spectator getting the normal stream, in line for a seat. Viewers can **Sit out** (watch only) or **Join the line** again; the waiting room shows the order.
+- Free guest seats are **offered** in line order ("You're up!", 10 s, chime, notification in a background tab). Take it with the button, Enter or any gamepad button; no answer = marked away and skipped. Seats can't be taken past the line.
+- **↻ Rotate seats** (Match card, ↻ in the match top bar, or **Ctrl+Shift+R** while the hub's tab has focus) moves seated viewers to the back of the line; **👑** on a seat keeps that player (winner stays). The **turn timer** (off, 3-30 min) warns 15 s before and only rotates when someone is waiting. The host's own seats on this PC never rotate.
+- Per seat (host): **🎮** mutes that player's inputs (held buttons are released), **⤺** sends them back to the waiting room. Seats change hands without reconnecting: only the host's seat-to-player mapping changes, and the old seat's buttons are released.
+- **Hide the code, invite link and passwords on my screen** (any player, per browser) blurs the lobby code, passwords, the overlay address and your account ID; copy buttons still work.
+- **OBS overlay**: add a Browser Source with `http://localhost:<port>/overlay/queue` (copy it from the Match card). It shows *Now playing* (P1-P4, turn time left) and *Up next* (first 5) on a transparent background and refreshes every 2 s. It answers only to the hub's own computer (not through a tunnel or proxy), so it needs no account; names only. Without `?room=CODE` it shows the Streamer Mode lobby hosted from this PC. `?side=right` and `?scale=1.5` are optional.
+- Limits: a lobby holds 12 people (players + waiting room), and the host uploads one stream per viewer. A hotkey that works while a native emulator's window has focus would need a system-wide keyboard hook; that's left out on purpose (it's what keyloggers do, and antivirus flags it). Use the in-game ↻ button or the hub tab's Ctrl+Shift+R.
+
+### Viewer effects (Streamer Mode)
+
+Retro Hub's own take on stream "chaos" effects, for any game and without outside services. Turn on **🎲 Viewer effects** in the Streamer Mode box and untick any effect you don't want.
+
+| Effect | Points | Lasts | Works with |
+| --- | --- | --- | --- |
+| Invert controls (up/down, left/right, sticks) | 3 | 15 s | all games (native: guests' seats) |
+| Swap A / B (and X / Y; N64: A / B) | 2 | 20 s | all games (native: guests' seats) |
+| Freeze controls | 4 | 4 s | all games (native: guests' seats) |
+| Double speed / Slow motion | 3 / 2 | 15 s | browser games |
+| Pause | 3 | 3 s | browser games |
+| Rewind 10 s | 5 | instant | browser games (off for save states over 24 MB) |
+| Upside down / Mirror / Tiny screen / Invert colors | 2 | 15 s | all games (the hub page's view) |
+| Black & white | 1 | 20 s | all games (the hub page's view) |
+
+- **Points**: every player except the host starts with 3, gets 1 every 30 s in the lobby (up to 30). The host's clicks are free (for testing).
+- **Limits**: one effect per kind (controls, speed, time, picture) at a time, a cooldown per effect (30-90 s after it ends), and one effect every 8 s per viewer. Effects only fire during a match.
+- **How they apply**: the hub announces each effect to everyone. Control effects change the buttons on the host's side before they reach the game (all seats of a browser game; guests' seats of a native game, since players on the host's PC use their pads directly in the emulator). Speed, pause and rewind are EmulatorJS functions on the host's page; for rewind the host's page keeps a save state every 3 s for about 20 s. Picture effects are a CSS filter / transform on every page's game view: guests see them on their stream, and so does a stream captured from the host's screen (not one captured straight from a native emulator's own window).
+
+### Shuffler
+
+A solo mode for "shuffler" challenges: `/shuffle.html` (linked under *Host a game*).
+
+- Pick 2-8 games: files from your computer (they stay there) or, for the owner, games from the server library. Each needs its console (detected from the extension; ambiguous files ask). Consoles can be mixed.
+- *Swap after at least / at most* sets the random interval (5-900 s). *Show the countdown* off means surprise swaps. Settings are remembered in the browser.
+- While playing: **✓ Beaten** (F8) removes the current game from the pool and moves on; **⤳ Swap** (F9); **⏸ Hold** (F10) pauses swapping (the game keeps running). When one game is left it stays put. When all are beaten the win screen shows the total time, number of swaps and time in each game.
+- How it works: each game runs in its own frame (`shuffle-frame.html`, the only page the hub lets itself frame) with its own EmulatorJS core, booted once and paused while it's not its turn. A swap pauses one and resumes another: instant, nothing reloads, no save states. Keys and gamepads are read by the Shuffler page and sent to the game whose turn it is (P1), and released at every swap so nothing stays held. In-game saves (battery saves) are kept by EmulatorJS per game as usual; a shuffle itself can't be resumed after closing the page.
+- Memory: every game stays loaded. Small consoles are light; PS1, N64, DS, PSP, Saturn, Sega CD, Jaguar and arcade are heavy (the setup warns from 4 of those).
+- **Memory saver** (on by default): with 2+ big consoles only one big game is loaded at a time; when another big game's turn comes, the loaded one is saved (save state) and closed, and the next one boots and restores its save (a few seconds, shown as *Loading…*). Small consoles always stay loaded.
+
+**Shuffle lobbies.** *Host a game* → mode **🔀 Shuffle**: every game you pick (files or library) goes into the shuffle list (2-8, each with its console), plus the swap times and the memory saver. It's a Co-op lobby: the host's page runs the games (the same engine as the Shuffler, `public/shuffler-core.js`) and streams the one that's on; the video track is swapped at each change and the games' sound is mixed into one track, so guests don't reconnect. Guests' controllers drive P2-P4 of whichever game is on (released at each swap). The hub keeps only the list and which game is on, for everyone's title bar and swap banner. The first game waits for GO; ✓ Beaten (F8), ⤳ Swap (F9), ⏸ Hold (F10) are in the host's top bar. Save states (💾) are off in shuffle lobbies, and *Play again* brings back an empty lobby (pick the games again). Streamer Mode and viewer effects work as usual (effects act on the game that's on).
+
+### Guitars and drum kits
+
+Guitar Hero and Rock Band run in the native emulators (PCSX2, Dolphin, RPCS3) on the host's PC; instruments plugged into that PC are set up in the emulator as usual. For friends over the stream, **🎸 Instruments** (☰ menu, a lobby's settings, the Shuffler) teaches the hub a guitar or drum kit: pick **Guitar** or **Drums** and press each part once. The learned layout (per device id, in this browser: `rh-padmaps`) replaces the standard gamepad layout for that device everywhere (lobbies, Shuffler); D-pad "hats" and an analog whammy are handled. Parts are mapped like an Xbox 360 instrument, so on the host's PC the friend's virtual Xbox controller can be mapped to the emulator's guitar / drums: see `emulators/INSTRUMENTS.md`. Have every remote player run the game's audio / video calibration (the stream adds a little delay). Xbox 360 games in Xenia expect real instruments, so remote instruments may not work there.
+
+### Lobby Browser
+
+The **Lobby Browser** tab (next to *Play*) is one table of every lobby: this hub's own, other hubs on your network (LAN beacons) and the master lobby pool when this hub uses one (`MASTER_SERVER_URL`).
+
+- **Search** matches game, host, console and player names; `|` means *or* (`Mario|Zelda`). Filters: console, mode (Co-op / Ghost / Race), at least N players, open seats, no password, not started, friends in it, this hub only. Filters and sort are remembered in the browser.
+- Columns sort by clicking (game, console, players, ping, where). Lobbies with your friends in them come first, marked 👥 (see *Friends*). Click a row (or Enter) to see who's in it; player names are shown for this hub's lobbies only (other hubs don't share them).
+- **Join** / **Watch** use the normal join dialog. Other hubs' lobbies open that hub (you make an account there). GBA link sessions point to the link panel on *Play*.
+- **⏳ Wait for a seat** (full lobbies on this hub, or *Wait for a seat* in the join dialog after a *full* answer): the page retries as soon as the lobby list shows a free seat, using the password you typed, and stops if the lobby closes. **🔔 Alert me** saves the current filters; every lobby that opens later and matches them pops up once (sound, and a system notification while the tab is in the background if allowed). Both run while the page is open, in any tab. The server sends player names in the lobby list (`names`) for this.
+
+### Friends
+
+**👥 Friends** (top bar) adds friends by account ID: the *#XXXX-XXXX-XXXX-XXXX* shown next to each name (top bar, player cards, chat). In a lobby, **＋ Friend** on a player does the same.
+
+- **Mutual only**: the hub shows two people to each other only when both have added each other. Then you see them online, in which lobby (game, host, 🔒 when it has a password) or playing; **Join** opens the normal join dialog, and from your own lobby **Invite** pops up a Join button on their screen.
+- **Added you**: someone online who added you (but you haven't added back) shows with **Add back** / **Ignore**.
+- **Appear offline** hides you from everyone (no presence, no requests, no invites).
+- **Privacy**: lists live in each browser, per account (export the account to move it; the list stays in that browser). The page sends the list over its own socket ({t:"friends"}); the hub keeps it in memory only while that page is open and stores nothing. Invites: friends only, 6 a minute, once per 20 s per friend.
+- Same hub only: friends on other hubs don't show.
+
+### Off Site Games
+
+The **Off Site Games** tab (next to **Play**) lists games that run on other websites, by category, with search. They open in a new tab with no referrer, marked *Offsite*; lobbies, netplay, saves and achievements don't apply, and Retro Hub doesn't host or check them.
+
+- The default list is `core/offsite-games.json`: free or open-source games, and ports that use your own game files.
+- **Your own list**: copy that file to `offsite-games.json` in the hub's main folder and edit it. It replaces the default, is kept by the updater, and isn't shipped. Each game: `name`, `url` (`https://` only; anything else is dropped), `category`, optional `note`, and `"touch": true` for games that work on phones and tablets (they get a *Phone / tablet friendly* filter).
+- Mind what you link to: a list of unofficial copies of commercial games, or sites with heavy ads, reflects on your hub.
+
 ---
 
 ## 7. The ROM library
@@ -476,6 +551,7 @@ Friends need only a browser and your link. You need a public HTTPS address.
 1. Install `cloudflared` (see [Requirements](#2-requirements)).
 2. In the window choose **Internet (Cloudflare Tunnel)** and press **Start**. Or run `launch.bat --tunnel` / `./launch-tunnel.sh`.
 3. The launcher waits for `cloudflared` to report a connection and reads the `https://<random>.trycloudflare.com` address. It passes that address to the server as `PUBLIC_URL`, so invite links use it.
+   Your own browser still opens the hub on `http://localhost:<port>` (native emulators and Library folders only work from the hub PC's own address). The window shows both addresses, and **Copy link** copies the public one.
 4. Copy the invite link into Discord and send the lobby password separately.
 
 The quick address changes on every start, and Cloudflare gives no uptime guarantee for quick tunnels.
