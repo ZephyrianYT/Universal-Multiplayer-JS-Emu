@@ -1,5 +1,35 @@
 # Changelog
 
+## 1.26.0 - 2026-11-18
+
+Released as **Retro Hub 0.3.3**.
+
+### 🌐 Online services for every console
+- New **🌐 Online** panel (owner, on the hub's own computer): for each emulator, the service its games' own online modes use, whether it's set up, what's missing, setup steps and links. Retro Hub's own lobbies still work for every console with nothing to set up. Retro Hub never ships keys, BIOS or account files: you use your own.
+- Checked automatically: **Wii U / Cemu** (Pretendo, your own Pretendo server, or SmmServer), **PS3 / RPCS3** (firmware installed, RPCN account, network on globally or per game), **PSP / PPSSPP** (networking, nickname, ad hoc server, infrastructure mode), **Xbox / xemu** (Insignia), **Xbox 360 / Xenia** (the Canary netplay fork and its server). Steps and links for Dolphin (Wiimmfi, WiiLink), melonDS (Wiimmfi / Kaeru WFC), Flycast (DCNet), PCSX2, Ryujinx; Azahar and Eden rooms are built in.
+- When something is limited you get one notice, a dot on the 🌐 button, and a short warning when you host that console.
+- **Cemu:** follows Cemu's own rule for which folder it reads (a `portable` folder, or a `settings.xml` next to Cemu.exe, else `%APPDATA%\Cemu`). Buttons: copy files to where Cemu reads them, import your own files (a Dumpling dump), Use Pretendo, My own server (pretendo-docker), Custom (`network_services.xml`, e.g. SmmServer), Offline. Backups first. SmmServer's FakeOnlineFiles are recognised (they only work with SmmServer), and a Custom server that isn't running is reported.
+- **PS3:** community servers table (PS Rewired, Demon's Souls' The Archstones) with only addresses confirmed from a named source.
+- Guide: `emulators/ONLINE.md`.
+
+### 🎮 PPSSPP (PSP) as a native emulator
+- New console **PSP (PPSSPP)**: PSP games can run in PPSSPP on the host (also takes `.iso`), next to the in-browser PSP.
+
+### 🗡️ Four Swords Adventures: GBA screens
+- GameCube games played with Game Boy Advance controllers (Four Swords Adventures, Final Fantasy Crystal Chronicles) are recognised by their disc ID.
+- **GBA screens mode** (only the host needs the game): Dolphin runs every port as a built-in GBA, the host shares the TV window and each GBA window, and every player sees **only their own GBA** in a corner of their game view (bigger / smaller / tuck away). Dolphin uses its own settings folder for this, so your normal Dolphin setup isn't changed. Needs your own GBA BIOS (`bios/gba_bios.bin`) and ViGEm for guests' controllers.
+- **Dolphin GBA netplay helper** (everyone owns the game): 🌐 Online → Dolphin → Open Dolphin for GBA netplay sets the 4 GBA ports, your BIOS, Hide Remote GBAs, traversal, your name, the pad buffer from your ping, and the host's code.
+- New `bios/` folder for your own BIOS files: never shipped, kept by updates.
+
+### 🎨 Themes, logo and emotes
+- **Custom theme**: start from any preset and pick your own background, panel, border, text and accent colors, font, heading style, corner roundness and a background picture (with darken). Share a theme with a `RH-THEME:` code. New **Durag Duck** preset.
+- The **duck mascot** is now the logo next to "Retro Hub" on every page.
+- **Duck emotes** in the lobby chat and Messenger IMs: a 🦆 picker or `:name:` codes. 16 classic emotes (happy, laugh, cheer, sad, cry, angry, heart, wow, wink, shades, think, sleep, shy, nervous, ko, check) and 20 Durag Duck stickers. A message that's only emotes shows them big.
+
+### Fixes
+- Theme cards cut their descriptions off.
+- Cemu's Pretendo check counted `otp.bin` / `seeprom.bin` next to Cemu.exe even when Cemu reads another folder, and missed the online-mode switch.
+
 ## 1.25.0 - 2026-11-18
 
 Released as **Retro Hub 0.3.1**.
