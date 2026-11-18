@@ -1,6 +1,13 @@
-# Fix log: 1.25.0 (Retro Hub 0.3.1)
+# Fix log: 1.26.0 (Retro Hub 0.3.3)
 
-Sections 1-9 are the fixes up to 1.19.0. Section 10 covers problems found and fixed while building 1.25.0 (released as 0.3.1).
+Sections 1-9 are the fixes up to 1.19.0. Section 10 covers 1.25.0 (released as 0.3.1), section 11 covers 1.26.0 (released as 0.3.3).
+
+## 11. 1.26.0 (Retro Hub 0.3.3)
+
+- **Cemu folder rule.** *Cause:* the Pretendo check counted `otp.bin`/`seeprom.bin` next to Cemu.exe, but Cemu 2.x reads them from its data folder only: `portable/`, else (Windows) the exe folder when a `settings.xml` is next to it (old portable layout), else `%APPDATA%\Cemu` (`src/gui/wxgui/CemuApp.cpp DeterminePaths`). *Change:* `apps.py cemu_paths` follows that rule; files next to Cemu.exe that Cemu doesn't read are reported with a Copy button. *Tested:* both layouts on scratch copies.
+- **Online mode switch ignored.** *Change:* `<Account><OnlineEnabled>` is checked and set together with the per-account `SelectedService` and the old `ActiveService`. *Tested:* scratch copy.
+- **New POST routes answered 405.** *Cause:* POST handlers placed after the GET-only gate in `server.mjs`. *Change:* moved before it. *Tested:* the Online panel's Cemu buttons.
+- **Theme cards overflowed.** *Cause:* the global button `white-space: nowrap`. *Change:* `.theme-card` wraps.
 
 ## 10. 1.25.0 (Retro Hub 0.3.1)
 
