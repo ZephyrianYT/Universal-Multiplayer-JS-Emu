@@ -1,76 +1,80 @@
-# Retro Hub
+# Retro Hub 🦆
 
-**Play retro games with your friends from a link.** You run Retro Hub on your PC, friends open the link in their browser, and you play together: co-op, races, or side by side as ghosts. Nothing to install for your friends, and no games are ever uploaded anywhere.
+**Play retro games with your friends from a link.** Run Retro Hub on your PC, send a link, and your friends play right in their browser. They don't install anything, and your games never leave your PC.
 
-- 🎮 **Browser consoles**: NES, SNES, N64, Game Boy, Game Boy Color, GBA, DS, PS1, PSP, Genesis, Saturn, arcade and more.
-- 🖥️ **Big consoles** (PS2, GameCube, Wii, Wii U, Switch, 3DS, Xbox, Dreamcast…) run in real emulators on your PC and stream to your friends.
-- 🏁 **Race / speedrun mode**, 🏆 **RetroAchievements**, voice chat, save states, and a link cable for GBA.
-- 🔒 **Private by design**: your games stay on your PC, and accounts live in each player's browser.
+![Retro Hub](docs/screenshot.png)
+
+**[⬇ Download the latest release](https://github.com/ZephyrianYT/Universal-Multiplayer-JS-Emu/releases/latest)** · Windows, macOS, Linux · Free (GPL-3.0)
 
 ---
 
-## Get started (Windows)
+## What you get
 
-1. **Unzip** `RetroHub0.3.1.zip` anywhere (for example `C:\Games\retro-hub`).
+- **Play together:** Co-op, Ghost (side by side), and Race / Speedrun, plus voice chat.
+- **In the browser:** NES, SNES, N64, Game Boy, GBC, GBA, DS, PS1, PSP, Genesis, Saturn, arcade and more.
+- **Big consoles:** PS2, GameCube, Wii, Wii U, Switch, 3DS, Xbox, Dreamcast and more run in real emulators on your PC and stream to your friends.
+- **Extras:** RetroAchievements 🏆, save states, GBA link cable, Streamer Mode, and a game Shuffler.
+- **Private by design:** 🔒 your games stay on your PC, and each player's account lives in their own browser.
+
+## Quick start (Windows)
+
+1. **Download** the latest zip from [Releases](https://github.com/ZephyrianYT/Universal-Multiplayer-JS-Emu/releases/latest) and unzip it anywhere (for example `C:\Games\retro-hub`).
 2. **Double-click `launch.bat`.**
-   - Missing Python or Node.js? It offers to download and install them for you, and checks every download first.
-   - It asks whether you want a **desktop shortcut** with the Retro Hub duck. Say yes, and next time just click the duck.
-3. In the Retro Hub window, press **▶ Start**. Your browser opens the hub.
-4. Type a name to **make your account** (one click, no password).
+   - Missing Python or Node.js? It offers to install them and checks every download first.
+   - Say yes to the **desktop shortcut**, and next time just click the duck.
+3. Press **▶ Start** in the Retro Hub window. Your browser opens the hub.
+4. **Type a name** to make your account. One click, no password.
 
-**macOS / Linux:** install Python 3 and Node.js 18+, then run `python3 RetroHub.pyw` (or `./launch.sh`) in the folder.
+**macOS / Linux:** install Python 3 and Node.js 18+, then run `./launch.sh` (or `python3 RetroHub.pyw`) in the folder.
 
 ## Add your games
 
-- Put games in the **`roms`** folder, one folder per console: `roms/snes`, `roms/gba`, `roms/psx`…
-- Or point each console at the folder your games are already in: **Settings → Consoles…** in the Retro Hub window.
+- Put games in the `roms` folder, one folder per console: `roms/snes`, `roms/gba`, `roms/psx`…
+- **Or** point a console at the folder your games are already in: **Settings → Consoles…**
 - In the hub, press **Unlock library** and enter the owner password (in the window: **Settings → Owner password → Show**).
 
-Disc games show up once (the `.cue` or `.m3u`, not every track), and BIOS files are left out on their own.
+Each disc game shows up once (its `.cue` or `.m3u`), and BIOS files are left out automatically.
 
 ## Play with friends
 
-1. **Host a game**: pick a mode (**Co-op**, **Ghost**, or **Race / Speedrun**), pick a game, press **Open lobby**.
-2. **Copy invite link** and send it to your friends. Set a lobby password if you like (send it separately).
-3. When everyone is ready, press **Start match**. After the game, **↻ Play again** brings everyone back to the lobby.
+1. **Host a game:** pick a mode, pick a game, and press **Open lobby**.
+2. **Copy invite link** and send it. Set a lobby password if you like, and send it separately.
+3. When everyone's ready, press **Start match**. **↻ Play again** brings everyone back to the lobby.
 
-**Friends on the same Wi-Fi** can use the *Copy Wi-Fi link* button. **Friends anywhere** need the Internet mode: in the window, pick **Internet (Cloudflare Tunnel)** before pressing Start. It's free, no account needed. The hub still opens on localhost for you; invite links use the public address.
+| Your friends are… | Do this |
+| --- | --- |
+| On your Wi-Fi | Use **Copy Wi-Fi link**. |
+| Anywhere else | Before pressing ▶ Start, pick **Internet (Cloudflare Tunnel)** in the window. It's free and needs no account. Your invite links then use the public address. |
 
-**Streaming?** Turn on **Streamer Mode** in a Co-op lobby: viewers wait in line and take turns in the seats (↻ Rotate, 👑 winner stays, optional turn timer), 🎲 **viewer effects** let viewers spend points on things like inverted controls, double speed or an upside-down screen, and `http://localhost:8080/overlay/queue` is an OBS overlay with who's playing and who's next.
+## More to try
 
-**🔀 Shuffler** (link under *Host a game*): load 2-8 games and it jumps between them at random, right where you left each one. Mark games beaten (F8) until you've beaten them all. With friends: pick the **🔀 Shuffle** mode in *Host a game*.
+- **🎥 Streamer Mode:** viewers wait in line and take turns in the seats. They can spend points on 🎲 effects (inverted controls, double speed, upside-down screen). The OBS overlay is at `http://localhost:8080/overlay/queue`.
+- **🔀 Shuffler:** load 2-8 games and it jumps between them at random, right where you left each one. Press F8 to mark a game beaten. To play it with friends, pick **🔀 Shuffle** in *Host a game*.
+- **🔎 Lobby Browser:** search every lobby on this hub and nearby hubs. **⏳ Wait for a seat** or **🔔 Alert me** when a lobby you want opens.
+- **👥 Buddy List:** a classic-style messenger with instant messages, away messages, and joining or inviting buddies to a lobby.
+- **🎸 Guitar Hero / Rock Band:** friends set up their instrument once in **🎸 Instruments** (☰ menu). See `emulators/INSTRUMENTS.md`.
+- **🕹️ Off Site Games:** Flash (.swf), phone games (J2ME .jar), ScummVM, and DOS / Windows 9x, plus links to games on other sites.
+- **🎨 Themes:** Coal, Midnight, Synthwave, Forest, Crimson, Pocket or Paper (light).
 
-**🎸 Guitar Hero / Rock Band**: these run in the native emulators on the host's PC. Friends set up their guitar or drum kit once in **🎸 Instruments** (☰ menu) and play along; the host maps them in the emulator (`emulators/INSTRUMENTS.md`).
+## Big consoles
 
-**Lobby Browser** (tab next to *Play*): every lobby on this hub and nearby hubs, with search and filters. Full? **⏳ Wait for a seat** joins you when one opens. **🔔 Alert me** tells you when a lobby you'd like opens.
+Drop a portable build of the emulator into its folder in `emulators/` (for example `emulators/pcsx2/`). Then press **Check for Emus** in the hub to see which ones it found. Details: [emulators/README.md](emulators/README.md).
 
-**👥 Buddy List**: a classic-style messenger. Add buddies by the ID next to their name (or **＋ Buddy** in a lobby, or **Find a Buddy**). Once you've both added each other you see when they're on, send instant messages, set an away message and profile, join their lobby, or invite them to yours.
+## Updating
 
-**Off Site Games** (the tab next to *Play*) links to games that run on other websites, in a new tab. It also has the hub's own extra players: **🎞️ Flash** (.swf), **📱 Phone games** (J2ME .jar), **🗝️ ScummVM** adventures and **🖥️ PC** (DOS / Windows 9x disk images). Load your own files, or the owner puts games in `roms/swf`, `roms/j2me`, `roms/scummvm` and `roms/x86` (one folder per game).
+The window checks for new versions when it opens. Press **Update…** to install one. Your settings, games and emulators are kept, and any file it replaces is backed up first.
 
-## Big consoles (PS2, GameCube, Switch…)
+## Troubleshooting
 
-Drop a portable build of the emulator into its folder in `emulators/` (for example `emulators/pcsx2/`). **Check for Emus** in the hub shows which ones it found. Details: [emulators/README.md](emulators/README.md).
-
-## Staying up to date
-
-The Retro Hub window checks for new versions when it opens. Press **Update…** (or **Check for updates**): your settings, games and emulators are kept, and replaced files are backed up first.
-
-## Make it yours
-
-**🎨 Theme** in the top bar (☰ on phones) switches the colors: Coal, Midnight, Synthwave, Forest, Crimson, Pocket or Paper (light). Click **Retro Hub** at the top left any time to get back to the home screen.
-
-## Need help?
-
-| Problem | Try this |
+| Problem | Fix |
 | --- | --- |
 | The library tab is missing | Press **Unlock library** and enter the owner password. |
-| A friend can't connect | Use the Internet (Cloudflare Tunnel) mode, or see *TURN* in the advanced guide. |
-| An emulator shows ✖ | The window shows a **Setup needs a look** box with a fix button. |
-| A game is missing from the library | Check its folder in **Settings → Consoles…**, and **Show hidden** in the library. |
+| A friend can't connect | Use **Internet (Cloudflare Tunnel)** mode, or see *TURN* in the [advanced guide](README-ADVANCED.md). |
+| An emulator shows ✖ | Use the fix button in the **Setup needs a look** box in the window. |
+| A game is missing | Check its folder in **Settings → Consoles…** and turn on **Show hidden** in the library. |
 
-**Everything else** (all settings, the security model, Docker, how it works inside): see the **[advanced guide](README-ADVANCED.md)**. What changed: [CHANGELOG.md](CHANGELOG.md).
+Everything else (all settings, security, Docker, how it works) is in the **[advanced guide](README-ADVANCED.md)**. You can see what changed in the [CHANGELOG](CHANGELOG.md).
 
 ---
 
-Retro Hub contains no games, BIOS files or keys. Only play games you own. GPL-3.0, see [LICENSE](LICENSE).
+Retro Hub contains no games, BIOS files or keys. Only play games you own. Licensed under [GPL-3.0](LICENSE).
