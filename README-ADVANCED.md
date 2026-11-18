@@ -89,7 +89,7 @@ On Windows you don't have to install these by hand: `launch.bat` offers Python a
 ## 3. Installing (fresh install)
 
 1. Install Node.js and Python (see above).
-2. Unzip `retro-hub-<release>-fresh-install.zip` (for example `retro-hub-0.2.4-fresh-install.zip`) anywhere, for example `C:\Games\retro-hub`. The path can contain spaces.
+2. Unzip the release zip (for example `RetroHub0.3.1.zip`, which holds a `retro-hub-0.3.1` folder) anywhere, for example `C:\Games\retro-hub`. The path can contain spaces.
 3. Double-click **`launch.bat`** (Windows). On macOS or Linux, run `python3 RetroHub.pyw` (or `./launch.sh` for the console launcher).
 4. The first time, the window asks **Would you like to create a RetroHub desktop shortcut?** Yes puts a RetroHub shortcut with the duck icon on your Desktop (see [Desktop shortcut](#desktop-shortcut)).
 5. In the window, press **▶ Start**.
@@ -131,7 +131,7 @@ The question comes once (the answer is saved as `"promptedDesktopShortcut": true
 - **Kept**: `.env`, `library-folders.json`, `library-hidden.json`, `.retrohub-config.json`, `emulators/` (your builds and `apps.json`; only its README / KEYBOARD / INSTRUMENTS docs update), `roms/`, `cache/`, `run/`, `node_modules/`.
 - **Backed up**: every file it replaces goes to `backup/<date-time>-before-<release>/` first.
 - **Checked** before anything changes: downloaded only from GitHub over HTTPS, SHA-256 against the checksum GitHub publishes for the file, a Microsoft Defender scan (Windows), and the zip itself (no paths outside its folder, must contain `server.mjs`, `package.json`, `apps.py`). A failed check deletes the download and changes nothing.
-- **Newer?** It compares release numbers: this install's (`"release"` in `package.json`) against the newest release's name or tag (e.g. `RetroHub0.3.0`, `v0.3.0`). Release zips may have the Retro Hub folder at any depth.
+- **Newer?** It compares release numbers: this install's (`"release"` in `package.json`) against the newest release's name or tag (e.g. `RetroHub0.3.1`, `v0.3.1`). Release zips may have the Retro Hub folder at any depth.
 - An older version than the one installed isn't installed unless you confirm. The hub is stopped first; the window restarts itself afterwards.
 - From a terminal: `python setup/update.py check` / `apply` (`--force` for an older release).
 
