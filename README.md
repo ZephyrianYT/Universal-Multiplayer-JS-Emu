@@ -11,7 +11,7 @@
 
 ## Get started (Windows)
 
-1. **Unzip** `retro-hub-0.2.4-fresh-install.zip` anywhere (for example `C:\Games\retro-hub`).
+1. **Unzip** `RetroHub0.3.1.zip` anywhere (for example `C:\Games\retro-hub`).
 2. **Double-click `launch.bat`.**
    - Missing Python or Node.js? It offers to download and install them for you, and checks every download first.
    - It asks whether you want a **desktop shortcut** with the Retro Hub duck. Say yes, and next time just click the duck.
@@ -44,9 +44,9 @@ Disc games show up once (the `.cue` or `.m3u`, not every track), and BIOS files 
 
 **Lobby Browser** (tab next to *Play*): every lobby on this hub and nearby hubs, with search and filters. Full? **⏳ Wait for a seat** joins you when one opens. **🔔 Alert me** tells you when a lobby you'd like opens.
 
-**👥 Friends**: add friends by the ID next to their name (or **＋ Friend** in a lobby). Once you've both added each other you see when they're on, join their lobby, or invite them to yours.
+**👥 Buddy List**: a classic-style messenger. Add buddies by the ID next to their name (or **＋ Buddy** in a lobby, or **Find a Buddy**). Once you've both added each other you see when they're on, send instant messages, set an away message and profile, join their lobby, or invite them to yours.
 
-**Off Site Games** (the tab next to *Play*) links to games that run on other websites, in a new tab.
+**Off Site Games** (the tab next to *Play*) links to games that run on other websites, in a new tab. It also has the hub's own extra players: **🎞️ Flash** (.swf), **📱 Phone games** (J2ME .jar), **🗝️ ScummVM** adventures and **🖥️ PC** (DOS / Windows 9x disk images). Load your own files, or the owner puts games in `roms/swf`, `roms/j2me`, `roms/scummvm` and `roms/x86` (one folder per game).
 
 ## Big consoles (PS2, GameCube, Switch…)
 
