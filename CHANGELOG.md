@@ -1,5 +1,20 @@
 # Changelog
 
+## 1.25.0 - 2026-11-18
+
+Released as **Retro Hub 0.3.1**.
+
+### 💬 Retro Hub Messenger (replaces Friends)
+- The Friends panel is now a classic-style messenger: a **Buddy List** window (groups, Online / List Setup tabs, Offline group, buddy requests), **Instant Message** windows, away messages with auto-responses, profiles, buddy icons, warnings, typing indicator, door sounds (made in the browser), and a taskbar for minimized windows.
+- **Find a Buddy** searches people online on this hub (not invisible ones). **Invite to my lobby** and **Join** are in the IM window and the buddy's right-click menu. Same rule as before: you see each other and can IM once you've both added each other. The hub relays messages and stores nothing; your list, away messages and profile stay in your browser.
+- New IMs during a match wait in the taskbar (with a toast) instead of covering the game. Lobby chat got the chat-room look.
+
+### 🕹️ New play pages (Off Site Games tab)
+- **🎞️ Load a .SWF**: classic Flash games with Ruffle, from your computer or the hub's `roms/swf/<Game>/` folder. Nothing is uploaded; games get no internet access.
+- **📱 Phone games (.JAR)**: J2ME games with freej2me-web, from your computer (its launcher) or `roms/j2me/<Game>/`. Needs internet: its Java runtime (CheerpJ) loads from Leaning Technologies.
+- **🗝️ ScummVM**: point-and-click adventures from `roms/scummvm/<Game>/` (official ScummVM web build; engine files download from GitHub on first use and are checked against pinned hashes, kept in `cache/scummvm/`).
+- **🖥️ PC (DOS / Win 9x)**: v86 boots your own .img / .iso disks (CD and floppy swaps, snapshots you can download and resume), or machines in `roms/x86/<Name>/`.
+
 ## 1.24.0 - 2026-11-17
 
 Released as **Retro Hub 0.3.0** (fresh install).
