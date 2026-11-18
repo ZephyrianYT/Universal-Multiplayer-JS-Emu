@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>Retro Hub · ScummVM</title>
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <!-- The ScummVM web build's own page (chkuendig/scummvm-demo), without its error reporting (Sentry) and with the
+       script moved to play.js for the hub's CSP. scummvm.js drives the #download-modal elements. -->
+  <style>
+    html, body { margin: 0; height: 100%; background: #000; overflow: hidden; }
+    canvas.emscripten { border: 0 none; position: absolute; inset: 0; width: 100%; height: 100%; display: block;
+      background: #cc6600 url("logo.svg") center / auto 33% no-repeat; }
+    @media (orientation: portrait) { canvas.emscripten { background-size: 80% auto; } }
+    #download-modal { background: #F9F2D2; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,.4); display: none;
+      font-family: Arial, sans-serif; left: 50%; max-width: 90%; overflow: hidden; position: absolute; bottom: 10%;
+      transform: translate(-50%, 0); width: 400px; z-index: 10; }
+    #download-modal-title { background: #E9CC7A; border-bottom: 1px solid #DFB661; margin: 0; padding: 8px 16px; text-align: center; }
+    #download-modal-content { padding: 16px; }
+    #download-modal h3 { color: #333; font-size: 13px; font-weight: bold; margin: 0; }
+    #download-modal p { color: #333; font-size: 12px; font-weight: bold; margin: 8px 0; }
+    #download-modal-progress { background: #F4E5AD; border-radius: 4px; border-top: 1px solid #686557; height: 20px;
+      margin: 12px 0; overflow: hidden; position: relative; width: 100%; }
+    #download-modal-progress-fill { background: #821D06; border-radius: 3px; height: 100%; width: 0%; }
+    #output { display: none; }
+  </style>
+</head>
+<body>
+  <div id="download-modal">
+    <div id="download-modal-title"><h3></h3></div>
+    <div id="download-modal-content">
+      <div id="download-modal-progress"><div id="download-modal-progress-fill"></div></div>
+      <p id="download-modal-progress-text">Downloaded 0 KB / 0 MB</p>
+      <p id="download-modal-speed-text">Download speed: 0 MB/s</p>
+    </div>
+  </div>
+  <canvas class="emscripten" id="canvas" tabindex="-1"></canvas>
+  <textarea id="output" aria-hidden="true"></textarea>
+  <script src="play.js"></script>
+  <script async src="scummvm.js"></script>
+</body>
+</html>

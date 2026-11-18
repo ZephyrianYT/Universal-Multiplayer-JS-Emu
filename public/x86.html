@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Retro Hub · PC (DOS / Windows 9x)</title>
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/style.css">
+  <script src="/theme.js"></script>
+</head>
+<body class="flash-page">
+  <header class="topbar">
+    <a class="brand" href="/" title="Back to the home screen"><img class="brand-logo" src="/icon.svg" alt="" width="30" height="30">Retro Hub</a>
+    <span class="small muted">🖥️ PC</span>
+    <span class="spacer"></span>
+    <span class="small muted trunc" id="pc-name"></span>
+    <a class="btn small" href="/" id="pc-back">← Back to the hub</a>
+  </header>
+
+  <main class="wrap" id="pc-setup">
+    <section class="card">
+      <div class="card-head"><h2>🖥️ PC: DOS and Windows 9x</h2></div>
+      <p class="small muted">An emulated 90s PC in this browser (<a href="https://github.com/copy/v86" target="_blank" rel="noopener noreferrer" title="Opens GitHub in a new tab">v86</a>).
+        Boot a disk image with DOS or Windows 95/98 on it, and put game CDs in while it runs. Your files stay on your computer:
+        nothing is uploaded, and the PC has no internet.</p>
+
+      <div id="pc-lib-wrap" hidden>
+        <label>On this hub</label>
+        <div class="fl-lib" id="pc-lib"></div>
+      </div>
+
+      <label>Your own disks</label>
+      <div class="pc-pick">
+        <label class="fl-drop" id="pc-drop">
+          <input type="file" id="pc-boot" accept=".img,.ima,.vfd,.flp,.iso">
+          <b id="pc-boot-name">Boot disk: drop a .img or .iso here</b>
+          <span class="small muted">or click to choose (hard disk / floppy .img, or a bootable CD .iso)</span>
+        </label>
+        <div class="pc-extra">
+          <label class="btn file-btn"><input type="file" id="pc-cd" accept=".iso"> 💿 Game CD (.iso)…</label>
+          <span class="small muted" id="pc-cd-name">none</span>
+        </div>
+        <div class="pc-extra">
+          <label class="btn file-btn"><input type="file" id="pc-state" accept=".v86state,.bin"> ⏯ Resume a snapshot…</label>
+          <span class="small muted" id="pc-state-name">none (cold boot)</span>
+        </div>
+        <div class="pc-extra">
+          <label for="pc-ram">Memory</label>
+          <select id="pc-ram">
+            <option value="32">32 MB (DOS)</option>
+            <option value="64">64 MB (Windows 95)</option>
+            <option value="128" selected>128 MB</option>
+            <option value="256">256 MB (Windows 98)</option>
+          </select>
+        </div>
+        <div class="row end"><button class="primary" id="pc-start" disabled>Power on</button></div>
+      </div>
+      <div class="msg error" id="pc-error" hidden></div>
+    </section>
+
+    <section class="card">
+      <div class="card-head"><h2>Tips</h2></div>
+      <ul class="small muted pc-tips">
+        <li><b>Click the screen</b> to type into the PC. <b>🔒 Mouse</b> captures the mouse for Windows (Esc lets go).</li>
+        <li><b>Snapshots</b>: once Windows is on the desktop, <b>💾 Snapshot</b> saves the whole PC to a file. Next time load it under
+          “Resume a snapshot” together with the <b>same disks and memory</b>, and you're back in a second or two.</li>
+        <li><b>Windows 95/98 tips</b>: install the VBE9x (VBEMP) display driver for more colors and 800×600+;
+          Windows 95 needs the FIX95CPU patch on fast CPUs.</li>
+        <li><b>Adding a game</b>: CD games: make an .iso of the game folder (ImgBurn, Folder2ISO, mkisofs) and use 💿 Game CD.
+          Installed games: copy the folder into your .img with 7-Zip or WinImage first.</li>
+        <li>Snapshots and changes to disks live only in this tab: <b>save a snapshot before closing</b> or they're gone.</li>
+        <li>Hub owner: one folder per PC/game in <code>roms/x86</code> (e.g. <code>roms/x86/Windows 98/win98.img</code> + <code>game.iso</code>);
+          a <code>.v86state</code> there is resumed automatically.</li>
+      </ul>
+    </section>
+  </main>
+
+  <div class="pc-play" id="pc-play" hidden>
+    <div class="hud">
+      <b id="pc-now" class="trunc"></b>
+      <span class="small muted" id="pc-status"></span>
+      <span class="spacer"></span>
+      <label class="btn small file-btn" title="Put a CD in the drive"><input type="file" id="pc-swap-cd" accept=".iso"> 💿 CD…</label>
+      <button class="small" id="pc-eject" title="Take the CD out">⏏ CD</button>
+      <label class="btn small file-btn" title="Put a floppy in drive A:"><input type="file" id="pc-swap-fd" accept=".img,.ima,.vfd,.flp"> 💾 Floppy…</label>
+      <button class="small" id="pc-cad" title="Send Ctrl+Alt+Del">Ctrl+Alt+Del</button>
+      <button class="small" id="pc-snap" title="Save the whole PC to a file">💾 Snapshot</button>
+      <button class="small" id="pc-mouse" title="Capture the mouse (Esc to let go)">🔒 Mouse</button>
+      <button class="small" id="pc-full">Fullscreen</button>
+      <button class="small ghost" id="pc-off">Power off</button>
+    </div>
+    <div class="pc-screen-wrap">
+      <div id="pc-screen" class="pc-screen">
+        <div class="pc-text"></div>
+        <canvas hidden></canvas>
+      </div>
+    </div>
+  </div>
+
+  <script src="/v86/libv86.js"></script>
+  <script src="/x86.js"></script>
+</body>
+</html>

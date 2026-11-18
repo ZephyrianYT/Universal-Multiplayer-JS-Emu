@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Retro Hub · Sign in</title>
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/style.css">
+  <script src="/theme.js"></script>
+</head>
+<body>
+  <div class="center">
+    <div class="login">
+      <div class="brand"><img class="brand-logo" src="/icon.svg" alt="" width="30" height="30">Retro Hub</div>
+
+      <section class="card" id="busy">
+        <p class="muted" id="busy-text">Signing in…</p>
+      </section>
+
+      <section class="card" id="pick" hidden>
+        <div class="card-head"><h2>Choose your account</h2></div>
+        <ul class="list acct-list" id="acct-list"></ul>
+        <p class="small muted" style="margin-top:12px">Accounts live only in this browser. There is no password.
+          <b>⤓</b> downloads a backup, <b>🗑</b> removes an account from this browser.</p>
+      </section>
+
+      <section class="card" id="make" hidden>
+        <div class="card-head"><h2 id="make-title">Make an account</h2></div>
+        <form id="make-form">
+          <label for="name">Your name</label>
+          <input id="name" type="text" maxlength="20" autocomplete="nickname" placeholder="What friends see" required>
+          <div class="row end" style="margin-top:14px">
+            <button type="button" class="ghost" id="make-back">Back</button>
+            <button type="button" class="ghost" id="import-btn">Import backup</button>
+            <button type="submit" class="primary">Make account</button>
+          </div>
+        </form>
+        <input type="file" id="import-file" accept=".json,application/json" hidden>
+        <p class="small muted" style="margin-top:12px">Your account is a key saved in this browser: no password, no email,
+          nothing stored on the server. Use <b>Export account</b> in the hub to keep a backup or move it to another device.</p>
+      </section>
+
+      <section class="card" id="access" hidden>
+        <div class="card-head"><h2>Server access code</h2></div>
+        <form id="access-form">
+          <p class="muted small">The owner of this hub set an access code. You only need to enter it once.</p>
+          <label for="access-code">Access code</label>
+          <input id="access-code" type="password" autocomplete="off" required>
+          <div class="row end" style="margin-top:14px">
+            <button type="button" class="ghost" id="access-back">Back</button>
+            <button type="submit" class="primary">Continue</button>
+          </div>
+        </form>
+      </section>
+
+      <div id="error" class="msg error" hidden></div>
+      <div id="reset-wrap" class="row end" style="margin-top:10px" hidden>
+        <button type="button" class="small" id="reset-btn">Reset accounts in this browser</button>
+      </div>
+    </div>
+  </div>
+  <script src="/vendor/nacl-fast.min.js"></script>
+  <script src="/account.js"></script>
+  <script src="/login.js"></script>
+</body>
+</html>

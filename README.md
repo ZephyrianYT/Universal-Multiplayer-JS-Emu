@@ -1,5 +1,3 @@
-(Missed a Launch bug on fresh install due to user having account and cache, but once cleared, the J2ME Server leads on run, please stay on 0.3.1)
-
 # Retro Hub
 
 **Play retro games with your friends from a link.** You run Retro Hub on your PC, friends open the link in their browser, and you play together: co-op, races, or side by side as ghosts. Nothing to install for your friends, and no games are ever uploaded anywhere.

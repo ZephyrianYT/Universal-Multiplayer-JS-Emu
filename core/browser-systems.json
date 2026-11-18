@@ -1,0 +1,303 @@
+{
+  "_comment": "Consoles that play in the browser (EmulatorJS). Read by server.mjs and the Retro Hub window. Native consoles live in core/runner/catalog.json.",
+  "systems": {
+    "n64": {
+      "label": "Nintendo 64",
+      "ext": [
+        "z64",
+        "n64",
+        "v64"
+      ],
+      "dirs": [
+        "n64",
+        "nintendo64"
+      ]
+    },
+    "nes": {
+      "label": "NES",
+      "ext": [
+        "nes",
+        "fds",
+        "unf",
+        "unif"
+      ],
+      "dirs": [
+        "nes",
+        "famicom"
+      ]
+    },
+    "snes": {
+      "label": "SNES",
+      "ext": [
+        "sfc",
+        "smc",
+        "fig",
+        "swc"
+      ],
+      "dirs": [
+        "snes",
+        "supernintendo",
+        "superfamicom",
+        "sfc"
+      ]
+    },
+    "gb": {
+      "label": "Game Boy",
+      "ext": [
+        "gb",
+        "dmg"
+      ],
+      "dirs": [
+        "gb",
+        "gameboy",
+        "dmg"
+      ]
+    },
+    "gbc": {
+      "label": "Game Boy Color",
+      "ext": [
+        "gbc",
+        "cgb"
+      ],
+      "dirs": [
+        "gbc",
+        "gameboycolor",
+        "cgb"
+      ],
+      "core": "gambatte"
+    },
+    "gba": {
+      "label": "Game Boy Advance",
+      "ext": [
+        "gba"
+      ],
+      "dirs": [
+        "gba",
+        "gameboyadvance"
+      ]
+    },
+    "nds": {
+      "label": "Nintendo DS",
+      "ext": [
+        "nds",
+        "dsi"
+      ],
+      "dirs": [
+        "nds",
+        "nintendods"
+      ]
+    },
+    "psx": {
+      "label": "PlayStation",
+      "ext": [
+        "pbp",
+        "chd",
+        "m3u",
+        "ecm",
+        "cue",
+        "ccd"
+      ],
+      "dirs": [
+        "psx",
+        "ps1",
+        "playstation",
+        "playstation1",
+        "psone"
+      ]
+    },
+    "segaMD": {
+      "label": "Genesis / Mega Drive",
+      "ext": [
+        "md",
+        "gen",
+        "smd"
+      ],
+      "dirs": [
+        "genesis",
+        "megadrive",
+        "md",
+        "segamd"
+      ]
+    },
+    "segaMS": {
+      "label": "Master System",
+      "ext": [
+        "sms",
+        "sg"
+      ],
+      "dirs": [
+        "sms",
+        "mastersystem"
+      ]
+    },
+    "segaGG": {
+      "label": "Game Gear",
+      "ext": [
+        "gg"
+      ],
+      "dirs": [
+        "gg",
+        "gamegear"
+      ]
+    },
+    "segaCD": {
+      "label": "Sega CD",
+      "ext": [
+        "chd",
+        "cue",
+        "ccd",
+        "m3u"
+      ],
+      "dirs": [
+        "segacd",
+        "megacd"
+      ]
+    },
+    "sega32x": {
+      "label": "Sega 32X",
+      "ext": [
+        "32x"
+      ],
+      "dirs": [
+        "32x",
+        "sega32x"
+      ]
+    },
+    "segaSaturn": {
+      "label": "Saturn",
+      "ext": [
+        "chd",
+        "cue",
+        "ccd",
+        "m3u"
+      ],
+      "dirs": [
+        "saturn",
+        "segasaturn"
+      ]
+    },
+    "atari2600": {
+      "label": "Atari 2600",
+      "ext": [
+        "a26"
+      ],
+      "dirs": [
+        "atari2600",
+        "2600"
+      ]
+    },
+    "atari7800": {
+      "label": "Atari 7800",
+      "ext": [
+        "a78"
+      ],
+      "dirs": [
+        "atari7800",
+        "7800"
+      ]
+    },
+    "lynx": {
+      "label": "Atari Lynx",
+      "ext": [
+        "lnx"
+      ],
+      "dirs": [
+        "lynx",
+        "atarilynx"
+      ]
+    },
+    "jaguar": {
+      "label": "Atari Jaguar",
+      "ext": [
+        "j64",
+        "jag"
+      ],
+      "dirs": [
+        "jaguar",
+        "atarijaguar"
+      ]
+    },
+    "pce": {
+      "label": "PC Engine / TG-16",
+      "ext": [
+        "pce",
+        "chd",
+        "cue",
+        "ccd",
+        "m3u"
+      ],
+      "dirs": [
+        "pce",
+        "pcengine",
+        "tg16",
+        "turbografx",
+        "turbografx16"
+      ]
+    },
+    "ngp": {
+      "label": "Neo Geo Pocket",
+      "ext": [
+        "ngp",
+        "ngc"
+      ],
+      "dirs": [
+        "ngp",
+        "ngpc",
+        "neogeopocket"
+      ]
+    },
+    "ws": {
+      "label": "WonderSwan",
+      "ext": [
+        "ws",
+        "wsc"
+      ],
+      "dirs": [
+        "wonderswan",
+        "wsc"
+      ]
+    },
+    "vb": {
+      "label": "Virtual Boy",
+      "ext": [
+        "vb",
+        "vboy"
+      ],
+      "dirs": [
+        "virtualboy",
+        "vb"
+      ]
+    },
+    "coleco": {
+      "label": "ColecoVision",
+      "ext": [
+        "col"
+      ],
+      "dirs": [
+        "coleco",
+        "colecovision"
+      ]
+    },
+    "arcade": {
+      "label": "Arcade (FBNeo)",
+      "ext": [],
+      "dirs": [
+        "arcade",
+        "fbneo",
+        "fba",
+        "neogeo"
+      ]
+    },
+    "psp": {
+      "label": "PSP",
+      "ext": [
+        "cso",
+        "pbp",
+        "chd"
+      ],
+      "dirs": [
+        "psp"
+      ]
+    }
+  }
+}

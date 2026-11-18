@@ -2,7 +2,7 @@
 
 This is a guide to streaming Retro Hub with OBS Studio: capturing the game, adding the *Now playing / Up next* overlay, styling it, and fixing it when it breaks.
 
-For Streamer Mode itself (waiting room, seat rotation, viewer effects), see [README-ADVANCED.md → Streamer Mode](README-ADVANCED.md#streamer-mode).
+For Streamer Mode itself (waiting room, seat rotation, viewer effects), see [README-ADVANCED.md → Streamer Mode](../README-ADVANCED.md#streamer-mode).
 
 ---
 

@@ -1,0 +1,499 @@
+{
+  "_comment": "Built-in native systems and emulators. product: the exe's Windows ProductName must contain one of these (when it has one), and an exe with that ProductName is found in any emulators/ subfolder whatever its file name. Read by apps.py (launches them) and server.mjs (library detection). Add your own in emulators/apps.json with `python apps.py`, not here. {game} in args is replaced by the game's full path. link.args: extra arguments for a network link-cable session ({link_host} {link_port} {link_players} {link_role}); VBA-M reads NAME=VALUE arguments as settings (Options > Link > Start Network Link then uses them).",
+  "systems": {
+    "ps2": {
+      "label": "PlayStation 2",
+      "ext": [
+        "chd",
+        "cso",
+        "cue",
+        "m3u"
+      ],
+      "dirs": [
+        "ps2",
+        "playstation2"
+      ],
+      "emulators": [
+        "pcsx2"
+      ]
+    },
+    "gc": {
+      "label": "GameCube",
+      "ext": [
+        "gcm",
+        "gcz",
+        "rvz",
+        "ciso"
+      ],
+      "dirs": [
+        "gc",
+        "gamecube",
+        "ngcube"
+      ],
+      "emulators": [
+        "dolphin"
+      ]
+    },
+    "wii": {
+      "label": "Wii",
+      "ext": [
+        "wbfs",
+        "wad",
+        "rvz",
+        "gcz",
+        "ciso"
+      ],
+      "dirs": [
+        "wii"
+      ],
+      "emulators": [
+        "dolphin"
+      ]
+    },
+    "ps3": {
+      "label": "PlayStation 3",
+      "ext": [],
+      "dirs": [
+        "ps3",
+        "playstation3"
+      ],
+      "emulators": [
+        "rpcs3"
+      ]
+    },
+    "xbox360": {
+      "label": "Xbox 360",
+      "ext": [
+        "xex",
+        "zar"
+      ],
+      "dirs": [
+        "xbox360",
+        "x360"
+      ],
+      "emulators": [
+        "xenia"
+      ]
+    },
+    "wiiu": {
+      "label": "Wii U",
+      "ext": [
+        "wud",
+        "wux",
+        "wua",
+        "rpx"
+      ],
+      "dirs": [
+        "wiiu"
+      ],
+      "emulators": [
+        "cemu"
+      ]
+    },
+    "switch": {
+      "label": "Nintendo Switch",
+      "ext": [
+        "nsp",
+        "xci",
+        "nca",
+        "nro"
+      ],
+      "dirs": [
+        "switch",
+        "nsw"
+      ],
+      "emulators": [
+        "ryujinx",
+        "eden"
+      ]
+    },
+    "xbox": {
+      "label": "Xbox",
+      "ext": [
+        "xiso"
+      ],
+      "dirs": [
+        "xbox",
+        "originalxbox",
+        "xboxog",
+        "xemu"
+      ],
+      "emulators": [
+        "xemu"
+      ]
+    },
+    "n3ds": {
+      "label": "Nintendo 3DS",
+      "ext": [
+        "3ds",
+        "cci",
+        "cxi",
+        "cia",
+        "3dsx"
+      ],
+      "dirs": [
+        "3ds",
+        "n3ds",
+        "nintendo3ds",
+        "azahar",
+        "citra"
+      ],
+      "emulators": [
+        "azahar"
+      ]
+    },
+    "gbalink": {
+      "label": "Game Boy / GBA (VBA-M link)",
+      "ext": [
+        "gba",
+        "gb",
+        "gbc",
+        "zip",
+        "7z"
+      ],
+      "dirs": [
+        "vbam",
+        "gbalink",
+        "gbanative"
+      ],
+      "emulators": [
+        "vbam"
+      ]
+    },
+    "ndsnative": {
+      "label": "Nintendo DS (melonDS)",
+      "ext": [
+        "nds",
+        "dsi",
+        "srl",
+        "zip",
+        "7z"
+      ],
+      "dirs": [
+        "melonds",
+        "ndsnative",
+        "dsnative"
+      ],
+      "emulators": [
+        "melonds"
+      ]
+    },
+    "pspnative": {
+      "label": "PSP (PPSSPP)",
+      "ext": [
+        "iso",
+        "cso",
+        "chd",
+        "pbp"
+      ],
+      "dirs": [
+        "ppsspp",
+        "pspnative"
+      ],
+      "emulators": [
+        "ppsspp"
+      ]
+    },
+    "dreamcast": {
+      "label": "Dreamcast",
+      "ext": [
+        "gdi",
+        "cdi",
+        "chd",
+        "m3u"
+      ],
+      "dirs": [
+        "dreamcast",
+        "dc"
+      ],
+      "emulators": [
+        "flycast"
+      ]
+    },
+    "pc": {
+      "label": "PC games",
+      "ext": [],
+      "dirs": [],
+      "emulators": []
+    },
+    "n64native": {
+      "label": "Nintendo 64 (Project64)",
+      "ext": [
+        "z64",
+        "n64",
+        "v64",
+        "zip",
+        "7z"
+      ],
+      "dirs": [
+        "project64",
+        "pj64",
+        "n64native"
+      ],
+      "emulators": [
+        "project64"
+      ]
+    }
+  },
+  "emulators": {
+    "pcsx2": {
+      "label": "PCSX2",
+      "win": [
+        "pcsx2-qt.exe",
+        "pcsx2-qtx64.exe",
+        "pcsx2-qtx64-avx2.exe",
+        "pcsx2.exe"
+      ],
+      "nix": [
+        "pcsx2-qt",
+        "pcsx2"
+      ],
+      "args": [
+        "-batch",
+        "-nogui",
+        "--",
+        "{game}"
+      ]
+    },
+    "dolphin": {
+      "label": "Dolphin",
+      "win": [
+        "dolphin.exe"
+      ],
+      "nix": [
+        "dolphin-emu"
+      ],
+      "args": [
+        "-b",
+        "-e",
+        "{game}"
+      ]
+    },
+    "rpcs3": {
+      "label": "RPCS3",
+      "win": [
+        "rpcs3.exe"
+      ],
+      "nix": [
+        "rpcs3"
+      ],
+      "args": [
+        "--no-gui",
+        "{game}"
+      ]
+    },
+    "xenia": {
+      "label": "Xenia",
+      "win": [
+        "xenia_canary.exe",
+        "xenia.exe"
+      ],
+      "nix": [],
+      "args": [
+        "{game}"
+      ]
+    },
+    "cemu": {
+      "label": "Cemu",
+      "win": [
+        "cemu.exe"
+      ],
+      "nix": [
+        "cemu"
+      ],
+      "args": [
+        "-g",
+        "{game}"
+      ]
+    },
+    "ryujinx": {
+      "label": "Ryujinx",
+      "win": [
+        "ryujinx.exe"
+      ],
+      "nix": [
+        "ryujinx"
+      ],
+      "args": [
+        "{game}"
+      ]
+    },
+    "eden": {
+      "label": "Eden / Citron / Sudachi",
+      "folders": [
+        "eden",
+        "citron",
+        "sudachi"
+      ],
+      "win": [
+        "eden.exe",
+        "citron.exe",
+        "sudachi.exe"
+      ],
+      "nix": [
+        "eden",
+        "citron",
+        "sudachi"
+      ],
+      "args": [
+        "-g",
+        "{game}"
+      ]
+    },
+    "xemu": {
+      "label": "xemu",
+      "folders": [
+        "xemu",
+        "xbox",
+        "originalxbox"
+      ],
+      "product": [
+        "xemu"
+      ],
+      "win": [
+        "xemu.exe"
+      ],
+      "nix": [
+        "xemu"
+      ],
+      "args": [
+        "-dvd_path",
+        "{game}"
+      ]
+    },
+    "azahar": {
+      "label": "Azahar",
+      "folders": [
+        "azahar",
+        "lime3ds",
+        "citra",
+        "3ds",
+        "n3ds"
+      ],
+      "product": [
+        "azahar",
+        "lime3ds",
+        "citra"
+      ],
+      "win": [
+        "azahar.exe",
+        "lime3ds.exe",
+        "citra-qt.exe"
+      ],
+      "nix": [
+        "azahar",
+        "lime3ds",
+        "citra-qt"
+      ],
+      "args": [
+        "{game}"
+      ]
+    },
+    "melonds": {
+      "label": "melonDS",
+      "folders": [
+        "melonds",
+        "melon",
+        "nds",
+        "ds"
+      ],
+      "product": [
+        "melonds"
+      ],
+      "win": [
+        "melonds.exe"
+      ],
+      "nix": [
+        "melonDS",
+        "melonds"
+      ],
+      "args": [
+        "{game}"
+      ]
+    },
+    "ppsspp": {
+      "label": "PPSSPP",
+      "folders": [
+        "ppsspp",
+        "psp"
+      ],
+      "product": [
+        "ppsspp"
+      ],
+      "win": [
+        "PPSSPPWindows64.exe",
+        "PPSSPPWindows.exe"
+      ],
+      "nix": [
+        "PPSSPPSDL",
+        "ppsspp"
+      ],
+      "args": [
+        "{game}"
+      ]
+    },
+    "vbam": {
+      "label": "VBA-M",
+      "folders": [
+        "vbam",
+        "vba-m",
+        "visualboyadvance-m",
+        "vba"
+      ],
+      "product": [
+        "visualboyadvance-m",
+        "visualboy advance-m",
+        "vba-m"
+      ],
+      "win": [
+        "visualboyadvance-m.exe",
+        "vbam.exe"
+      ],
+      "nix": [
+        "visualboyadvance-m"
+      ],
+      "args": [
+        "{game}"
+      ],
+      "link": {
+        "args": [
+          "GBA/LinkType=1",
+          "GBA/LinkProto=0",
+          "GBA/LinkAuto=0",
+          "GBA/LinkHost={link_host}",
+          "GBA/LinkPort={link_port}",
+          "preferences/LinkNumPlayers={link_players}"
+        ]
+      }
+    },
+    "flycast": {
+      "label": "Flycast",
+      "win": [
+        "flycast.exe"
+      ],
+      "nix": [
+        "flycast"
+      ],
+      "args": [
+        "{game}"
+      ]
+    },
+    "project64": {
+      "label": "Project64",
+      "folders": [
+        "project64",
+        "pj64"
+      ],
+      "product": [
+        "project64"
+      ],
+      "win": [
+        "Project64.exe"
+      ],
+      "nix": [],
+      "args": [
+        "{game}"
+      ]
+    }
+  }
+}

@@ -1,0 +1,5 @@
+# Optional: guest controllers for native emulators (core/streaming/input_bridge.py).
+# Windows: vgamepad also needs the ViGEmBus driver (its installer is offered on first install).
+vgamepad>=0.1.0; sys_platform == "win32"
+# Linux: the user running the hub needs write access to /dev/uinput.
+evdev>=1.6; sys_platform == "linux"

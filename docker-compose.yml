@@ -1,0 +1,43 @@
+# Settings come from a .env file next to this one (copy .env.example to .env and fill it in).
+# Unraid (Compose Manager plugin): change the build path and the two host folders, then Compose Up.
+#
+#   docker compose up -d --build                     # hub only (LAN / your own reverse proxy)
+#   docker compose --profile tunnel up -d --build    # hub + Cloudflare named tunnel (needs TUNNEL_TOKEN)
+services:
+  retro-hub:
+    build: .                      # Unraid: /mnt/user/appdata/retro-hub/src
+    image: retro-hub:1.24.0
+    # No build needed: delete the two lines above and use the published image instead:
+    # image: ghcr.io/<github-user>/<repo>:latest
+    container_name: retro-hub
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./roms:/roms:ro           # Unraid: /mnt/user/roms:/roms:ro   (your whole ROM share, read-only)
+      - ./cache:/cache            # Unraid: /mnt/user/appdata/retro-hub/cache
+    environment:
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD:-}     # "Unlock library" in the hub (8+ chars); players need no password
+      - ADMIN_KEYS=${ADMIN_KEYS:-}             # or your account ID(s): unlocks the library automatically
+      - ACCESS_PASSWORD=${ACCESS_PASSWORD:-}   # server-wide access code (empty = anyone with the link)
+      - LIBRARY_ACCESS=${LIBRARY_ACCESS:-admin}
+      - MAX_PLAYERS=${MAX_PLAYERS:-4}
+      - PUBLIC_URL=${PUBLIC_URL:-}             # e.g. https://play.example.com (used in invite links)
+      - TRUST_PROXY=${TRUST_PROXY:-}           # set 1 when a proxy/tunnel in another container fronts the hub
+      - STUN_URLS=${STUN_URLS:-}
+      - TURN_URL=${TURN_URL:-}
+      - TURN_USERNAME=${TURN_USERNAME:-}
+      - TURN_CREDENTIAL=${TURN_CREDENTIAL:-}
+    restart: unless-stopped
+
+  # Cloudflare named tunnel. In the Cloudflare dashboard, give the tunnel a public hostname that points to
+  # the service http://retro-hub:8080, and set TUNNEL_TOKEN, PUBLIC_URL and TRUST_PROXY=1 in .env.
+  tunnel:
+    image: cloudflare/cloudflared:latest
+    profiles: ["tunnel"]
+    container_name: retro-hub-tunnel
+    command: tunnel --no-autoupdate run
+    environment:
+      - TUNNEL_TOKEN=${TUNNEL_TOKEN:-}
+    depends_on:
+      - retro-hub
+    restart: unless-stopped

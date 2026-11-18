@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+<title>Retro Hub</title>
+<path d="M218 112 C240 118 252 140 246 160 C236 158 226 146 214 132 Z" fill="#6420c9" stroke="#2a1633" stroke-width="5" stroke-linejoin="round"/>
+<path d="M40 150 C30 72 88 40 128 40 C168 40 226 72 216 150 C224 210 190 242 128 242 C66 242 32 210 40 150 Z" fill="#e8301f" stroke="#2a1633" stroke-width="6" stroke-linejoin="round"/>
+<path d="M70 186 C84 200 106 206 128 206 C150 206 172 200 186 186 C196 224 168 241 128 241 C88 241 60 224 70 186 Z" fill="#fff6f0"/>
+<path d="M84 222 C96 216 104 226 112 220 C120 228 136 228 144 220 C152 226 160 216 172 222 C160 230 96 230 84 222 Z" fill="#e9d6d2"/>
+<path d="M34 130 C28 60 84 28 128 28 C176 28 230 60 224 124 C190 104 160 98 128 98 C96 98 64 108 34 130 Z" fill="#8b3bf0" stroke="#2a1633" stroke-width="6" stroke-linejoin="round"/>
+<path d="M40 112 C70 94 100 88 128 88 C160 88 196 94 220 108 C196 100 160 96 128 96 C98 96 68 102 40 112 Z" fill="#6420c9"/>
+<ellipse cx="98" cy="54" rx="22" ry="9" fill="#c79bff"/>
+<ellipse cx="226" cy="116" rx="15" ry="13" fill="#8b3bf0" stroke="#2a1633" stroke-width="5" stroke-linejoin="round"/>
+<ellipse cx="90" cy="134" rx="13" ry="16" fill="#2a1633"/>
+<ellipse cx="166" cy="134" rx="13" ry="16" fill="#2a1633"/>
+<ellipse cx="85" cy="127" rx="5" ry="5" fill="#ffffff"/>
+<ellipse cx="161" cy="127" rx="5" ry="5" fill="#ffffff"/>
+<ellipse cx="66" cy="158" rx="13" ry="7" fill="#ff8aa0"/>
+<ellipse cx="190" cy="158" rx="13" ry="7" fill="#ff8aa0"/>
+<path d="M88 156 C86 214 170 214 168 156 Z" fill="#ffc21a" stroke="#2a1633" stroke-width="5" stroke-linejoin="round"/>
+<path d="M100 160 C100 200 156 200 156 160 Z" fill="#a3183a"/>
+<ellipse cx="128" cy="188" rx="18" ry="9" fill="#ff7096"/>
+<path d="M80 152 C80 136 176 136 176 152 C176 164 152 170 128 170 C104 170 80 164 80 152 Z" fill="#ffc21a" stroke="#2a1633" stroke-width="5" stroke-linejoin="round"/>
+<path d="M96 158 C110 164 146 164 160 158 C150 166 106 166 96 158 Z" fill="#e08a00"/>
+<ellipse cx="116" cy="146" rx="3" ry="2" fill="#e08a00"/>
+<ellipse cx="140" cy="146" rx="3" ry="2" fill="#e08a00"/>
+</svg>
