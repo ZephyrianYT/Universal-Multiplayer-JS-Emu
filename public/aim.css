@@ -1,0 +1,188 @@
+/* Retro Hub Messenger (public/aim.js): a late-90s desktop-messenger look. Fixed palette on purpose (it looks the same
+   in every hub theme), drawn with plain CSS: no images, logos or fonts from the original service. */
+.aim-layer { position: fixed; inset: 0; pointer-events: none; z-index: 900; }
+.aim-layer > * { pointer-events: auto; }
+.aim-win, .aim-menu, .aim-dock { --w95-face: #c0c0c0; --w95-light: #fff; --w95-shadow: #808080; --w95-dark: #000; --w95-title: #000080; --w95-title2: #1084d0;
+  font: 12px/1.35 Tahoma, Verdana, "Segoe UI", sans-serif; color: #000; }
+.aim-win { position: fixed; display: flex; flex-direction: column; min-width: 220px; min-height: 120px; max-width: calc(100vw - 8px); max-height: calc(100vh - 8px);
+  background: var(--w95-face); padding: 3px; resize: both; overflow: hidden;
+  box-shadow: inset -1px -1px var(--w95-dark), inset 1px 1px var(--w95-face), inset -2px -2px var(--w95-shadow), inset 2px 2px var(--w95-light), 4px 6px 18px rgba(0,0,0,.35); }
+.aim-win[hidden] { display: none; }
+.aim-title { display: flex; align-items: center; gap: 4px; height: 20px; padding: 0 2px 0 4px; margin-bottom: 2px; cursor: default; user-select: none;
+  background: linear-gradient(90deg, #808080, #b5b5b5); color: #dfdfdf; font-weight: bold; touch-action: none; }
+.aim-win.active .aim-title { background: linear-gradient(90deg, var(--w95-title), var(--w95-title2)); color: #fff; }
+.aim-win.flash .aim-title { animation: aim-flash .4s steps(1) 4; }
+@keyframes aim-flash { 50% { background: linear-gradient(90deg, #a06000, #e0a000); } }
+.aim-ticon { font-size: 12px; }
+.aim-ttext { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.aim-tbtns { display: flex; gap: 2px; }
+.aim-tb, .aim-btn, .aim-bar button, .aim-menubar button, .aim-tabs button, .aim-tool, .aim-dockbtn, .aim-iconpick, .aim-ghead {
+  font: inherit; color: #000; background: var(--w95-face); border: 0; border-radius: 0; cursor: pointer; min-height: 0; text-transform: none; letter-spacing: 0; }
+.aim-tb { width: 16px; height: 14px; padding: 0; font-size: 9px; font-weight: bold; line-height: 14px;
+  box-shadow: inset -1px -1px var(--w95-dark), inset 1px 1px var(--w95-light), inset -2px -2px var(--w95-shadow); }
+.aim-btn, .aim-bar button, .aim-tool, .aim-iconpick, .aim-dockbtn { padding: 3px 8px;
+  box-shadow: inset -1px -1px var(--w95-dark), inset 1px 1px var(--w95-light), inset -2px -2px var(--w95-shadow), inset 2px 2px #dfdfdf; }
+.aim-btn:active, .aim-bar button:active, .aim-tool:active, .aim-tb:active, .aim-dockbtn:active, .aim-iconpick.sel {
+  box-shadow: inset 1px 1px var(--w95-dark), inset -1px -1px var(--w95-light), inset 2px 2px var(--w95-shadow); }
+.aim-btn:disabled, .aim-bar button:disabled { color: #808080; text-shadow: 1px 1px #fff; cursor: default; }
+.aim-btn.primary { font-weight: bold; outline: 1px solid #000; outline-offset: -1px; }
+.aim-win :focus-visible { outline: 1px dotted #000; outline-offset: -3px; }
+.aim-body { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 3px; }
+.aim-win .spacer { flex: 1; }
+.aim-win .trunc { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.aim-win .min0 { min-width: 0; }
+.aim-sunken { background: #fff; box-shadow: inset 1px 1px var(--w95-shadow), inset -1px -1px var(--w95-light), inset 2px 2px var(--w95-dark), inset -2px -2px #dfdfdf; }
+
+/* menus */
+.aim-menubar { display: flex; gap: 0; }
+.aim-menubar button { padding: 1px 7px; }
+.aim-menubar button:hover, .aim-menubar button:focus-visible { background: var(--w95-title); color: #fff; }
+.aim-menu { position: fixed; min-width: 170px; background: var(--w95-face); padding: 2px; display: flex; flex-direction: column;
+  box-shadow: inset -1px -1px var(--w95-dark), inset 1px 1px #dfdfdf, inset -2px -2px var(--w95-shadow), inset 2px 2px var(--w95-light), 3px 3px 8px rgba(0,0,0,.3); }
+.aim-menu button { font: inherit; text-align: left; background: none; border: 0; border-radius: 0; padding: 4px 18px 4px 22px; color: #000; position: relative; min-height: 0; cursor: pointer; }
+.aim-menu button:hover:not(:disabled), .aim-menu button:focus { background: var(--w95-title); color: #fff; outline: none; }
+.aim-menu button:disabled { color: #808080; text-shadow: 1px 1px #fff; }
+.aim-menu button.checked::before { content: "✓"; position: absolute; left: 7px; }
+.aim-menu hr { border: 0; border-top: 1px solid var(--w95-shadow); border-bottom: 1px solid var(--w95-light); margin: 3px 1px; }
+.aim-menu.aim-smileys { display: grid; grid-template-columns: repeat(4, 1fr); min-width: 0; }
+.aim-menu.aim-smileys button { padding: 4px; text-align: center; font-size: 18px; }
+
+/* buddy list */
+.aim-bl .aim-me { display: flex; gap: 6px; align-items: center; padding: 4px; background: linear-gradient(#fffbe6, #ffe680); border: 1px solid #a08000; }
+.aim-myicon { font-size: 26px; width: 34px; height: 34px; display: grid; place-items: center; background: #fff; border: 1px solid #808080; cursor: pointer; }
+.aim-mewho { display: flex; flex-direction: column; min-width: 0; }
+.aim-mewho b { font-size: 13px; }
+.aim-mestatus { color: #604000; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.aim-back { display: flex; align-items: center; gap: 6px; padding: 3px 4px; background: #ffffe1; border: 1px solid #000; }
+.aim-back[hidden] { display: none; }
+.aim-back span { flex: 1; }
+.aim-tabs { display: flex; gap: 0; padding-left: 2px; margin-bottom: -3px; position: relative; z-index: 1; }
+.aim-tabs button { padding: 3px 10px; margin-right: -1px; box-shadow: inset 1px 1px var(--w95-light), inset -1px 0 var(--w95-dark), inset -2px 0 var(--w95-shadow); }
+.aim-tabs button[aria-selected="true"] { padding-bottom: 5px; margin-top: -2px; font-weight: bold; }
+.aim-tree { flex: 1; min-height: 80px; overflow: auto; padding: 4px 2px; background: #fff;
+  box-shadow: inset 1px 1px var(--w95-shadow), inset -1px -1px var(--w95-light), inset 2px 2px var(--w95-dark), inset -2px -2px #dfdfdf; }
+.aim-ghead { display: flex; align-items: center; justify-content: flex-start; gap: 4px; width: 100%; padding: 1px 2px; background: none; box-shadow: none; font-weight: bold; text-align: left; }
+.aim-ghead small { font-weight: normal; color: #404040; }
+.aim-caret { width: 10px; font-size: 10px; }
+.aim-buddy, .aim-req { display: flex; align-items: center; gap: 4px; padding: 1px 4px 1px 16px; cursor: default; user-select: none; }
+.aim-buddy.sel { background: var(--w95-title); color: #fff; }
+.aim-buddy.off { color: #808080; }
+.aim-buddy.away .aim-bname, .aim-buddy.idle .aim-bname { color: #707070; font-style: italic; }
+.aim-buddy.sel .aim-bname { color: #fff; }
+.aim-bicon { width: 16px; text-align: center; font-size: 13px; flex: none; }
+.aim-bicon.big { font-size: 30px; width: 40px; }
+.aim-bname { flex: 1; min-width: 0; }
+.aim-flag { font-size: 11px; }
+.aim-warnpct { font-size: 10px; color: #a00000; }
+.aim-buddy.sel .aim-warnpct { color: #ffd0d0; }
+.aim-req span { flex: 1; min-width: 0; }
+.aim-req .aim-btn { padding: 1px 5px; }
+.aim-reqs .aim-ghead { color: #a00000; }
+.aim-empty { padding-left: 18px; color: #808080; font-style: italic; }
+.aim-hint { margin: 6px 4px; color: #404040; font-size: 11px; }
+.aim-setup { display: flex; flex-wrap: wrap; gap: 4px; padding: 6px 4px 0; }
+.aim-conn { padding: 2px 4px; background: #ffffe1; border: 1px solid #000; }
+.aim-conn[hidden] { display: none; }
+.aim-bar { display: flex; gap: 2px; padding-top: 2px; }
+.aim-bar button { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 0; padding: 2px 2px; font-size: 11px; min-width: 0; }
+.aim-bar button i { font-style: normal; font-size: 15px; line-height: 1.1; }
+
+/* IM window */
+.aim-imhead { display: flex; gap: 6px; align-items: center; padding: 2px 4px; }
+.aim-imhead .aim-bicon { font-size: 22px; width: 28px; }
+.aim-imhead b { display: block; }
+.aim-imstatus { display: block; color: #404040; }
+.aim-im.offline .aim-imhead b { color: #808080; }
+.aim-log { flex: 1; min-height: 60px; overflow: auto; padding: 4px 6px; background: #fff; font: 13px/1.4 Arial, Helvetica, sans-serif; overflow-wrap: anywhere;
+  box-shadow: inset 1px 1px var(--w95-shadow), inset -1px -1px var(--w95-light), inset 2px 2px var(--w95-dark), inset -2px -2px #dfdfdf; }
+.aim-line { white-space: pre-wrap; }
+.aim-line time { display: none; color: #808080; font-size: 11px; margin-right: 4px; }
+.aim-im.times .aim-line time { display: inline; }
+.aim-line.me b { color: #e00000; }
+.aim-line.them b { color: #0000e0; }
+.aim-line.auto b { color: #0000e0; font-style: italic; }
+.aim-line.auto .aim-txt { font-style: italic; color: #303030; }
+.aim-line.sys { color: #808080; font-style: italic; font-size: 12px; }
+.aim-line.fail { opacity: .7; }
+.aim-line.fail em { color: #a00000; font-size: 11px; }
+.aim-line.invite { background: #ffffe1; border: 1px solid #c0a000; padding: 3px 5px; margin: 3px 0; white-space: normal; }
+.aim-line.invite .aim-btn { margin-left: 4px; padding: 1px 8px; }
+.aim-typing { min-height: 14px; font-size: 11px; color: #404040; font-style: italic; padding: 0 2px; }
+.aim-tools { display: flex; align-items: center; gap: 2px; }
+.aim-tool { padding: 1px 5px; font-size: 13px; }
+.aim-left { color: #404040; font-size: 11px; }
+.aim-input { resize: none; font: 13px/1.35 Arial, Helvetica, sans-serif; color: #000; background: #fff; border: 0; border-radius: 0; padding: 4px; min-height: 48px;
+  box-shadow: inset 1px 1px var(--w95-shadow), inset -1px -1px var(--w95-light), inset 2px 2px var(--w95-dark), inset -2px -2px #dfdfdf; }
+.aim-input:focus { outline: none; }
+.aim-send { font-weight: bold; }
+
+/* small windows (Add Buddy, Find, Info, Away, Profile, Icon) */
+.aim-form { display: flex; flex-direction: column; gap: 6px; padding: 4px; }
+.aim-form label { display: flex; flex-direction: column; gap: 2px; margin: 0; font-size: 12px; color: #000; text-transform: none; letter-spacing: 0; font-weight: normal; }
+.aim-form label[hidden] { display: none; }
+.aim-form .aim-check { flex-direction: row; align-items: center; gap: 6px; }
+.aim-form input:not([type=checkbox]), .aim-form select, .aim-form textarea { font: 12px Tahoma, Verdana, sans-serif; color: #000; background: #fff; border: 0; border-radius: 0; padding: 3px 4px; min-height: 0;
+  box-shadow: inset 1px 1px var(--w95-shadow), inset -1px -1px var(--w95-light), inset 2px 2px var(--w95-dark), inset -2px -2px #dfdfdf; }
+.aim-form textarea { resize: vertical; }
+.aim-row { display: flex; gap: 6px; align-items: center; }
+.aim-err { margin: 0; color: #a00000; }
+.aim-err[hidden] { display: none; }
+.aim-results { max-height: 220px; overflow: auto; background: #fff; padding: 2px;
+  box-shadow: inset 1px 1px var(--w95-shadow), inset -1px -1px var(--w95-light); }
+.aim-result { display: flex; align-items: center; gap: 4px; padding: 2px; }
+.aim-result .grow { flex: 1; min-width: 0; }
+.aim-result .aim-btn { padding: 1px 6px; }
+.aim-infohead { display: flex; gap: 8px; align-items: center; padding: 4px; }
+.aim-infohead b { display: block; font-size: 14px; }
+.aim-infohead .id { color: #404040; font-family: ui-monospace, Consolas, monospace; font-size: 11px; }
+.aim-infobody { padding: 0 4px 4px; overflow: auto; }
+.aim-infobody h4 { margin: 8px 0 3px; font-size: 12px; }
+.aim-dl { display: grid; grid-template-columns: auto 1fr; gap: 2px 8px; margin: 0; }
+.aim-dl dt { font-weight: bold; }
+.aim-dl dd { margin: 0; overflow-wrap: anywhere; }
+.aim-profile { background: #fff; padding: 6px; white-space: pre-wrap; overflow-wrap: anywhere; max-height: 220px; overflow: auto; font: 13px/1.4 Arial, sans-serif;
+  box-shadow: inset 1px 1px var(--w95-shadow), inset -1px -1px var(--w95-light); }
+.aim-icons { display: grid; grid-template-columns: repeat(auto-fill, minmax(38px, 1fr)); gap: 3px; padding: 4px; }
+.aim-iconpick { font-size: 20px; padding: 4px 0; }
+
+/* taskbar strip, bottom right */
+.aim-dock { position: fixed; right: 8px; bottom: 8px; z-index: 899; display: flex; gap: 3px; flex-wrap: wrap-reverse; justify-content: flex-end; max-width: calc(100vw - 16px); pointer-events: none; }
+.aim-dock > * { pointer-events: auto; }
+.aim-dockbtn { display: flex; align-items: center; gap: 5px; max-width: 180px; padding: 4px 8px; }
+.aim-dockbtn i { font-style: normal; }
+.aim-dockbtn span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.aim-dockbtn.flash { animation: aim-dockflash .8s steps(1) infinite; }
+@keyframes aim-dockflash { 50% { background: #000080; color: #fff; } }
+.aim-count { font-size: 10px; background: #008000; color: #fff; padding: 0 4px; border-radius: 6px; }
+.aim-dock-bl { font-weight: bold; }
+
+/* phones: windows become sheets */
+@media (max-width: 640px) {
+  .aim-win { left: 4px !important; right: 4px; top: auto !important; bottom: 48px; width: auto !important; max-height: 70vh; resize: none; }
+  .aim-win.aim-bl { height: 60vh !important; }
+  .aim-dockbtn span { max-width: 90px; }
+}
+
+/* lobby chat, restyled as a chat room window (the chat itself is app.js's, unchanged) */
+.chat.aim-room { font: 12px/1.35 Tahoma, Verdana, sans-serif; color: #000; background: #c0c0c0; padding: 3px;
+  box-shadow: inset -1px -1px #000, inset 1px 1px #c0c0c0, inset -2px -2px #808080, inset 2px 2px #fff; }
+.chat.aim-room .card-head { background: linear-gradient(90deg, #000080, #1084d0); color: #fff; padding: 2px 4px; margin: 0 0 3px; min-height: 20px; }
+.chat.aim-room .card-head h2 { color: #fff; font: bold 12px Tahoma, Verdana, sans-serif; text-transform: none; letter-spacing: 0; margin: 0; }
+.chat.aim-room .chat-log { background: #fff; font: 13px/1.4 Arial, Helvetica, sans-serif; padding: 4px 6px;
+  box-shadow: inset 1px 1px #808080, inset -1px -1px #fff, inset 2px 2px #000, inset -2px -2px #dfdfdf; border-radius: 0; }
+.chat.aim-room .chat-log li { display: block; padding: 0; border: 0; background: none; margin: 0; }
+.chat.aim-room .chat-log li .c-who { display: inline; }
+.chat.aim-room .chat-log li .c-who b { color: #0000e0; }
+.chat.aim-room .chat-log li .c-who b::after { content: ":"; color: #000; font-weight: normal; margin-right: 4px; }
+.chat.aim-room .chat-log li.mine .c-who b { color: #e00000; }
+.chat.aim-room .chat-log li .c-who time, .chat.aim-room .chat-log li > time { display: none; }
+.chat.aim-room .chat-log li .c-slot { font-size: 10px; color: #808080; margin-right: 3px; }
+.chat.aim-room .chat-log li .c-text { display: inline; white-space: pre-wrap; overflow-wrap: anywhere; color: #000; }
+.chat.aim-room .chat-log li.sys { color: #808080; font-style: italic; }
+.chat.aim-room .chat-log li.sys .c-text { color: #808080; }
+.chat.aim-room .chat-empty { color: #404040; }
+.chat.aim-room .chat-form input { font: 13px Arial, sans-serif; color: #000; background: #fff; border: 0; border-radius: 0;
+  box-shadow: inset 1px 1px #808080, inset -1px -1px #fff, inset 2px 2px #000, inset -2px -2px #dfdfdf; }
+.chat.aim-room .chat-form button { font: bold 12px Tahoma, sans-serif; color: #000; background: #c0c0c0; border: 0; border-radius: 0; text-transform: none; letter-spacing: 0;
+  box-shadow: inset -1px -1px #000, inset 1px 1px #fff, inset -2px -2px #808080, inset 2px 2px #dfdfdf; }
+.chat.aim-room .chat-form button:active { box-shadow: inset 1px 1px #000, inset -1px -1px #fff; }

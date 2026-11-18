@@ -1,6 +1,17 @@
-# Fix log: 1.26.0 (Retro Hub 0.3.3)
+# Fix log: 1.26.1 (Retro Hub 0.3.4)
 
-Sections 1-9 are the fixes up to 1.19.0. Section 10 covers 1.25.0 (released as 0.3.1), section 11 covers 1.26.0 (released as 0.3.3).
+Sections 1-9 are the fixes up to 1.19.0. Section 10 covers 1.25.0 (released as 0.3.1), section 11 covers 1.26.0 (released as 0.3.3), section 12 covers 1.26.1 (released as 0.3.4).
+
+## 12. 1.26.1 (Retro Hub 0.3.4)
+
+- **Launch opened "freej2me-web … Loading…" instead of the hub.**
+  - *Symptom:* on Windows with Firefox (fresh profile, or after clearing site data), pressing Start opened `http://localhost:8080` showing a grey page titled *freej2me-web* with "Loading…" that never finished. With an existing account and cache it could go unnoticed, so 0.3.3 shipped with it.
+  - *Cause:* `server.mjs` listened on `HOST=0.0.0.0` (IPv4 only), and `launch.py port_free()` / `RetroHub.pyw port_open()` only connected to `127.0.0.1`. Browsers resolve `localhost` to `::1` first (Firefox always; Chrome/Edge on Windows). A second web server holding `[::1]:8080` (by the page it showed, a freej2me-web server: freej2me-web's own index page is that exact page) got every `localhost` request while the hub sat unused on IPv4, and no check could see it. The page stays on "Loading…" because, served from that program, freej2me's launcher never gets past start-up. The hub's own `/j2me/` route was not involved: it is only served under `/j2me/`, and `/` always gives `public/index.html` (checked in a browser).
+  - *Change:*
+    - `server.mjs`: `HOST` defaults to `::` (dual-stack); without IPv6 (`EAFNOSUPPORT`/`EADDRNOTAVAIL`) it falls back to `0.0.0.0`. With a loopback `HOST` (launcher's localhost-only and tunnel modes) a second listener on the other loopback address shares the request and WebSocket handlers. New public `GET /api/instance` (`{app, version, instance}`; the instance id is random per run, not a secret). After listening, `verifyLocalhost()` asks `127.0.0.1` and `::1` for it: refused / no such address is fine (browsers skip it), anything else that isn't this run stops the server with a message naming the address, the other program's page title, and `netstat`/`lsof` to find it. `EADDRINUSE` on either address gives the same message. The run file is written only after this check and now holds `instance` and `launch`. IPv4-mapped peers (`::ffff:1.2.3.4`) are normalised (`peerAddr`) for rate limits, nearby hubs and the link cable.
+    - `launch.py`: `port_user()` checks `127.0.0.1` and `::1`; `wait_for_ready()` waits until the run file carries this launch's token (`RH_LAUNCH_ID`; not the PID, since a Node shim like volta or nvm runs node as a child) instead of only waiting for the port to open.
+    - `RetroHub.pyw`: `port_open()` checks both addresses; `hub_answers()` requires `/api/instance` from Retro Hub (and the run file's instance) before showing "already running" or keeping the Open hub button live.
+  - *Tested (Linux container, no IPv6 there, so the `::` → `0.0.0.0` fallback ran):* normal `launch.py` start (run file has `instance` and `launch`, `/` → login → hub in Chromium); another server already on the port → `launch.py` and `server.mjs` both refuse with the message; hub on `127.0.0.2` with a freej2me-web server on `127.0.0.1` → stops with *"it answers with a page titled "freej2me-web""*; `hub_answers()` true for the real hub, false for the other server and for a stale run file. Not tested on Windows or with a real IPv6 listener; the IPv6 path is the same code with `::1`.
 
 ## 11. 1.26.0 (Retro Hub 0.3.3)
 

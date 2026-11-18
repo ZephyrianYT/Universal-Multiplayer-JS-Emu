@@ -1,0 +1,705 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Retro Hub</title>
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/aim.css">
+  <script src="/theme.js"></script>
+  <link rel="stylesheet" href="/jetfx/jetfx.css">
+</head>
+<body>
+  <!-- ======================= HUB ======================= -->
+  <div id="hub">
+    <header class="topbar">
+      <a class="brand" id="brand-home" href="/" title="Back to the home screen (Play tab)"><img class="brand-logo" src="/icon.svg" alt="" width="30" height="30">Retro Hub</a>
+      <span class="spacer"></span>
+      <div class="who"><b id="me-name" class="trunc">…</b><span class="id" id="me-id"></span></div>
+      <button class="small icon tb-menu" id="tb-menu" type="button" aria-expanded="false" aria-label="More options" title="More options">☰</button>
+      <button class="small icon tb-more" id="keys-btn" title="Keyboard shortcuts (?)" aria-label="Keyboard shortcuts" aria-keyshortcuts="Shift+Slash">⌨</button>
+      <button class="small" id="friends-btn" title="Buddy List: instant messages with your buddies on this hub">👥 Buddy List <span class="fr-badge" id="friends-badge" hidden></span></button>
+      <button class="small" id="online-btn" type="button" hidden>🌐<span class="tb-label"> Online</span><span class="ol-dot" id="online-dot" hidden aria-label="needs setup"></span></button>
+      <button class="small" id="ra-btn" title="RetroAchievements: your account, used for achievement lists and progress">🏆<span class="tb-label"> RetroAchievements</span></button>
+      <button class="small tb-more" type="button" data-open-pads title="Check every button and stick, fly the jet, set the loading screen and screensaver">🎮 Controller test</button>
+      <button class="small tb-more" type="button" data-open-instruments title="Guitars, drum kits and other controllers">🎸 Instruments</button>
+      <button class="small tb-more" id="theme-btn" type="button" title="Pick the colors of the hub">🎨 Theme</button>
+      <button class="small tb-more" id="calib-btn" title="Measure controller lag and stick deadzones">Calibrate controllers</button>
+      <button class="small tb-more" id="unlock-btn" hidden>Unlock library</button>
+      <button class="small tb-more" id="libdirs-btn" hidden title="Pick the folder each console's games are in">Library folders</button>
+      <button class="small tb-more" id="export-btn" title="Download a backup of this account">Export account</button>
+      <button class="small ghost tb-more" id="switch-btn">Switch account</button>
+    </header>
+
+    <!-- ---------- hosts list + host form ---------- -->
+    <main class="wrap" id="hub-main">
+      <section class="intro" id="intro" hidden aria-label="How Retro Hub works">
+        <ol class="steps">
+          <li><b>Host or join</b><span>Open a lobby with a game, or join a friend from <i>Hosting now</i> or with their code.</span></li>
+          <li><b>Ready up</b><span>Pick a seat, chat, and press Ready. The host starts a 3-2-1 countdown.</span></li>
+          <li><b>Play</b><span>The host's computer runs the game and streams it to everyone. Keyboard, gamepad or touch.</span></li>
+        </ol>
+        <button class="small ghost icon" id="intro-close" aria-label="Hide this guide" title="Hide this guide">✕</button>
+      </section>
+      <div class="tabs hub-tabs" role="tablist" aria-label="Hub sections">
+        <button role="tab" id="tab-play" data-hubtab="play" aria-controls="hub-play" aria-selected="true">Play</button>
+        <button role="tab" id="tab-lobbies" data-hubtab="lobbies" aria-controls="lobbies-panel" aria-selected="false">Lobby Browser <span class="fr-badge" id="lb-tab-count" hidden></span></button>
+        <button role="tab" id="tab-offsite" data-hubtab="offsite" aria-controls="offsite-panel" aria-selected="false">Off Site Games</button>
+      </div>
+      <section class="card lobbies-panel" id="lobbies-panel" role="tabpanel" aria-labelledby="tab-lobbies" hidden>
+        <div class="card-head"><h2>Lobby Browser</h2><span class="spacer"></span><span class="small muted" id="lb-count"></span></div>
+        <div class="lb-wait" id="lb-wait" hidden aria-live="polite"></div>
+        <div class="lb-tools">
+          <input type="search" id="lb-search" placeholder="Search games, hosts, players · Mario|Zelda for either" aria-label="Search lobbies">
+          <select id="lb-system" aria-label="Console"><option value="">All consoles</option></select>
+          <select id="lb-mode" aria-label="Mode"><option value="">All modes</option><option value="coop">Co-op Netplay</option><option value="ghost">Single-Player Ghost</option><option value="race">Race / Speedrun</option></select>
+          <label class="lb-min small">At least <input type="number" id="lb-min" min="1" max="12" value="1" aria-label="Minimum players"> players</label>
+        </div>
+        <div class="filters lb-chips" role="group" aria-label="More filters">
+          <label class="chip"><input type="checkbox" id="lb-open"> Open seats</label>
+          <label class="chip"><input type="checkbox" id="lb-nopw"> No password</label>
+          <label class="chip"><input type="checkbox" id="lb-waiting"> Not started</label>
+          <label class="chip"><input type="checkbox" id="lb-friends"> Friends in it</label>
+          <label class="chip"><input type="checkbox" id="lb-here"> This hub only</label>
+          <span class="spacer"></span>
+          <button class="small" id="lb-watch" type="button" aria-pressed="false" title="Get a pop-up (and a notification when this tab is in the background) when a lobby matching these filters opens">🔔 Alert me</button>
+        </div>
+        <div class="small muted lb-watching" id="lb-watching" hidden></div>
+        <div class="lb-table-wrap">
+          <table class="lb-table" aria-label="Lobbies">
+            <thead><tr>
+              <th scope="col"><button type="button" data-sort="game">Game</button></th>
+              <th scope="col" class="lb-c-sys"><button type="button" data-sort="system">Console</button></th>
+              <th scope="col" class="lb-c-mode">Mode</th>
+              <th scope="col"><button type="button" data-sort="players">Players</button></th>
+              <th scope="col" class="lb-c-ping"><button type="button" data-sort="ping">Ping</button></th>
+              <th scope="col" class="lb-c-where"><button type="button" data-sort="where">Where</button></th>
+              <th scope="col"><span class="sr-only">Actions</span></th>
+            </tr></thead>
+            <tbody id="lb-rows"></tbody>
+          </table>
+        </div>
+        <div class="empty" id="lb-empty" hidden></div>
+        <p class="small muted">Lobbies on this hub, on other hubs on your network, and in the shared lobby pool when this hub is in one. Click a row to see who's in it. Alerts and waiting for a seat work while this page is open.</p>
+      </section>
+      <section class="card offsite-panel" id="offsite-panel" role="tabpanel" aria-labelledby="tab-offsite" hidden>
+        <div class="card-head"><h2>Off Site Games</h2><span class="spacer"></span><span class="small muted" id="og-count"></span></div>
+        <p class="small muted og-warn">These games run on <b>other websites</b>, not on this hub: they open in a new tab, and lobbies, netplay, saves and
+          achievements here don't apply. Retro Hub doesn't host or check them; each site has its own rules and ads.</p>
+        <div class="og-flash">
+          <a class="btn primary" href="/flash.html" target="_blank" rel="noopener">🎞️ Load a .SWF</a>
+          <span class="small muted">Have a classic Flash game file? Play it here in a new tab (Ruffle). The file stays on your computer.</span>
+        </div>
+        <div class="og-flash">
+          <a class="btn primary" href="/j2me.html" target="_blank" rel="noopener">📱 Phone games (.JAR)</a>
+          <span class="small muted">Old Java phone games (J2ME) in a new tab. Needs internet (the emulator's Java runtime loads from its maker).</span>
+        </div>
+        <div class="og-flash">
+          <a class="btn primary" href="/scummvm.html" target="_blank" rel="noopener">🗝️ ScummVM</a>
+          <span class="small muted">Point-and-click adventures (Monkey Island, Day of the Tentacle, Broken Sword…) from this hub's ScummVM folder, in a new tab.</span>
+        </div>
+        <div class="og-flash">
+          <a class="btn primary" href="/x86.html" target="_blank" rel="noopener">🖥️ PC (DOS / Win 9x)</a>
+          <span class="small muted">Boot your own DOS or Windows 95/98 disk image (.img / .iso) in a new tab and put game CDs in. Files stay on your computer.</span>
+        </div>
+        <div class="lib-tools">
+          <input type="search" id="og-search" placeholder="Search off site games" aria-label="Search off site games">
+          <select id="og-cat" aria-label="Category"><option value="">All categories</option></select>
+          <label class="chip"><input type="checkbox" id="og-touch"> Phone / tablet friendly</label>
+        </div>
+        <div id="og-list" class="og-list"></div>
+        <p class="small muted" id="og-owner" hidden>Owner: to change this list, copy <code>core/offsite-games.json</code> to <code>offsite-games.json</code> in the hub's main folder and edit it there. Updates keep your copy.</p>
+      </section>
+      <div class="grid" id="hub-play" role="tabpanel" aria-labelledby="tab-play">
+        <section class="card">
+          <div class="card-head">
+            <h2>Hosting now</h2><span class="spacer"></span>
+            <span class="ping-me small muted" id="my-ping" title="Your round trip to this hub"></span>
+            <span class="small muted" id="lobby-status">Connecting…</span>
+          </div>
+          <div class="filters" role="group" aria-label="Filter lobbies">
+            <label class="chip"><input type="checkbox" id="f-full"> Hide full</label>
+            <label class="chip"><input type="checkbox" id="f-locked"> Hide password</label>
+            <select id="f-system" aria-label="Console"><option value="">All consoles</option></select>
+            <select id="f-mode" aria-label="Mode">
+              <option value="">All modes</option><option value="coop">Co-op Netplay</option><option value="ghost">Single-Player Ghost</option>
+            </select>
+            <span class="spacer"></span>
+            <span class="small muted" id="rooms-count"></span>
+          </div>
+          <ul class="list" id="rooms"></ul>
+          <div class="empty" id="rooms-empty">
+            <div class="empty-title" id="rooms-empty-title">Nobody is hosting right now.</div>
+            <div class="small" id="rooms-empty-sub">Be the first: pick a game in <a href="#hub-picker" id="empty-host">Host a game</a>, then send your friends the invite link.</div>
+          </div>
+          <div id="lan-box" hidden>
+            <div class="card-head small"><h3>Other hubs nearby</h3><span class="spacer"></span><span class="small muted" id="lan-count"></span></div>
+            <ul class="list" id="lan-rooms"></ul>
+          </div>
+          <div id="link-box" class="link-box" hidden>
+            <div class="card-head small"><h3>GBA / Game Boy link cable</h3><span class="spacer"></span><span class="small muted" id="link-ip"></span></div>
+            <p class="small muted" id="link-help">Everyone plays their own copy in VBA-M on their own PC (same network, same ROM). Host here, or press <b>Join link</b> on a session under <i>Other hubs nearby</i>.</p>
+            <div class="row" id="link-host-row">
+              <select id="link-game" aria-label="GBA or Game Boy game"></select>
+              <select id="link-players" aria-label="Players"><option value="2">2 players</option><option value="3">3 players</option><option value="4" selected>4 players</option></select>
+              <button class="small primary" id="link-host">Host link</button>
+            </div>
+            <div class="small" id="link-status" hidden></div>
+            <button class="small" id="link-stop" hidden>Leave link session</button>
+          </div>
+          <form class="code-join" id="code-form" autocomplete="off">
+            <label for="code-input" class="small muted">Have a lobby code?</label>
+            <input id="code-input" maxlength="300" placeholder="e.g. K7QM2X" spellcheck="false" autocapitalize="characters">
+            <button class="small" id="code-go">Join</button>
+          </form>
+          <p class="small muted legend">Ping is an estimate through the hub (your link + the host's link).
+            <span class="ping good">&lt;50</span> <span class="ping mid">&lt;100</span> <span class="ping bad">100+</span></p>
+          <div class="emu-check">
+            <button class="small" id="emu-check-btn" type="button">Check for Emus</button>
+            <span class="small muted" id="emu-check-sum"></span>
+            <ul class="emu-list" id="emu-list" hidden></ul>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="card-head"><h2>Host a game</h2></div>
+          <div class="mode-pick" role="radiogroup" aria-label="Mode">
+            <label class="mode-opt"><input type="radio" name="mode" value="coop" checked>
+              <span><b>Co-op Netplay</b><small>You run the game and stream it; friends play in your game.</small></span></label>
+            <label class="mode-opt"><input type="radio" name="mode" value="ghost">
+              <span><b>Single-Player Ghost</b><small>Everyone runs their own copy; others show as ghosts.</small></span></label>
+            <label class="mode-opt"><input type="radio" name="mode" value="race">
+              <span><b>Race / Speedrun</b><small>Ghost mode plus a shared timer and splits. Alone: a speedrun timer with PBs.</small></span></label>
+            <label class="mode-opt"><input type="radio" name="mode" value="shuffle">
+              <span><b>🔀 Shuffle</b><small>Co-op with 2-8 games: it jumps between them at random. Friends play along on the stream.</small></span></label>
+          </div>
+          <div class="msg ghost-note" id="mode-help" hidden>Each player runs their own local ROM independently. Other players appear as 60% translucent ghosts&mdash;no collisions, shared items, or game interference.</div>
+          <a class="sh-link small" href="/shuffle.html" title="Solo: 2-8 games, random swaps, beat them all">🔀 <b>Shuffler</b>: load 2-8 games, it jumps between them at random. Beat them all.</a>
+          <div class="shuffle-wrap" id="shuffle-wrap" hidden>
+            <div class="sys-group">Shuffle games (pick 2-8 below)</div>
+            <ul class="list sh-games" id="hs-games"></ul>
+            <div class="row nowrap small">Swap every <input type="number" id="hs-min" min="5" max="600" class="hs-num" aria-label="At least (seconds)"> to <input type="number" id="hs-max" min="5" max="900" class="hs-num" aria-label="At most (seconds)"> s
+              <label class="check"><input type="checkbox" id="hs-saver"> Memory saver</label></div>
+          </div>
+          <div class="game-picker" id="hub-picker"></div>
+
+          <div class="picked" id="picked" hidden></div>
+
+          <label for="system">Console</label>
+          <select id="system"><option value="">Choose…</option></select>
+
+          <div id="playin-wrap" hidden>
+            <label>Play in</label>
+            <div class="row" role="radiogroup" aria-label="Play in">
+              <label class="chip"><input type="radio" name="playin" value="browser" checked> Browser (EmulatorJS)</label>
+              <label class="chip"><input type="radio" name="playin" value="link"> VBA-M link cable</label>
+            </div>
+            <p class="small muted" id="playin-help" style="margin-top:6px"></p>
+          </div>
+
+          <label for="lobby-pw">Lobby password <span class="muted">(optional)</span></label>
+          <input id="lobby-pw" type="password" maxlength="64" autocomplete="new-password" placeholder="Leave empty for an open lobby">
+
+          <div id="seats-wrap">
+            <label>Players on this computer</label>
+            <div class="seats" id="seats"></div>
+            <p class="small muted" id="seat-help" style="margin-top:6px"></p>
+          </div>
+
+          <div class="row end" style="margin-top:14px">
+            <button class="primary" id="host-btn" disabled>Open lobby</button>
+          </div>
+          <div class="msg error" id="host-error" hidden></div>
+        </section>
+      </div>
+
+      <p class="small muted" style="margin-top:24px">Retro Hub <span id="version"></span> · Only play games you own.
+        Emulation by <a href="https://emulatorjs.org" target="_blank" rel="noopener">EmulatorJS</a> (GPL-3.0).</p>
+    </main>
+
+    <!-- ---------- room lobby (before the match) ---------- -->
+    <main class="wrap" id="room" hidden>
+      <section class="card room-head">
+        <div class="room-title">
+          <div class="grow">
+            <h2 class="trunc" id="r-game"></h2>
+            <div class="small muted trunc" id="r-sub"></div>
+          </div>
+          <span class="phase" id="r-phase">Lobby</span>
+        </div>
+        <div class="ghost-badge" id="r-ghost-badge" hidden title="Each player runs their own local ROM independently. Other players appear as translucent ghosts: no collisions, shared items, or game interference.">GHOST MODE &mdash; Visual Only (No Player Interaction)</div>
+        <div class="row">
+          <span class="code-chip" title="Lobby code">Code <b class="code" id="r-code"></b></span>
+          <button class="small" id="r-copy-code">Copy code</button>
+          <button class="small" id="r-copy-link">Copy invite link</button>
+          <span class="spacer"></span>
+          <button class="small ghost" id="r-leave">Leave lobby</button>
+        </div>
+      </section>
+
+      <div class="grid room-grid">
+        <section class="card">
+          <div class="card-head"><h2>Players</h2><span class="spacer"></span><span class="small muted" id="r-count"></span></div>
+          <div class="slots" id="r-slots"></div>
+          <div class="spectators" id="r-specs" hidden>
+            <div class="sys-group" id="r-specs-title">Spectators</div>
+            <p class="small muted" id="r-queue-help" hidden></p>
+            <ul class="list" id="r-spec-list"></ul>
+          </div>
+          <div class="rom-panel" id="r-rom" hidden>
+            <div class="sys-group">Your ROM</div>
+            <div class="rom-box" id="r-rom-box"></div>
+          </div>
+          <div class="row me-actions">
+            <button class="primary ready-btn" id="r-ready" aria-pressed="false">Ready</button>
+            <button id="r-mic" aria-pressed="false" title="Voice chat with the lobby">🎙 Mic off</button>
+            <button id="r-fx" hidden aria-expanded="false" aria-controls="fx-panel">🎲 Effects</button>
+            <button id="r-spectate" aria-pressed="false">Watch instead</button>
+          </div>
+          <div class="msg info" id="r-notice" hidden></div>
+        </section>
+
+        <section class="card">
+          <div class="card-head"><h2>Match</h2><span class="spacer"></span><span class="small muted" id="r-rules-who"></span></div>
+          <div id="r-rules">
+            <label for="r-mode">Mode</label>
+            <select id="r-mode">
+              <option value="coop">Co-op Netplay</option>
+              <option value="ghost">Single-Player Ghost</option>
+              <option value="race">Race / Speedrun</option>
+            </select>
+            <div id="r-splits-wrap" hidden>
+              <label for="r-splits">Splits</label>
+              <textarea id="r-splits" rows="4" maxlength="1700" spellcheck="false" placeholder="Level 1&#10;Level 2&#10;Final boss"></textarea>
+              <p class="small muted" id="r-splits-help"></p>
+            </div>
+            <label>Game</label>
+            <div class="row nowrap">
+              <div class="picked grow trunc" id="r-game-pick" style="margin:0"></div>
+              <button class="small host-only" id="r-change-game">Change…</button>
+            </div>
+            <label for="r-system">Console</label>
+            <select id="r-system"></select>
+            <label class="check"><input type="checkbox" id="r-spec-rule"> Allow spectators</label>
+            <div class="row" id="r-cheats-row" hidden><button class="small" id="r-cheats" type="button" title="GameShark / Action Replay codes from .cht files (Project64, RetroArch)">🧩 Cheats</button>
+              <span class="small muted trunc" id="r-cheats-sum"></span></div>
+            <div class="streamer-box" id="r-streamer">
+              <label class="check"><input type="checkbox" id="st-on"> Streamer Mode: a waiting room, and viewers take turns in the seats</label>
+              <div id="st-opts" hidden>
+                <div class="row">
+                  <label for="st-turn" class="small">Turn timer</label>
+                  <select id="st-turn" class="st-turn">
+                    <option value="0">Off (rotate by hand)</option><option value="3">3 min</option><option value="5">5 min</option>
+                    <option value="10">10 min</option><option value="15">15 min</option><option value="20">20 min</option><option value="30">30 min</option>
+                  </select>
+                  <button class="small primary" id="st-rotate" type="button" title="Seated viewers go to the back of the line, the next ones are offered their seats (Ctrl+Shift+R)">↻ Rotate seats</button>
+                </div>
+                <label class="check"><input type="checkbox" id="fx-on"> 🎲 Viewer effects: viewers earn points while they watch and spend them on effects</label>
+                <div class="fx-enabled" id="fx-enabled" hidden role="group" aria-label="Allowed effects"></div>
+                <p class="small muted">👑 on a seat keeps that player on the next rotation (winner stays). The timer only moves people on when someone is waiting.</p>
+                <p class="small muted st-overlay">OBS: add a <b>Browser Source</b> on this PC with <code id="st-overlay-url"></code> <button class="small" id="st-overlay-copy" type="button">Copy</button> (Now playing / Up next, transparent).</p>
+              </div>
+            </div>
+            <label class="check" title="Blurs the lobby code, invite link and passwords on your screen, so they don't show on stream. Copy buttons still work."><input type="checkbox" id="st-safe"> Hide the code, invite link and passwords on my screen (for streaming)</label>
+            <p class="small muted">Changing the game or rules clears everyone's ready state.</p>
+          </div>
+          <div class="row end" style="margin-top:14px">
+            <span class="small muted grow" id="r-start-help"></span>
+            <button class="primary host-only" id="r-start" disabled>Start match</button>
+          </div>
+
+          <details class="settings" id="r-settings">
+            <summary>Sound, controls &amp; stream</summary>
+            <label for="s-volume">Game volume</label>
+            <input type="range" id="s-volume" min="0" max="1" step="0.05">
+            <label for="s-voice">Voice volume</label>
+            <input type="range" id="s-voice" min="0" max="1" step="0.05">
+            <label class="check"><input type="checkbox" id="s-sfx"> Lobby sounds (countdown ticks)</label>
+            <label class="check"><input type="checkbox" id="s-eq"> Equalize lag between controllers on this computer</label>
+            <div class="row" style="margin-top:8px">
+              <button class="small" id="r-calib">Calibrate controllers</button>
+              <button class="small" type="button" data-open-instruments>🎸 Instruments</button>
+              <button class="small" type="button" data-open-pads>🎮 Test</button>
+              <span class="small muted trunc" id="r-calib-sum"></span>
+            </div>
+            <div id="r-stream-home"></div>
+          </details>
+        </section>
+      </div>
+      <section class="card chat-card" id="r-chat-home" aria-label="Lobby chat"></section>
+    </main>
+  </div>
+
+  <!-- chat lives in the lobby card above, and moves into the in-game drawer during a match -->
+  <div class="chat aim-room" id="chat">
+    <div class="card-head"><h2>💬 Chat Room</h2><span class="spacer"></span>
+      <button class="small ghost icon" id="chat-close" aria-label="Close chat" title="Close chat (Esc)" hidden>✕</button></div>
+    <ol class="chat-log" id="chat-log" aria-live="polite" aria-label="Messages"></ol>
+    <div class="chat-empty small muted" id="chat-empty">No messages yet. Say hi!</div>
+    <form class="chat-form" id="chat-form" autocomplete="off">
+      <input id="chat-input" maxlength="300" placeholder="Message the lobby" aria-label="Chat message">
+      <button type="button" class="small ghost emote-btn" id="chat-emote" title="Duck emotes" aria-label="Duck emotes"><img src="/emotes/lol.png" alt=""></button>
+      <span class="chat-count small muted" id="chat-count" hidden aria-live="polite"></span>
+      <button class="primary small" id="chat-send">Send</button>
+    </form>
+  </div>
+
+  <!-- ======================= GAME ======================= -->
+  <div id="game" class="game" hidden>
+    <div class="hud">
+      <b id="g-title" class="trunc"></b>
+      <span class="muted">Lobby <span class="code" id="g-code"></span></span>
+      <button class="small" id="g-invite">Copy invite link</button>
+      <button class="small" id="g-cheats" hidden title="Cheat codes for this game">🧩</button>
+      <button class="small primary" id="g-sh-beaten" hidden title="This game is beaten (F8)">✓ Beaten</button>
+      <button class="small" id="g-sh-swap" hidden title="Swap now (F9)">⤳ Swap</button>
+      <button class="small" id="g-sh-hold" hidden aria-pressed="false" title="Hold: no swaps until pressed again (F10)">⏸ Hold</button>
+      <button class="small" id="g-rotate" hidden title="Rotate seats (Ctrl+Shift+R)">↻ Rotate</button>
+      <button class="small" id="g-queue" hidden title="Streamer Mode: your place in line for a seat"></button>
+      <div class="players" id="g-players"></div>
+      <span class="spacer"></span>
+      <span class="small muted trunc" id="g-net"></span>
+      <button class="small ghost-toggle" id="g-ghost-toggle" hidden aria-pressed="true" title="Show or hide all ghosts (O)">👻 Ghosts on</button>
+      <button class="small icon" id="g-ghosts" hidden aria-haspopup="dialog" title="Ghost settings" aria-label="Ghost settings">⚙</button>
+      <button class="small" id="g-save" hidden title="Save the game now (F2). A copy goes to every player.">💾 Save</button>
+      <button class="small" id="g-saves" hidden aria-haspopup="dialog" title="Saved games (F4 loads the newest)">📂 Saves</button>
+      <button class="small chat-btn" id="g-chat" aria-expanded="false" title="Chat (/)">💬 Chat<span class="unread" id="g-chat-unread" hidden></span></button>
+      <button class="small" id="g-emuwin" hidden aria-pressed="false" title="Bring the emulator's own window on screen (for its menus), or send it back off-screen">🪟 Emulator window</button>
+      <button class="small" id="g-ra" hidden aria-expanded="false" title="RetroAchievements">🏆</button>
+      <button class="small" id="g-stream" hidden aria-haspopup="dialog" title="Stream quality and live connection stats">📶 Stream</button>
+      <button class="small" id="g-fx" hidden aria-expanded="false" aria-controls="fx-panel" title="Viewer effects">🎲 <span id="g-fx-pts"></span></button>
+      <button class="small" id="g-mic" aria-pressed="false">🎙 Off</button>
+      <button class="small" id="g-touch" hidden>Touch pad</button>
+      <button class="small" id="g-sound" hidden>Turn sound on</button>
+      <button class="small" id="g-full">Fullscreen</button>
+      <button class="small" id="g-rematch" hidden title="Back to the lobby with the same game and settings; everyone readies up again">↻ Play again</button>
+      <button class="small" id="g-leave">Leave</button>
+    </div>
+    <div class="stage" id="stage">
+      <div class="fx-banner" id="fx-banner" hidden aria-live="polite"></div>
+      <div class="sh-banner" id="g-sh-banner" hidden aria-live="polite"></div>
+      <div id="sh-lobby-stage" class="sh-lobby-stage" hidden></div>
+      <div id="ejs-wrap" hidden><div id="ejs-player"></div></div>
+      <video id="guest-video" autoplay playsinline hidden></video>
+      <div class="ghost-badge corner" id="g-ghost-badge" hidden>GHOST MODE &mdash; Visual Only (No Player Interaction)</div>
+      <div class="loadboard" id="loadboard" hidden>
+        <h2>Loading match</h2>
+        <div id="load-rows"></div>
+        <div class="rom-box" id="load-rom" hidden></div>
+        <p class="small muted" id="load-help">The match starts when everyone is at 100%.</p>
+        <div class="nv" id="native-actions" hidden>
+          <ol class="nv-steps" aria-label="Hosting steps">
+            <li data-step="launch" data-state="todo"><span class="nv-dot" aria-hidden="true"></span><span class="nv-label">Start the game</span><span class="sr-only nv-state"></span></li>
+            <li data-step="share" data-state="todo"><span class="nv-dot" aria-hidden="true"></span><span class="nv-label">Share its window</span><span class="sr-only nv-state"></span></li>
+            <li data-step="live" data-state="todo"><span class="nv-dot" aria-hidden="true"></span><span class="nv-label">Live for guests</span><span class="sr-only nv-state"></span></li>
+          </ol>
+          <div class="row">
+            <button class="primary" id="nv-share" hidden>📺 Share the window</button>
+            <button id="nv-relaunch">Restart</button>
+          </div>
+          <div class="nv-gba" id="nv-gba" hidden></div>
+          <label class="check small" id="nv-headless-wrap"><input type="checkbox" id="nv-headless"> Play in this page: keep the emulator window off-screen (headless)</label>
+        </div>
+        <div class="row" id="load-actions" hidden>
+          <button class="primary ready-btn" id="lb-ready" aria-pressed="false">Ready</button>
+          <button class="primary" id="lb-start">Start countdown</button>
+        </div>
+      </div>
+      <div class="race-panel" id="race-panel" hidden aria-label="Race timer"></div>
+      <div class="overlay-msg" id="g-msg" hidden></div>
+      <div class="pip-drop" id="pip-drop" hidden>Drop to pop out</div>
+      <div class="chat-peek" id="chat-peek" aria-hidden="true"></div>
+    </div>
+    <aside class="chat-drawer" id="g-chat-drawer" hidden aria-label="Chat"></aside>
+    <div class="pip-layer" id="pip-layer"></div>
+  </div>
+
+  <!-- ======================= OVERLAYS ======================= -->
+  <div class="countdown" id="countdown" hidden data-no-escape="1" aria-live="assertive">
+    <div class="cd-num" id="cd-num">3</div>
+    <div class="cd-sub" id="cd-sub">Match starting</div>
+    <button class="primary" id="cd-abort">Abort</button>
+  </div>
+
+  <div class="ghost-panel" id="ghost-panel" hidden aria-label="Ghost settings">
+    <div class="row nowrap"><h3 style="margin:0">Ghosts</h3><span class="grow"></span><button class="small ghost" id="gp-close" aria-label="Close">✕</button></div>
+    <label for="gp-opacity">Ghost opacity: <b id="gp-opacity-val">60%</b></label>
+    <input type="range" id="gp-opacity" min="0" max="80" step="5">
+    <label class="check"><input type="checkbox" id="gp-show"> Show ghosts <span class="muted small">(O)</span></label>
+    <label class="check"><input type="checkbox" id="gp-tint"> Tint ghosts by player color</label>
+    <label for="gp-blend">Blend</label>
+    <select id="gp-blend">
+      <option value="normal">Normal (translucent)</option>
+      <option value="screen">Lighten (hides dark backgrounds)</option>
+    </select>
+    <div class="sys-group">Players</div>
+    <div id="gp-slots"></div>
+    <p class="small muted" style="margin:8px 0 0">Click a player in the top bar to hide or show their ghost. Drag them onto the screen to pop their game out into its own window.</p>
+  </div>
+
+  <!-- stream quality settings: in the lobby's settings, moved into the Stream panel during a match -->
+  <div class="stream-box" id="stream-box">
+    <div class="sys-group">Stream quality</div>
+    <div id="sq-host">
+      <label for="sq-preset">Preset</label>
+      <select id="sq-preset">
+        <option value="auto">Recommended · 6 Mbps · 60 fps</option>
+        <option value="high">High · 12 Mbps · 60 fps</option>
+        <option value="balanced">Balanced · 4 Mbps · up to 720p</option>
+        <option value="saver">Data saver · 1.5 Mbps · 30 fps · up to 480p</option>
+        <option value="custom">Custom</option>
+      </select>
+      <div class="sq-grid">
+        <div class="sq-wide"><label for="sq-bitrate">Max bitrate per player: <b id="sq-bitrate-val"></b></label>
+          <input type="range" id="sq-bitrate" min="500" max="20000" step="250"></div>
+        <div><label for="sq-fps">Frame rate</label>
+          <select id="sq-fps"><option value="60">60 fps</option><option value="30">30 fps</option></select></div>
+        <div><label for="sq-res">Max resolution</label>
+          <select id="sq-res"><option value="0">Native</option><option value="1080">1080p</option><option value="720">720p</option><option value="480">480p</option><option value="360">360p</option></select></div>
+        <div class="sq-wide"><label for="sq-prefer">When the connection can't keep up</label>
+          <select id="sq-prefer">
+            <option value="smooth">Keep motion smooth (picture gets softer)</option>
+            <option value="balanced">Balance smoothness and sharpness</option>
+            <option value="sharp">Keep picture sharp (frame rate drops)</option>
+          </select></div>
+        <div class="sq-wide"><label for="sq-audio">Game audio (stereo)</label>
+          <select id="sq-audio"><option value="64">Light · 64 kbps</option><option value="96">Standard · 96 kbps</option><option value="128">High · 128 kbps</option><option value="192">Best · 192 kbps</option></select></div>
+        <div class="sq-wide"><label for="sq-codec">Video codec</label>
+          <select id="sq-codec">
+            <option value="auto">Auto (browser's choice)</option>
+            <option value="h264">H.264: often hardware-encoded, light on the host's CPU</option>
+            <option value="vp9">VP9: sharper at low bitrates, more CPU</option>
+            <option value="av1">AV1: best quality per Mbps, heaviest without hardware support</option>
+            <option value="vp8">VP8: plays everywhere, software only</option>
+          </select>
+          <p class="small muted sq-note" id="sq-codec-note"></p></div>
+      </div>
+      <p class="small muted sq-note">Applies live to every player. These are upper limits: the stream lowers itself when a connection is slower. Each player can also ask for a lighter stream for themselves.</p>
+    </div>
+    <div id="sq-guest">
+      <label for="sq-cap">My stream from the host</label>
+      <select id="sq-cap">
+        <option value="0">Full quality (host's setting)</option>
+        <option value="3000">Lighter · up to 3 Mbps</option>
+        <option value="1200">Lightest · up to 1.2 Mbps</option>
+      </select>
+      <p class="small muted sq-note">Pick a lighter stream if the picture stutters or your connection is busy. Only your own stream changes.</p>
+    </div>
+    <p class="small muted" id="sq-ghost-note">Ghost mode: everyone runs their own game, so there is no game stream to tune. Ghost video uses a fixed light setting.</p>
+  </div>
+
+  <div class="stream-panel" id="stream-panel" hidden aria-label="Stream">
+    <div class="row nowrap"><h3 style="margin:0">Stream</h3><span class="grow"></span><button class="small ghost" id="sp-close" aria-label="Close">✕</button></div>
+    <div class="sp-stats" id="sp-stats" aria-live="off"></div>
+    <div id="sp-settings"></div>
+  </div>
+
+  <div class="ra-panel" id="ra-panel" hidden aria-label="RetroAchievements">
+    <div class="row nowrap"><h3 style="margin:0" class="trunc grow" id="ra-title">RetroAchievements</h3>
+      <button class="small ghost icon" id="ra-refresh" title="Refresh progress" aria-label="Refresh progress">↻</button>
+      <button class="small ghost" id="ra-close" aria-label="Close">✕</button></div>
+    <div id="ra-body"></div>
+  </div>
+
+  <div class="saves-panel" id="saves-panel" hidden aria-label="Saved games">
+    <div class="row nowrap"><h3 style="margin:0">Saved games</h3><span class="grow"></span><button class="small ghost" id="sv-close" aria-label="Close">✕</button></div>
+    <p class="small muted" id="sv-help">Saves for this game on this computer, including copies the host shared with you.</p>
+    <div class="row">
+      <button class="primary small" id="sv-save">💾 Save now</button>
+      <label class="small file-btn"><input type="file" id="sv-import" accept=".rhsave"> Import file…</label>
+    </div>
+    <ul class="list saves-list" id="sv-list"></ul>
+  </div>
+
+  <div class="fx-panel" id="fx-panel" hidden role="region" aria-label="Viewer effects">
+    <div class="row nowrap"><h3 style="margin:0" class="grow">🎲 Viewer effects</h3><button class="small ghost" id="fx-close" aria-label="Close">✕</button></div>
+    <p class="small" id="fx-points"></p>
+    <div class="fx-grid" id="fx-grid"></div>
+    <p class="small muted" id="fx-note"></p>
+  </div>
+
+  <div class="seat-offer" id="seat-offer" hidden role="alertdialog" aria-labelledby="so-title" aria-describedby="so-sub">
+    <div class="so-title" id="so-title">You're up!</div>
+    <div class="so-sub" id="so-sub"></div>
+    <div class="row">
+      <button class="primary" id="so-take">🎮 Take controller <span id="so-left"></span></button>
+      <button class="ghost" id="so-skip">Sit out</button>
+    </div>
+    <div class="small muted">Enter or any gamepad button takes it.</div>
+  </div>
+
+  <!-- ======================= DIALOGS ======================= -->
+  <dialog id="join-dlg">
+    <form method="dialog" id="join-form">
+      <h2 id="join-title" class="trunc">Join lobby</h2>
+      <p class="muted small trunc" id="join-sub"></p>
+      <div id="join-pw-wrap">
+        <label for="join-pw">Lobby password</label>
+        <input id="join-pw" type="password" maxlength="64" autocomplete="off">
+      </div>
+      <div class="msg info" id="join-ping" hidden></div>
+      <div class="msg error" id="join-error" hidden></div>
+      <div class="row end" style="margin-top:14px">
+        <button value="cancel" formnovalidate class="ghost">Cancel</button>
+        <button type="button" id="join-wait" hidden title="Stay here; you join automatically the moment a seat opens">⏳ Wait for a seat</button>
+        <button value="ok" class="primary" id="join-ok">Join</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="unlock-dlg">
+    <form method="dialog" id="unlock-form">
+      <h2>Unlock library</h2>
+      <p class="muted small">Enter the owner password to use this server's game library with your account.</p>
+      <label for="unlock-pw">Owner password</label>
+      <input id="unlock-pw" type="password" autocomplete="current-password">
+      <div class="msg error" id="unlock-error" hidden></div>
+      <div class="row end" style="margin-top:14px">
+        <button value="cancel" formnovalidate class="ghost">Cancel</button>
+        <button value="ok" class="primary">Unlock</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="libdirs-dlg" class="wide" aria-labelledby="libdirs-title">
+    <h2 id="libdirs-title">Library folders</h2>
+    <p class="muted small" id="libdirs-sub">Pick the folder each console's games are in. Consoles without one use
+      their sub-folder of the main ROM folder.</p>
+    <div class="msg error" id="libdirs-error" hidden></div>
+    <ul class="libdirs" id="libdirs-list"></ul>
+    <div class="row end" style="margin-top:14px">
+      <button class="primary" id="libdirs-close">Done</button>
+    </div>
+  </dialog>
+
+  <dialog id="fs-dlg" class="wide" aria-labelledby="fs-title">
+    <h2 id="fs-title">Choose a folder</h2>
+    <div class="fs-path small" id="fs-path"></div>
+    <div class="msg error" id="fs-error" hidden></div>
+    <ul class="fs-list" id="fs-list"></ul>
+    <div class="row end" style="margin-top:14px">
+      <button class="ghost" id="fs-cancel">Cancel</button>
+      <button class="primary" id="fs-ok">Use this folder</button>
+    </div>
+  </dialog>
+
+  <dialog id="ra-dlg" aria-labelledby="ra-dlg-title">
+    <h2 id="ra-dlg-title">RetroAchievements</h2>
+    <p class="muted small">Shows each game's achievements and your progress while you play, and tells you (and the lobby, if you like) when one unlocks.
+      Your <b>Web API key</b> is on <a href="https://retroachievements.org/settings" target="_blank" rel="noopener noreferrer">retroachievements.org/settings</a>
+      under <i>Authentication</i> (it can only read, never play as you). Both stay in this browser; the hub passes them to RetroAchievements and keeps nothing.</p>
+    <label for="ra-user">Username</label>
+    <input id="ra-user" type="text" maxlength="40" autocomplete="off" spellcheck="false">
+    <label for="ra-key">Web API key</label>
+    <input id="ra-key" type="password" maxlength="64" autocomplete="off" spellcheck="false">
+    <label class="check"><input type="checkbox" id="ra-share" checked> Tell the lobby when I unlock an achievement</label>
+    <a class="offsite" href="https://retroachievements.org/" target="_blank" rel="noopener noreferrer" title="Opens retroachievements.org in a new tab. Not part of Retro Hub.">
+      <span class="os-tag">Offsite · retroachievements.org</span><span class="os-label">No account yet? Sign up on RetroAchievements <span aria-hidden="true">↗</span></span>
+      <span class="os-note">Free. Your account lives there, not on this hub.</span></a>
+    <p class="small muted">Achievements unlock inside an emulator with RetroAchievements built in, such as the hub's native emulators (PCSX2, Dolphin, DuckStation, PPSSPP, melonDS…) signed in to your account. Browser games (EmulatorJS) can show the list and your progress, but can't unlock.</p>
+    <div class="msg" id="ra-result" hidden></div>
+    <div class="row end" style="margin-top:14px">
+      <button class="ghost" id="ra-clear">Forget</button><span class="grow"></span>
+      <button class="ghost" id="ra-cancel">Cancel</button>
+      <button id="ra-test">Test</button>
+      <button class="primary" id="ra-save">Save</button>
+    </div>
+  </dialog>
+
+  <dialog id="news-dlg" class="wide" aria-labelledby="news-title">
+    <h2 id="news-title">What's new in Retro Hub</h2>
+    <div class="news-body" id="news-body"></div>
+    <div class="row end" style="margin-top:14px"><button class="primary" id="news-ok">Got it</button></div>
+  </dialog>
+
+  <dialog id="keys-dlg" class="wide" aria-labelledby="keys-title">
+    <h2 id="keys-title">Keyboard shortcuts</h2>
+    <div id="keys-body"></div>
+    <div class="row end" style="margin-top:14px">
+      <button class="primary" id="keys-close">Close</button>
+    </div>
+  </dialog>
+
+  <dialog id="online-dlg" class="wide" aria-labelledby="online-title">
+    <h2 id="online-title">🌐 Online services</h2>
+    <p class="muted small">Retro Hub's own lobbies work for every console. These are the services a game's <b>own</b> online mode uses
+      (Pretendo, RPCN, Insignia...). Retro Hub checks what it can on this computer and never ships keys, BIOS or account files: you use your own.</p>
+    <p class="ol-summary" id="online-summary"></p>
+    <div class="ol-list" id="online-list"></div>
+    <div class="row end" style="margin-top:14px"><button type="button" class="small ghost" id="online-refresh">Check again</button>
+      <button class="primary" id="online-close">Done</button></div>
+  </dialog>
+
+  <dialog id="theme-dlg" class="wide" aria-labelledby="theme-title">
+    <h2 id="theme-title">Theme</h2>
+    <p class="muted small">Colors for every Retro Hub page in this browser. Games and streams look the same for everyone.</p>
+    <div class="theme-grid" id="theme-grid" role="radiogroup" aria-labelledby="theme-title"></div>
+    <div class="row" style="margin-top:12px"><button type="button" class="small" id="theme-make">✏️ Make your own from this one</button></div>
+    <section class="theme-edit" id="theme-edit" hidden aria-label="Custom theme">
+      <h3>✏️ Custom theme</h3>
+      <p class="muted small">Changes show live. Everything stays in this browser.</p>
+      <div class="te-grid">
+        <label>Background <input type="color" data-te="bg"></label>
+        <label>Panels <input type="color" data-te="panel"></label>
+        <label>Borders <input type="color" data-te="line"></label>
+        <label>Text <input type="color" data-te="text"></label>
+        <label>Accent <input type="color" data-te="accent"></label>
+        <label>Font <select data-te="font">
+          <option value="system">Standard</option><option value="rounded">Rounded</option><option value="mono">Monospace</option>
+          <option value="serif">Serif</option><option value="comic">Comic</option></select></label>
+        <label>Headings <select data-te="headCase"><option value="upper">UPPERCASE</option><option value="none">As written</option></select></label>
+        <label>Corners <input type="range" min="0" max="20" step="1" data-te="radius"></label>
+      </div>
+      <div class="te-bg">
+        <span class="small"><b>Background picture</b> <span class="muted" id="te-bg-state">none</span></span>
+        <button type="button" class="small" id="te-bg-pick">Pick a picture…</button>
+        <button type="button" class="small ghost" id="te-bg-clear">Remove</button>
+        <label class="small te-dim">Darken <input type="range" min="0" max="95" step="5" data-te="dim"></label>
+        <input type="file" id="te-bg-file" accept="image/png,image/jpeg,image/webp,image/gif" hidden>
+      </div>
+      <p class="small te-warn" id="te-warn" hidden></p>
+      <div class="te-share">
+        <button type="button" class="small" id="te-copy" title="Copy a code other players can paste to get the same colors">📋 Copy share code</button>
+        <input id="te-code" class="small" placeholder="Paste a RH-THEME: code" aria-label="Theme share code">
+        <button type="button" class="small" id="te-paste">Use code</button>
+        <button type="button" class="small ghost" id="te-reset">Reset</button>
+      </div>
+    </section>
+    <div class="row end" style="margin-top:14px"><button class="primary" id="theme-close">Done</button></div>
+  </dialog>
+
+  <dialog id="game-dlg" class="wide">
+    <h2>Change game</h2>
+    <div class="game-picker" id="dlg-picker"></div>
+    <div class="row end" style="margin-top:14px">
+      <button class="ghost" id="game-dlg-cancel">Cancel</button>
+    </div>
+  </dialog>
+
+  <script src="/vendor/nacl-fast.min.js"></script>
+  <script src="/account.js"></script>
+  <script src="/ui.js"></script>
+  <script src="/input.js"></script>
+  <script src="/jetfx/jet-scene.js"></script>
+  <script src="/jetfx/jetfx.js"></script>
+  <script src="/netplay.js"></script>
+  <script src="/native.js"></script>
+  <script src="/voice.js"></script>
+  <script src="/calibrate.js"></script>
+  <script src="/instruments.js"></script>
+  <script src="/cheats.js"></script>
+  <script src="/ghost.js"></script>
+  <script src="/saves.js"></script>
+  <script src="/race.js"></script>
+  <script src="/shuffler-core.js"></script>
+  <script src="/rahash.js"></script>
+  <script src="/ra.js"></script>
+  <script src="/offsite.js"></script>
+  <script src="/emotes.js"></script>
+  <script src="/gbaview.js"></script>
+  <script src="/online.js"></script>
+  <script src="/aim.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Retro Hub · Stream overlay</title>
+  <!-- OBS browser source: http://localhost:<port>/overlay/queue  (optional ?room=CODE, ?side=right, ?scale=1.5)
+       Transparent background; only reachable from the hub's own computer. -->
+  <style>
+    html, body { margin: 0; background: transparent; }
+    body { font: 600 18px/1.3 "Bahnschrift SemiCondensed", "Bahnschrift", "Roboto Condensed", "Arial Narrow", Arial, sans-serif;
+      color: #f3f4f6; padding: 12px; }
+    .box { display: inline-block; min-width: 260px; max-width: 420px; background: rgba(14, 15, 17, .82); border-left: 4px solid #ffd60a;
+      border-radius: 6px; padding: 10px 14px; box-shadow: 0 6px 18px rgba(0,0,0,.35); }
+    body.right { text-align: right; } body.right .box { text-align: left; }
+    h1 { margin: 0 0 2px; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: #ffd60a; }
+    .game { font-size: 14px; color: #c4c8ce; margin-bottom: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    ol { list-style: none; margin: 0; padding: 0; }
+    li { display: flex; gap: 8px; align-items: baseline; padding: 2px 0; }
+    .slot { color: #ffd60a; width: 2.2em; }
+    .name { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .t { font: 500 14px ui-monospace, Consolas, monospace; color: #c4c8ce; }
+    .next { margin-top: 10px; }
+    .next li .slot { color: #8b929d; }
+    .muted { color: #8b929d; font-size: 14px; }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <div class="box hidden" id="box">
+    <h1>Now playing</h1>
+    <div class="game" id="game"></div>
+    <ol id="seats"></ol>
+    <div class="next" id="next-wrap">
+      <h1>Up next</h1>
+      <ol id="next"></ol>
+    </div>
+  </div>
+  <script src="/overlay.js"></script>
+</body>
+</html>

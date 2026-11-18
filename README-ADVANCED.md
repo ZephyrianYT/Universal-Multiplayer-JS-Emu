@@ -614,7 +614,7 @@ Settings are environment variables, usually from `.env`. Edit them in the window
 | `ACCESS_PASSWORD` | – (open) | Server-wide code, asked once per account. Recommended on the internet. |
 | `LIBRARY_ACCESS` | `admin` | `all` shares the server library with every account. |
 | `PORT` | `8080` | HTTP port. |
-| `HOST` | `0.0.0.0` | Listen address. The launcher sets `127.0.0.1` for localhost-only and tunnel modes. |
+| `HOST` | `::` | Listen address. `::` is every address, IPv4 and IPv6 (falls back to IPv4 when the computer has no IPv6); `0.0.0.0` = IPv4 only. The launcher sets `127.0.0.1` for localhost-only and tunnel modes, and the hub then also listens on `::1`. At start the hub checks that both `127.0.0.1` and `::1` reach it and stops with a message naming the other program if one doesn't (browsers open `localhost` on `::1` first). |
 | `MAX_PLAYERS` | `4` | Seats per lobby, clamped to 2–4. |
 | `ROMS_DIR` | `./roms` (`/roms` in Docker) | Main ROM library. |
 | `CORES_CACHE` | `./cache/cores` | Downloaded EmulatorJS cores. `session.key` sits next to it. |

@@ -1,0 +1,75 @@
+# Dependencies
+node_modules/
+
+# Never commit games: ROMs, BIOS files and disc images are copyrighted
+roms/*
+!roms/.gitkeep
+*.z64
+*.n64
+*.v64
+*.sfc
+*.smc
+*.nes
+*.gb
+*.gbc
+*.gba
+*.nds
+*.iso
+*.bin
+*.cue
+*.chd
+*.pbp
+*.7z
+*.zip
+
+# Native emulator builds (big, and some ship firmware/keys): keep only the folder layout
+emulators/*/*
+!emulators/*/.gitkeep
+emulators/apps.json
+*.wbfs
+*.rvz
+*.wud
+*.wux
+
+# Runtime core cache
+cache/
+
+# Exported save states
+*.rhsave
+
+# Local config and secrets
+.env
+.env.*
+!.env.example
+
+# Editor and OS files
+.vscode/
+.idea/
+*.log
+__pycache__/
+*.pyc
+Thumbs.db
+.DS_Store
+
+# Server runtime files (pid + stop token) and release staging
+run/
+release/
+
+# Per-console library folders chosen in the hub
+library-folders.json
+library-hidden.json
+# The owner's own Off Site Games list (replaces core/offsite-games.json)
+offsite-games.json
+
+# Backups the updater makes of files it replaces
+backup/
+
+# First-run answers (desktop shortcut asked once)
+.retrohub-config.json
+
+# Co-op ROM hack patch files the owner added (core/coop-hacks.json)
+/patches/
+
+# Your own BIOS files (GBA BIOS for Dolphin GBA mode...): never shipped
+bios/
+emulators/dolphin/retrohub-gba-user/

@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Retro Hub · Flash</title>
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/style.css">
+  <script src="/theme.js"></script>
+</head>
+<body class="flash-page">
+  <header class="topbar">
+    <a class="brand" href="/" title="Back to the home screen"><img class="brand-logo" src="/icon.svg" alt="" width="30" height="30">Retro Hub</a>
+    <span class="small muted">🎞️ Flash</span>
+    <span class="spacer"></span>
+    <span class="small muted trunc" id="fl-name"></span>
+    <button class="small" id="fl-full" hidden>Fullscreen</button>
+    <button class="small ghost" id="fl-eject" hidden>⏏ Eject</button>
+    <a class="btn small" href="/">← Back to the hub</a>
+  </header>
+
+  <main class="wrap" id="fl-setup">
+    <section class="card">
+      <div class="card-head"><h2>🎞️ Load a .SWF</h2></div>
+      <p class="small muted">Play a classic Flash game from a <b>.swf</b> file on your computer, like putting a cartridge in.
+        It runs in this tab with <a href="https://ruffle.rs/" target="_blank" rel="noopener noreferrer" title="Opens ruffle.rs in a new tab">Ruffle</a>, a Flash Player emulator.
+        The file stays on your computer (nothing is uploaded) and the game gets no internet access. Saves are kept in this browser.</p>
+      <div id="fl-lib-wrap" hidden>
+        <label>On this hub</label>
+        <div class="fl-lib" id="fl-lib"></div>
+      </div>
+      <label class="fl-drop" id="fl-drop">
+        <input type="file" id="fl-file" accept=".swf,application/x-shockwave-flash">
+        <b>Drop a .swf here</b><span class="small muted">or click to choose a file</span>
+      </label>
+      <div class="msg error" id="fl-error" hidden></div>
+      <p class="small muted">Most older Flash games (ActionScript 1/2) work. Newer ActionScript 3 games may run with glitches or not at all.
+        Games that need their own website or an online server won't work.</p>
+    </section>
+  </main>
+
+  <div class="fl-stage" id="fl-stage" hidden></div>
+
+  <script src="/flash.js"></script>
+  <script src="/ruffle/ruffle.js"></script>
+</body>
+</html>

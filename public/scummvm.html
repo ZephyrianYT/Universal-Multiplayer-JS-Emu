@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Retro Hub · ScummVM</title>
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/style.css">
+  <script src="/theme.js"></script>
+</head>
+<body class="flash-page">
+  <header class="topbar">
+    <a class="brand" href="/" title="Back to the home screen"><img class="brand-logo" src="/icon.svg" alt="" width="30" height="30">Retro Hub</a>
+    <span class="small muted">🗝️ ScummVM</span>
+    <span class="spacer"></span>
+    <a class="btn small" href="/">← Back to the hub</a>
+  </header>
+
+  <main class="wrap">
+    <section class="card">
+      <div class="card-head"><h2>🗝️ ScummVM</h2></div>
+      <p class="small muted">Classic point-and-click adventures (LucasArts, Sierra, Revolution and
+        <a href="https://www.scummvm.org/compatibility/" target="_blank" rel="noopener noreferrer" title="Opens scummvm.org in a new tab">hundreds more</a>)
+        in this browser with <a href="https://www.scummvm.org/" target="_blank" rel="noopener noreferrer" title="Opens scummvm.org in a new tab">ScummVM</a>.
+        Games open in a new tab; saves stay in this browser.</p>
+      <p class="small muted" id="sv-first">The first start downloads ScummVM (about 45 MB, plus each game engine the first time it's used) to the hub, then it's quick.</p>
+
+      <div id="sv-lib-wrap" hidden>
+        <label>On this hub</label>
+        <div class="fl-lib" id="sv-lib"></div>
+      </div>
+      <p class="small muted" id="sv-none" hidden>No ScummVM games on this hub yet.</p>
+
+      <div class="og-flash">
+        <a class="btn" href="/scummvm/play.html" target="_blank" rel="noopener">Open ScummVM's launcher</a>
+        <span class="small muted">ScummVM's own menu: options, saved games, and <b>Add Game…</b> for any hub game folder.</span>
+      </div>
+      <p class="small muted" id="sv-owner">Hub owner: put each game in its own folder in <code>roms/scummvm</code>
+        (for example <code>roms/scummvm/Flight of the Amazon Queen/</code>) with all its data files inside, the way you'd copy it for ScummVM.
+        A <code>cover.png</code> in the folder becomes its picture. ScummVM can't open folders from a player's own computer in the browser,
+        so games go on the hub. Free games: <a href="https://www.scummvm.org/games/" target="_blank" rel="noopener noreferrer" title="Opens scummvm.org in a new tab">scummvm.org/games</a>.</p>
+    </section>
+  </main>
+  <script src="/scummvm-page.js"></script>
+</body>
+</html>

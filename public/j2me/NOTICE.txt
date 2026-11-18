@@ -1,0 +1,6 @@
+freej2me-web (J2ME emulator for the browser) by zb3: https://github.com/zb3/freej2me-web
+Copied unmodified from commit c19416e75cbc15f9a27f7e967ee81cb108761e30 (web/ folder, build and test files left out).
+Full source (including the libmidi / libmedia WebAssembly sources): https://github.com/zb3/freej2me-web/tree/c19416e75cbc15f9a27f7e967ee81cb108761e30
+License: GPL-3.0 (see LICENSE); FluidSynth: LGPL-2.1 (libmidi/LICENSE-fluidsynth); FFmpeg (libmedia): LGPL/GPL.
+It runs on CheerpJ (Leaning Technologies, proprietary), which the pages load from https://cjrtnc.leaningtech.com.
+Retro Hub serves these files at /j2me/ and adds its own page, /j2me.html.

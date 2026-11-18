@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Retro Hub · Shuffler</title>
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/style.css">
+  <script src="/theme.js"></script>
+</head>
+<body class="shuffle-page">
+  <header class="topbar">
+    <a class="brand" href="/" title="Back to the home screen"><img class="brand-logo" src="/icon.svg" alt="" width="30" height="30">Retro Hub</a>
+    <span class="small muted">🔀 Shuffler</span>
+    <span class="spacer"></span>
+    <button class="small" type="button" data-open-instruments>🎸 Instruments</button>
+    <a class="btn small" href="/" id="sh-back">← Back to the hub</a>
+  </header>
+
+  <!-- ---------- setup ---------- -->
+  <main class="wrap" id="sh-setup">
+    <section class="card">
+      <div class="card-head"><h2>🔀 Shuffler</h2></div>
+      <p class="small muted">Load 2 to 8 games. One of them plays; after a random time the Shuffler freezes it and jumps to another, right where you left it.
+        Beat a game and mark it <b>Beaten</b> (F8): it leaves the pool. Beat them all to win. Consoles can be mixed. Your files stay on this computer.</p>
+      <label>Games</label>
+      <div class="row">
+        <label class="btn file-btn"><input type="file" id="sh-files" multiple> Add game files…</label>
+        <span class="small muted" id="sh-count"></span>
+      </div>
+      <ul class="list sh-games" id="sh-games"></ul>
+      <div id="sh-lib-wrap" hidden>
+        <label for="sh-lib-q">Add from the server library</label>
+        <input type="search" id="sh-lib-q" placeholder="Search the library" aria-label="Search the server library">
+        <ul class="list sh-lib" id="sh-lib"></ul>
+      </div>
+      <div class="sh-opts">
+        <div><label for="sh-min">Swap after at least</label><div class="row nowrap"><input type="number" id="sh-min" min="5" max="600" step="1"> <span class="small muted">seconds</span></div></div>
+        <div><label for="sh-max">and at most</label><div class="row nowrap"><input type="number" id="sh-max" min="5" max="900" step="1"> <span class="small muted">seconds</span></div></div>
+      </div>
+      <label class="check"><input type="checkbox" id="sh-showtimer"> Show the countdown to the next swap (off = surprise swaps)</label>
+      <label class="check"><input type="checkbox" id="sh-sound"> Play a sound on each swap</label>
+      <label class="check" title="PS1, N64, DS, PSP, Saturn, Sega CD, Jaguar and arcade use a lot of memory each"><input type="checkbox" id="sh-saver"> Memory saver: keep only one big console (PS1, N64, DS…) loaded; the others are saved and reloaded on their turn (a few seconds)</label>
+      <div class="msg error" id="sh-error" hidden></div>
+      <div class="row end" style="margin-top:14px">
+        <span class="small muted grow" id="sh-mem"></span>
+        <button class="primary" id="sh-start" disabled>Start shuffling</button>
+      </div>
+    </section>
+    <p class="small muted">Keys while playing: <b>F8</b> beaten · <b>F9</b> swap now · <b>F10</b> hold (no swaps until you press it again). Game controls are the same as in a lobby (P1 keyboard or any gamepad).</p>
+  </main>
+
+  <!-- ---------- playing ---------- -->
+  <div class="game sh-play" id="sh-play" hidden>
+    <div class="hud">
+      <b id="sh-now" class="trunc"></b>
+      <span class="small muted" id="sh-left"></span>
+      <span class="spacer"></span>
+      <span class="small muted" id="sh-stats"></span>
+      <span class="sh-timer" id="sh-timer" hidden></span>
+      <button class="small primary" id="sh-beaten" title="I beat this game (F8)">✓ Beaten</button>
+      <button class="small" id="sh-swap" title="Swap now (F9)">⤳ Swap</button>
+      <button class="small" id="sh-hold" aria-pressed="false" title="Hold: no swaps until you press it again (F10)">⏸ Hold</button>
+      <label class="small sh-vol" title="Game volume">🔊 <input type="range" id="sh-volume" min="0" max="1" step="0.05" aria-label="Game volume"></label>
+      <button class="small" id="sh-full">Fullscreen</button>
+      <button class="small ghost" id="sh-end">End</button>
+    </div>
+    <div class="stage sh-stage" id="sh-stage">
+      <div class="sh-banner" id="sh-banner" hidden></div>
+      <div class="loadboard" id="sh-loading" hidden>
+        <h2>Loading games</h2>
+        <div id="sh-load-rows"></div>
+        <p class="small muted">Each game boots once, then waits frozen until its turn.</p>
+      </div>
+    </div>
+    <div class="sh-strip" id="sh-strip"></div>
+  </div>
+
+  <!-- ---------- the end ---------- -->
+  <dialog id="sh-win" class="wide" aria-labelledby="sh-win-title">
+    <h2 id="sh-win-title">🏆 All games beaten!</h2>
+    <p id="sh-win-sub"></p>
+    <ul class="list" id="sh-win-list"></ul>
+    <div class="row end" style="margin-top:14px">
+      <button class="ghost" id="sh-win-close">Close</button>
+      <button class="primary" id="sh-win-again">New shuffle</button>
+    </div>
+  </dialog>
+
+  <script src="/ui.js"></script>
+  <script src="/input.js"></script>
+  <script src="/instruments.js"></script>
+  <script src="/shuffler-core.js"></script>
+  <script src="/shuffle.js"></script>
+</body>
+</html>

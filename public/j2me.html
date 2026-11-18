@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Retro Hub · Phone games (J2ME)</title>
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/style.css">
+  <script src="/theme.js"></script>
+</head>
+<body class="flash-page">
+  <header class="topbar">
+    <a class="brand" href="/" title="Back to the home screen"><img class="brand-logo" src="/icon.svg" alt="" width="30" height="30">Retro Hub</a>
+    <span class="small muted">📱 Phone games</span>
+    <span class="spacer"></span>
+    <a class="btn small" href="/">← Back to the hub</a>
+  </header>
+
+  <main class="wrap">
+    <section class="card">
+      <div class="card-head"><h2>📱 Phone games (J2ME)</h2></div>
+      <p class="small muted">Play old Java phone games (<b>.jar</b>, sometimes with a <b>.jad</b>) in this browser with
+        <a href="https://github.com/zb3/freej2me-web" target="_blank" rel="noopener noreferrer" title="Opens GitHub in a new tab">freej2me-web</a>.
+        Games open in a new tab.</p>
+      <div class="msg" id="j2-net">Needs internet: the emulator runs on CheerpJ, a Java runtime that your browser downloads from
+        <b>cjrtnc.leaningtech.com</b> (Leaning Technologies) each time. That site sees your IP address, like any website.
+        Your game files are not sent to it.</div>
+
+      <div id="j2-lib-wrap" hidden>
+        <label>On this hub</label>
+        <div class="fl-lib" id="j2-lib"></div>
+      </div>
+
+      <label>Your own games</label>
+      <div class="og-flash">
+        <a class="btn primary" href="/j2me/" target="_blank" rel="noopener">📲 Load a .JAR</a>
+        <span class="small muted">Opens the phone game launcher: add a .jar from your computer, set the screen size and phone type,
+          and it stays installed in this browser with its saves. Hub games you've played show up there too (to change their settings).</span>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="card-head"><h2>Keys</h2></div>
+      <table class="j2-keys">
+        <tr><th>Key</th><th>Phone</th></tr>
+        <tr><td>↑ ↓ ← →</td><td>D-pad (in “Standard” phone type: 2 8 4 6)</td></tr>
+        <tr><td>Enter</td><td>OK / fire (“Standard”: 5)</td></tr>
+        <tr><td>Q or F1</td><td>Left soft key</td></tr>
+        <tr><td>W or F2</td><td>Right soft key</td></tr>
+        <tr><td>0 – 9</td><td>Keypad numbers (numpad: 7 8 9 and 1 2 3 swapped, like a phone)</td></tr>
+        <tr><td>E / R</td><td>* / #</td></tr>
+        <tr><td>Esc</td><td>Emulator options (screen size, phone type, sound…)</td></tr>
+      </table>
+      <p class="small muted">Game not working? Press Esc and try another screen size or phone type, or turn sound off, then restart it.
+        Not every game runs. On a phone or tablet the page shows an on-screen keypad.</p>
+    </section>
+  </main>
+  <script src="/j2me-page.js"></script>
+</body>
+</html>

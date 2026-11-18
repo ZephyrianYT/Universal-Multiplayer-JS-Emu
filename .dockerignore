@@ -3,8 +3,12 @@
 .github
 roms
 cache
-index.cdn-old.html
-.claude
 node_modules
 .env
-UniversalMultiplayer.json
+run
+release
+*.bat
+*.sh
+*.py
+emulators
+!core/streaming/*.py

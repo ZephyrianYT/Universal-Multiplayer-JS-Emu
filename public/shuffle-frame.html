@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Retro Hub · Shuffler game</title>
+  <!-- One EmulatorJS instance for the Shuffler (shuffle.html runs one of these per game). -->
+  <style>
+    html, body { margin: 0; height: 100%; background: #000; overflow: hidden; }
+    #game { width: 100%; height: 100%; }
+    /* The Shuffler page has its own controls: hide EmulatorJS's menu bar, context menu button and touch pad here. */
+    .ejs_menu_bar, .ejs_virtualGamepad_parent, .ejs_context_menu { display: none !important; }
+  </style>
+</head>
+<body>
+  <div id="game"></div>
+  <script src="/shuffle-frame.js"></script>
+</body>
+</html>
