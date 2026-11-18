@@ -1,3 +1,11 @@
+0.3.4 fix is merged. Until the release zip is up tonight, either:
+
+1) Quick workaround on 0.3.3: open http://127.0.0.1:8080 instead of http://localhost:8080
+   (or change Port in the Retro Hub window: Settings, e.g. 8081, then Start).
+
+2) Get 0.3.4 now: on the GitHub repo page press Code > Download ZIP, unzip,
+   copy your old .env, roms and emulators folders into it, then run launch.bat.
+
 # Retro Hub
 
 **Play retro games with your friends from a link.** You run Retro Hub on your PC, friends open the link in their browser, and you play together: co-op, races, or side by side as ghosts. Nothing to install for your friends, and no games are ever uploaded anywhere.
