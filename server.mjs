@@ -32,7 +32,14 @@ const ROMS_DIR = path.resolve(process.env.ROMS_DIR || path.join(ROOT, "roms"));
 const CORES_CACHE = path.resolve(process.env.CORES_CACHE || path.join(ROOT, "cache", "cores"));
 const CACHE_DIR = path.dirname(CORES_CACHE);      // cache/ (Docker: /cache): covers and RetroAchievements lists live here too
 const PORT = Number(process.env.PORT || 8080);
-const HOST = process.env.HOST || "0.0.0.0";
+// Default: every address, IPv4 and IPv6 ("::" is dual-stack). Browsers open "localhost" on IPv6 (::1) first
+// (Firefox always, Chrome/Edge on Windows), so a hub listening on IPv4 only lets any other program that holds
+// [::1]:PORT answer instead of it: that is the 0.3.3 report, where another web server showing freej2me-web
+// took over http://localhost:8080. HOST=0.0.0.0 still means IPv4 only, for setups that want it.
+const HOST = process.env.HOST || "::";
+// Random per run: the start-up self-check (verifyLocalhost) asks every loopback address for it, so it knows
+// the answer came from this process and not from another program on the same port.
+const INSTANCE_ID = crypto.randomBytes(12).toString("hex");
 const MAX_PLAYERS = Math.min(4, Math.max(2, Number(process.env.MAX_PLAYERS || 4)));
 const LIBRARY_ACCESS = process.env.LIBRARY_ACCESS === "all" ? "all" : "admin";
 const TRUST_PROXY = process.env.TRUST_PROXY === "1";
@@ -131,8 +138,11 @@ const canLibrary = s => !!s && (s.role === "admin" || LIBRARY_ACCESS === "all");
 // Behind a proxy every visitor arrives from the proxy's address, so rate limits would lump everyone together.
 // Forwarded headers are trusted with TRUST_PROXY=1, or automatically when the proxy runs on this same computer
 // (loopback peer: a local cloudflared / Caddy / nginx). Cloudflare's CF-Connecting-IP wins over X-Forwarded-For.
+// A dual-stack socket reports IPv4 clients as ::ffff:1.2.3.4; everything here (rate limits, nearby hubs, link
+// cable) keys on the plain IPv4 form.
+const peerAddr = req => String(req.socket.remoteAddress || "").replace(/^::ffff:(?=\d+\.\d+\.\d+\.\d+$)/i, "");
 function clientIp(req) {
-  const peer = req.socket.remoteAddress;
+  const peer = peerAddr(req);
   if (!TRUST_PROXY && !isLoopback(req)) return peer;
   const cf = String(req.headers["cf-connecting-ip"] || "").trim();
   const xff = String(req.headers["x-forwarded-for"] || "").split(",")[0].trim();
@@ -687,6 +697,9 @@ const server = http.createServer(async (req, res) => {
     if (urlPath === "/api/overlay") return json(res, 200, overlayData(cleanCode(new URL(req.url, "http://x").searchParams.get("room"))));
     return sendFile(req, res, path.join(PUBLIC_DIR, urlPath === "/overlay.js" ? "overlay.js" : "overlay.html"), "no-cache");
   }
+  // Which program answers here: the launcher and the start-up self-check compare the id with this run's.
+  if (urlPath === "/api/instance" && (req.method === "GET" || req.method === "HEAD"))
+    return json(res, 200, { app: "retro-hub", version: APP_VERSION, instance: INSTANCE_ID });
   if (urlPath === "/api/challenge" && req.method === "GET") {
     const nonce = newChallenge();
     if (!nonce) return json(res, 503, { error: "Server busy. Try again in a minute." });
@@ -767,7 +780,7 @@ const server = http.createServer(async (req, res) => {
   }
   if ((urlPath === "/api/link/claim" || urlPath === "/api/link/release") && req.method === "POST") {
     if (!directLan(req)) return json(res, 403, { error: "Link cable sessions only work between computers on the same network." });
-    const ip = req.socket.remoteAddress;
+    const ip = peerAddr(req);
     if (linkThrottled(ip)) return json(res, 429, { error: "Too many requests" });
     let body; try { body = JSON.parse(await readBody(req)); } catch { return json(res, 400, { error: "Bad request" }); }
     const r = urlPath === "/api/link/claim" ? link.claim(body, ip) : link.release(body);
@@ -2275,6 +2288,7 @@ function shutdown(reason) {
   try { native.shutdown(); } catch {}
   try { discovery.stop(); masterPool?.stop(); } catch {}
   removeRunFile();
+  companion?.close();
   server.close(() => process.exit(0));
   setTimeout(() => { for (const ws of wss.clients) ws.terminate(); process.exit(0); }, 3000).unref();
 }
@@ -2288,7 +2302,9 @@ const SHUTDOWN_TOKEN = crypto.randomBytes(24).toString("base64url");
 function writeRunFile() {
   try {
     fs.mkdirSync(path.dirname(RUN_FILE), { recursive: true });
-    fs.writeFileSync(RUN_FILE, JSON.stringify({ pid: process.pid, port: PORT, token: SHUTDOWN_TOKEN, started: new Date().toISOString() }), { mode: 0o600 });
+    fs.writeFileSync(RUN_FILE, JSON.stringify({ pid: process.pid, port: PORT, token: SHUTDOWN_TOKEN, instance: INSTANCE_ID,
+      launch: process.env.RH_LAUNCH_ID || null,
+      started: new Date().toISOString() }), { mode: 0o600 });
   } catch (e) { console.warn(`Could not write ${RUN_FILE} (${e.code}); stop.py will fall back to finding the process by port.`); }
 }
 function removeRunFile() {
@@ -2310,10 +2326,78 @@ function sameOrigin(req) {
   try { const u = new URL(o); return u.host === req.headers.host && (u.protocol === "http:" || u.protocol === "https:"); } catch { return false; }
 }
 
-server.listen(PORT, HOST, () => {
+// ---------------------------------------------------------------- listen + "is localhost really us?" check
+// The browser is opened on http://localhost:PORT, and "localhost" is two addresses: 127.0.0.1 and ::1 (tried
+// first by Firefox, and by Chrome/Edge on Windows). Before 1.26.1 the hub listened on IPv4 only and only checked
+// 127.0.0.1, so another program holding [::1]:PORT got the browser instead of the hub (0.3.3: a freej2me-web
+// page stuck on "Loading..."). Now the hub listens on both, and before it says it's running it asks both
+// addresses for /api/instance: anything that answers and isn't this process stops the start with a clear message.
+const NO_IPV6 = new Set(["EAFNOSUPPORT", "EADDRNOTAVAIL", "EINVAL"]);
+function portTaken(addr) {
+  console.error(`\n[retro-hub] Port ${PORT} is already used by another program on ${addr}.\n` +
+    `  Browsers would open that program instead of Retro Hub at http://localhost:${PORT}.\n` +
+    `  Close it, or pick another port (Retro Hub window: Settings > Port, or PORT=... in .env, or launch.py --port ${PORT + 1}).\n` +
+    (process.platform === "win32" ? `  To see which program it is:  netstat -ano | findstr :${PORT}   then look up the last number (PID) in Task Manager.\n`
+      : `  To see which program it is:  lsof -i :${PORT}\n`));
+  process.exit(1);
+}
+function listenOn(srv, host) {
+  return new Promise((resolve, reject) => {
+    const fail = e => { srv.off("listening", ok); reject(e); };
+    const ok = () => { srv.off("error", fail); resolve(); };
+    srv.once("error", fail); srv.once("listening", ok);
+    srv.listen(PORT, host);
+  });
+}
+// Loopback-only hosting (--localhost-only, tunnel): a second listener on the other loopback address, same handlers.
+let companion = null;
+async function listenAll() {
+  let host = HOST;
+  try { await listenOn(server, host); }
+  catch (e) {
+    if (e.code === "EADDRINUSE") portTaken(host === "::" || host === "0.0.0.0" ? "this computer" : host);
+    if (!process.env.HOST && NO_IPV6.has(e.code)) {          // IPv6 turned off on this computer: IPv4 is all there is
+      host = "0.0.0.0";
+      try { await listenOn(server, host); } catch (e2) { if (e2.code === "EADDRINUSE") portTaken("127.0.0.1"); throw e2; }
+    } else throw e;
+  }
+  const other = /^127\./.test(host) ? "::1" : host === "::1" ? "127.0.0.1" : null;
+  if (other) {
+    companion = http.createServer();
+    for (const ev of ["request", "upgrade"]) for (const fn of server.listeners(ev)) companion.on(ev, fn);
+    try { await listenOn(companion, other); }
+    catch (e) {
+      companion = null;
+      if (e.code === "EADDRINUSE") portTaken(other);
+      if (!NO_IPV6.has(e.code)) throw e;                     // that address doesn't exist here: nothing can take it
+    }
+  }
+}
+function askInstance(addr, urlPath = "/api/instance") {
+  return new Promise(resolve => {
+    const req = http.get({ host: addr, family: addr.includes(":") ? 6 : 4, port: PORT, path: urlPath, timeout: 3000,
+      headers: { Host: `localhost:${PORT}` } }, res => {
+      let body = ""; res.setEncoding("utf8");
+      res.on("data", c => { if (body.length < 4096) body += c; });
+      res.on("end", () => { let j = null; try { j = JSON.parse(body); } catch {}
+        resolve({ ok: j?.instance === INSTANCE_ID, other: true, status: res.statusCode, title: (/<title>([^<]{0,80})/i.exec(body) || [])[1] }); });
+    });
+    req.on("timeout", () => req.destroy(Object.assign(new Error("timeout"), { code: "ETIMEDOUT" })));
+    req.on("error", e => resolve({ ok: false, other: e.code === "ETIMEDOUT", error: e.code }));   // refused / no such address: browsers skip it
+  });
+}
+async function verifyLocalhost() {
+  for (const addr of ["127.0.0.1", "::1"]) {
+    const r = await askInstance(addr);
+    if (r.ok || !r.other) continue;
+    if (r.status) { const home = await askInstance(addr, "/"); if (home.title) r.title = home.title; }   // its home page names it best
+    portTaken(addr + (r.title ? ` (it answers with a page titled "${r.title.trim()}")` : r.status ? ` (it answers with HTTP ${r.status})` : " (it doesn't answer)"));
+  }
+}
+listenAll().then(verifyLocalhost).then(() => {
   writeRunFile();
   console.log(`Retro Hub v${APP_VERSION} on http://localhost:${PORT}  (roms: ${ROMS_DIR}, core cache: ${CORES_CACHE}, library: ${LIBRARY_ACCESS})`);
   refreshLibrary();          // first library scan in the background, so the library is ready when someone opens it
   if (PUBLIC_URL) console.log(`Public address (used in invite links): ${PUBLIC_URL}`);
   console.log("Stop it with the Retro Hub window's Stop button, Ctrl+C, python stop.py / stop.sh, or 'docker compose down' for Docker.");
-});
+}).catch(e => { console.error(`[retro-hub] Could not start the server: ${e.message}`); process.exit(1); });

@@ -16,6 +16,7 @@ Press Ctrl+C to stop. Uses only the Python standard library (Python 3.8+).
 from __future__ import annotations
 
 import argparse
+import json
 import os
 import re
 import secrets
@@ -189,18 +190,42 @@ def lan_ip() -> str | None:
         s.close()
 
 
+# "localhost" is two addresses. Browsers try ::1 (IPv6) first: Firefox always, Chrome/Edge on Windows. Up to 1.26.0
+# only 127.0.0.1 was checked, so a program holding [::1]:PORT went unnoticed and got the browser instead of the hub.
+LOOPBACKS = ((socket.AF_INET, "127.0.0.1"), (socket.AF_INET6, "::1"))
+RUN_FILE = ROOT / "run" / "retro-hub.json"
+
+
+def port_user(port: int) -> str | None:
+    """The loopback address on which something already accepts connections on this port, or None."""
+    for family, addr in LOOPBACKS:
+        try:
+            with socket.socket(family, socket.SOCK_STREAM) as s:
+                s.settimeout(0.5)
+                if s.connect_ex((addr, port)) == 0:
+                    return addr
+        except OSError:  # no IPv6 on this computer: nothing can listen there
+            continue
+    return None
+
+
 def port_free(port: int) -> bool:
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        return s.connect_ex(("127.0.0.1", port)) != 0
+    return port_user(port) is None
 
 
-def wait_for_port(port: int, proc: subprocess.Popen, timeout: float = 20.0) -> bool:
+def wait_for_ready(proc: subprocess.Popen, launch_id: str, timeout: float = 30.0) -> bool:
+    """True once this server wrote its run file: it does that only after checking that both loopback addresses
+    reach it (see verifyLocalhost in server.mjs)."""
     end = time.time() + timeout
     while time.time() < end:
         if proc.poll() is not None:
             return False
-        if not port_free(port):
-            return True
+        try:
+            # Matched by a token from this launch, not the PID: a Node.js shim (volta, nvm) runs node as a child.
+            if json.loads(RUN_FILE.read_text(encoding="utf-8")).get("launch") == launch_id:
+                return True
+        except (OSError, ValueError, AttributeError):
+            pass
         time.sleep(0.25)
     return False
 
@@ -263,8 +288,12 @@ def main() -> None:
     except ValueError:
         fail(f"PORT must be a number, got {env.get('PORT')!r}")
     env["PORT"] = str(port)
-    if not port_free(port):
-        fail(f"Port {port} is already in use. Close the other program or run: python launch.py --port {port + 1}")
+    taken = port_user(port)
+    if taken:
+        fail(f"Port {port} is already in use by another program (on {taken}). Browsers would open that program instead "
+             f"of Retro Hub.\n  Close it, or run: python launch.py --port {port + 1}   (or change the port in the Retro Hub window: "
+             f"Settings).\n  Which program: " + (f"netstat -ano | findstr :{port}  (last number = PID, see Task Manager)"
+                                                    if os.name == "nt" else f"lsof -i :{port}"))
 
     tunnel: subprocess.Popen | None = None
     public = ""
@@ -277,6 +306,7 @@ def main() -> None:
         tunnel, public = start_tunnel(cloudflared, port, env)
         env["PUBLIC_URL"] = public
 
+    env["RH_LAUNCH_ID"] = secrets.token_hex(8)
     proc = subprocess.Popen([node, "server.mjs"], cwd=ROOT, env=env)
 
     def stop(*_: object) -> None:
@@ -293,13 +323,13 @@ def main() -> None:
     if hasattr(signal, "SIGTERM"):
         signal.signal(signal.SIGTERM, stop)
 
-    if not wait_for_port(port, proc):
+    if not wait_for_ready(proc, env["RH_LAUNCH_ID"]):
         if tunnel is not None and tunnel.poll() is None:
             tunnel.terminate()
         code = proc.poll()
         if code is not None:
             fail(f"The server exited early (code {code}). See the messages above.")
-        fail(f"The server did not start listening on port {port} within 20 seconds.")
+        fail(f"The server did not start on port {port} within 30 seconds.")
 
     # The host always opens the hub on localhost, tunnel or not: native emulators and Library folders only work from
     # this computer's own address, and invite links still use the public address (the server gets PUBLIC_URL).

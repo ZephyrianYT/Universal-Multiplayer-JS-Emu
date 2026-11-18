@@ -11,7 +11,7 @@
 
 ## Get started (Windows)
 
-1. **Unzip** `RetroHub0.3.3.zip` anywhere (for example `C:\Games\retro-hub`).
+1. **Unzip** `RetroHub0.3.4.zip` anywhere (for example `C:\Games\retro-hub`).
 2. **Double-click `launch.bat`.**
    - Missing Python or Node.js? It offers to download and install them for you, and checks every download first.
    - It asks whether you want a **desktop shortcut** with the Retro Hub duck. Say yes, and next time just click the duck.
@@ -36,7 +36,7 @@ Disc games show up once (the `.cue` or `.m3u`, not every track), and BIOS files 
 
 **Friends on the same Wi-Fi** can use the *Copy Wi-Fi link* button. **Friends anywhere** need the Internet mode: in the window, pick **Internet (Cloudflare Tunnel)** before pressing Start. It's free, no account needed. The hub still opens on localhost for you; invite links use the public address.
 
-**Streaming?** Turn on **Streamer Mode** in a Co-op lobby: viewers wait in line and take turns in the seats (↻ Rotate, 👑 winner stays, optional turn timer), 🎲 **viewer effects** let viewers spend points on things like inverted controls, double speed or an upside-down screen, and `http://localhost:8080/overlay/queue` is an OBS overlay with who's playing and who's next.
+**Streaming?** Turn on **Streamer Mode** in a Co-op lobby: viewers wait in line and take turns in the seats (↻ Rotate, 👑 winner stays, optional turn timer), 🎲 **viewer effects** let viewers spend points on things like inverted controls, double speed or an upside-down screen, and `http://localhost:8080/overlay/queue` is an OBS overlay with who's playing and who's next ([OBS guide](docs/OBS-STREAMING.md)).
 
 **🔀 Shuffler** (link under *Host a game*): load 2-8 games and it jumps between them at random, right where you left each one. Mark games beaten (F8) until you've beaten them all. With friends: pick the **🔀 Shuffle** mode in *Host a game*.
 
@@ -66,6 +66,7 @@ The Retro Hub window checks for new versions when it opens. Press **Update…** 
 | --- | --- |
 | The library tab is missing | Press **Unlock library** and enter the owner password. |
 | A friend can't connect | Use the Internet (Cloudflare Tunnel) mode, or see *TURN* in the advanced guide. |
+| The hub link opens some other page (for example "freej2me-web … Loading…") | Another program uses the same port. Retro Hub 0.3.4+ refuses to start and names it; close it or change **Port** in **Settings**. |
 | An emulator shows ✖ | The window shows a **Setup needs a look** box with a fix button. |
 | A game is missing from the library | Check its folder in **Settings → Consoles…**, and **Show hidden** in the library. |
 

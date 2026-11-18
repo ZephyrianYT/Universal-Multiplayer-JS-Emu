@@ -132,10 +132,40 @@ def write_env(values: dict[str, str]) -> None:
     tmp.replace(ENV_FILE)
 
 
+def hub_answers(port: int, instance: str | None = None) -> bool:
+    """Retro Hub itself (not another program) answers on http://localhost:<port>, on both addresses that "localhost"
+    can mean. With an instance id (from run/retro-hub.json), it must be that very run. Servers before 1.26.1 have
+    no /api/instance and count as not answering, so a stale run file never vouches for another program."""
+    seen = False
+    for addr in ("127.0.0.1", "[::1]"):
+        try:
+            with urllib.request.urlopen(f"http://{addr}:{port}/api/instance", timeout=1.5) as r:
+                info = json.loads(r.read(4096).decode("utf-8", "replace"))
+        except urllib.error.HTTPError:          # some other web server
+            return False
+        except urllib.error.URLError as e:
+            if isinstance(e.reason, ConnectionRefusedError) or (isinstance(e.reason, OSError) and not isinstance(e.reason, TimeoutError)):
+                continue     # nothing on this address (or no IPv6 here): browsers skip it
+            return False
+        except (OSError, ValueError):           # timed out, or not JSON
+            return False
+        if not isinstance(info, dict) or info.get("app") != "retro-hub" or (instance and info.get("instance") != instance):
+            return False
+        seen = True
+    return seen
+
+
 def port_open(port: int) -> bool:
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        s.settimeout(0.3)
-        return s.connect_ex(("127.0.0.1", port)) == 0
+    """Something accepts connections on this port on 127.0.0.1 or ::1 (the two addresses "localhost" means)."""
+    for family, addr in ((socket.AF_INET, "127.0.0.1"), (socket.AF_INET6, "::1")):
+        try:
+            with socket.socket(family, socket.SOCK_STREAM) as s:
+                s.settimeout(0.3)
+                if s.connect_ex((addr, port)) == 0:
+                    return True
+        except OSError:      # no IPv6 on this computer
+            continue
+    return False
 
 
 def kill_tree(pid: int) -> None:
@@ -394,7 +424,7 @@ class App:
             port = int(info["port"])
         except (OSError, ValueError, KeyError, TypeError):
             return
-        if port_open(port):
+        if port_open(port) and hub_answers(port, info.get("instance")):
             self.url = f"http://localhost:{port}"
             self.link_var.set(f"Hub address: {self.url}")
             self.set_running(True, external=True)
@@ -403,8 +433,8 @@ class App:
     def poll_status(self) -> None:
         if self.server is None and self.status.cget("text").startswith("Running"):
             try:
-                port = int(json.loads(RUN_FILE.read_text(encoding="utf-8"))["port"])
-                alive = port_open(port)
+                info = json.loads(RUN_FILE.read_text(encoding="utf-8"))
+                alive = hub_answers(int(info["port"]), info.get("instance"))
             except (OSError, ValueError, KeyError, TypeError):
                 alive = False
             if not alive:

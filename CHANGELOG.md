@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.26.1 - 2026-11-18
+
+Released as **Retro Hub 0.3.4**. Fixes the launch bug in 0.3.3 where the browser opened a "freej2me-web / Loading…" page instead of the hub.
+
+### Fixes
+- **The hub opened as "freej2me-web … Loading…" on launch.** The hub listened on IPv4 only (`0.0.0.0`) and the launcher only checked `127.0.0.1` to see if the port was free, but browsers open `localhost` on IPv6 (`::1`) first: Firefox always, Chrome and Edge on Windows. Another program holding `[::1]:8080` (from the screenshot, a separate freej2me-web web server) therefore got the browser, and nothing warned about it. An existing account and cached page could hide it, which is why it showed up on fresh installs. Now:
+  - The hub listens on IPv4 **and** IPv6 (`HOST=::`, falling back to IPv4 on computers without IPv6). In localhost-only and tunnel modes it listens on both `127.0.0.1` and `::1`.
+  - Before it says it's running, the hub asks both `127.0.0.1` and `::1` who they are (`/api/instance`). If another program answers, it stops with a message naming it (page title), the port, and how to find or avoid it. The launcher refuses to start the same way, and checks both addresses.
+  - The Retro Hub window only shows "already running (started elsewhere)" when Retro Hub itself answers on that port, so a leftover `run/retro-hub.json` no longer sends **Open hub** to another program.
+  - `launch.py` waits for the server's own "ready" signal (after the check), not just for the port to open, so the browser is never opened on the wrong program.
+
+### Repository
+- The full Retro Hub source is back in the repository (it was only in the release zips). Fix log renamed to `FIXLOG.md`; the OBS guide is `docs/OBS-STREAMING.md`; the duplicate controllers readme was removed (`emulators/README.md` is the one).
+
 ## 1.26.0 - 2026-11-18
 
 Released as **Retro Hub 0.3.3**.

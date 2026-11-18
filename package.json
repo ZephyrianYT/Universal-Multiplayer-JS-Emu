@@ -1,7 +1,7 @@
 {
   "name": "retro-hub",
-  "version": "1.26.0",
-  "release": "0.3.3",
+  "version": "1.26.1",
+  "release": "0.3.4",
   "description": "Self-hosted private retro game hub with browser netplay (EmulatorJS + WebRTC streaming)",
   "license": "GPL-3.0-only",
   "private": true,
