@@ -1,5 +1,24 @@
 # Changelog
 
+## 1.27.0 - 2026-11-19
+
+Released as **Retro Hub 0.3.7**: zero-setup native emulators, plus the features built since 0.3.6.
+
+### 🧰 Native emulators set themselves up
+- **Pre-flight check** the first time you host with an emulator: it checks the program, the Visual C++ runtime, and the files the emulator can't start without (PS2 BIOS, PS3 firmware, Switch keys, xemu's MCPX/BIOS/HDD, Cemu's `keys.txt` for encrypted discs, TeknoParrot's game executable and .NET), says how to fix each one, and has an **Open <emulator> once** button for emulators that need their own first-run window. It only shows again when something is missing or Retro Hub's setup changes.
+- **Controllers by seat:** player *n* is Xbox pad *n* (you on pad 1, guests on their virtual pads), set up right before the emulator starts. Cemu gets `controller0-3.xml` (Wii U GamePad for P1, Pro Controllers for P2-P4); Dolphin gets one GameCube port per player in the lobby and a `GCPadNew.ini` with deadzones and rumble; TeknoParrot games switch to XInput while no controls are bound yet.
+- **No pop-ups that stop a stream:** Dolphin's "stop emulation?" question, analytics question and update pop-up are off (for Retro Hub's launches only, nothing saved); Cemu's update question is off; fullscreen for Cemu, Dolphin and PCSX2 unless the game is headless.
+- **Your settings stay yours:** a controller profile you made is never replaced, and a setting you changed in the emulator is left alone. Anything Retro Hub replaces is copied to `backup/` first. The record is `emulators/provision.json` (safe to delete).
+- For developers: every native emulator now has an adapter (`core/runner/adapters/`) with the same checklist; `python apps.py preflight|provision|first-boot`. Design and gap analysis: `docs/EMULATOR-ADAPTERS.md`.
+- Still by hand (the check says so): Wii Remote mapping, TeknoParrot button binding, controller files for PCSX2, RPCS3, Ryujinx/Eden, Xenia and the others.
+
+### Also new since 0.3.6 (less tested)
+- **Android (APK) console:** installs and starts an APK on an Android emulator or phone with adb and shows it in the page (scrcpy). Tested with stand-ins only.
+- **Pass the controller** and combo/multiworld **randomizer links** (samus.link, archipelago.gg).
+- **🧩 Patches & variants** (off by default): play a game with your own .ips/.bps/.ups patches stacked, without changing the original file.
+- **Dance mats:** a 💃 Dance mat profile in Instruments (arrows, corners, jump test, lag test) and StepMania Online in Off Site Games.
+- **Themes:** four launcher-style themes (Lounge, Marquee, Couch, Shelf), a grouped picker with previews, Surprise me, Undo and Match my system light/dark.
+
 ## 1.26.3 - 2026-11-19
 
 Released as **Retro Hub 0.3.6**: a security update. Everyone should update.
