@@ -1,6 +1,16 @@
-# Fix log: 1.26.3 (Retro Hub 0.3.6)
+# Fix log: 1.27.0 (Retro Hub 0.3.7)
 
-Sections 1-9 are the fixes up to 1.19.0. Section 10 covers 1.25.0 (released as 0.3.1), section 11 covers 1.26.0 (released as 0.3.3), sections 12 and 13 cover 1.26.1 and 1.26.2 (both released together as 0.3.5), section 14 covers 1.26.3 (released as 0.3.6).
+Sections 1-9 are the fixes up to 1.19.0. Section 10 covers 1.25.0 (released as 0.3.1), section 11 covers 1.26.0 (released as 0.3.3), sections 12 and 13 cover 1.26.1 and 1.26.2 (both released together as 0.3.5), section 14 covers 1.26.3 (released as 0.3.6), section 15 covers 1.27.0 (released as 0.3.7).
+
+## 15. 1.27.0 (Retro Hub 0.3.7)
+
+Native emulator adapters (`core/runner/adapters/`, design in `docs/EMULATOR-ADAPTERS.md`).
+
+- **Guest seats P2-P4 had no controls in Dolphin and Cemu until mapped by hand.** *Cause:* `apps.py run` passed only the game; Dolphin's ports 2-4 default to "None" and Cemu has no profile for controllers 2-4. *Change:* `build_command` asks the emulator's adapter for a plan (seat n = XInput n-1) and applies it before the process starts; `native.mjs` passes `--players` (host + highest guest seat with a virtual pad).
+- **Headless Dolphin could hang on "Stop emulation?" / panic pop-ups nobody can see.** `-C Dolphin.Interface.ConfirmStop=False` (+ `UsePanicHandlers=False` when headless), command-line layer only.
+- **Launch failed late for missing BIOS/firmware/keys.** Pre-flight checks (blocking ones disable *Set up and start*): PCSX2 BIOS, RPCS3 `dev_flash` version, Ryujinx/Eden `prod.keys`, xemu toml paths, TeknoParrot `GamePath`, .NET 4.8, VC++ x64.
+- Ownership rules: whole files only when absent or still Retro Hub's (sha-256), single keys only at default or Retro Hub's value, backups in `backup/provision-*`. A provisioning error never blocks a launch (`{"t":"provision","error":...}` is logged).
+- Values checked against source: Cemu `EmulatedController::type_to_string`, `ProController::ButtonId`, `XInputController::raw_state` (bit i = button i, +Y up); Dolphin `MainSettings.cpp` keys; TeknoParrot's shipped `GameProfiles/*.xml`.
 
 ## 14. 1.26.3 (Retro Hub 0.3.6)
 
