@@ -1,4 +1,4 @@
-> **0.3.5 is out:** it fixes the 0.3.3 launch bug (browser showing "freej2me-web … Loading…" instead of the hub). Update with the updater or download `RetroHub0.3.5.zip` from Releases.
+> **0.3.6 is out:** a security update (it also has the 0.3.5 fix for the "freej2me-web … Loading…" launch bug). Everyone should update: use the updater or download `RetroHub0.3.6.zip` from Releases.
 
 # Retro Hub
 
@@ -13,7 +13,7 @@
 
 ## Get started (Windows)
 
-1. **Unzip** `RetroHub0.3.5.zip` anywhere (for example `C:\Games\retro-hub`).
+1. **Unzip** `RetroHub0.3.6.zip` anywhere (for example `C:\Games\retro-hub`).
 2. **Double-click `launch.bat`.**
    - Missing Python or Node.js? It offers to download and install them for you, and checks every download first.
    - It asks whether you want a **desktop shortcut** with the Retro Hub duck. Say yes, and next time just click the duck.

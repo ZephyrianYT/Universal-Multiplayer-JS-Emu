@@ -1,6 +1,20 @@
-# Fix log: 1.26.2 (Retro Hub 0.3.5)
+# Fix log: 1.26.3 (Retro Hub 0.3.6)
 
-Sections 1-9 are the fixes up to 1.19.0. Section 10 covers 1.25.0 (released as 0.3.1), section 11 covers 1.26.0 (released as 0.3.3), sections 12 and 13 cover 1.26.1 and 1.26.2 (both released together as 0.3.5).
+Sections 1-9 are the fixes up to 1.19.0. Section 10 covers 1.25.0 (released as 0.3.1), section 11 covers 1.26.0 (released as 0.3.3), sections 12 and 13 cover 1.26.1 and 1.26.2 (both released together as 0.3.5), section 14 covers 1.26.3 (released as 0.3.6).
+
+## 14. 1.26.3 (Retro Hub 0.3.6)
+
+Fixes for the CodeQL code-scanning alerts on `main`.
+
+- **XSS in lobby lists.** *Cause:* `public/app.js` built the hub lobby list, the LAN/master-pool list and the Lobby Browser with `innerHTML`, and `players`/`max`/`spectators`/`current_players`/`max_players`/`open` from other hubs went in unescaped. *Change:* `num()` turns them into numbers; `safeHttp()` re-checks other-hub links before `href` / `window.open`; `SRC_LABEL` escaped.
+- **Login `?next=` redirect.** `public/login.js` resolves it against `location.origin` and keeps only same-origin paths (also catches `/\t/host`, which browsers read as `//host`).
+- **Socket handler lookup.** `sock.handlers[m.t]` only when `Object.hasOwn(sock.handlers, m.t)`.
+- **Password compare.** `server.mjs same()`: scrypt under a random per-process salt, the configured secret's digest cached (was SHA-256, then HMAC; CodeQL counts both as fast hashes).
+- **ReDoS in `cleanGameName`.** Input capped at 300 characters before any regex; the `, The` swap uses `indexOf` instead of a lazy `(.+?)` pattern. *Tested:* same output for No-Intro style names, Wii U title-id prefixes and plain names.
+- **Double unescaping.** `core/library/rules.mjs xmlText()` decodes the five XML entities in one pass.
+- **Regex escaping.** `core/online/check.mjs yamlKey()` escapes every regex metacharacter.
+- **Clear-text logging.** `launch.py` prints where `ADMIN_PASSWORD` / `ACCESS_PASSWORD` are (`.env`, or the `--access-password` flag), not their values.
+- Not changed: `public/ruffle/ruffle.js` (bundled third-party Ruffle) and `public/emotes.js` (false positive: image paths come from a fixed list, text is added as text nodes).
 
 ## 13. 1.26.2 (Retro Hub 0.3.5)
 
