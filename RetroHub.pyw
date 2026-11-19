@@ -58,6 +58,9 @@ if WIN and Path(PY).name.lower() == "pythonw.exe":  # children need a real conso
         PY = str(cand)
 
 URL_RE = re.compile(r"Retro Hub is running:\s+(\S+)")
+# launch.py / server.mjs when another program holds the port (on 127.0.0.1 or ::1): offer the next free port.
+TAKEN_RE = re.compile(r"Port (\d+) is already (?:in use|used) by another program")
+TITLE_RE = re.compile(r"page titled \"([^\"]{1,80})\"")
 LAN_RE = re.compile(r"Friends on your Wi-Fi:\s+(\S+)")
 PUBLIC_RE = re.compile(r"Public address:\s+(\S+)")   # tunnel: the address friends use
 SKIP_DIRS = {"node_modules", ".git", "__pycache__", "run", "cores"}
@@ -387,6 +390,10 @@ class App:
         self.copy(self.public or self.url)
 
     def scan_line(self, line: str) -> None:
+        t = TAKEN_RE.search(line)
+        if t:
+            title = TITLE_RE.search(line)
+            self.port_taken = (int(t.group(1)), title.group(1) if title else "")
         m = URL_RE.search(line)
         if m:
             self.url = m.group(1)
@@ -475,6 +482,8 @@ class App:
 
     def server_exited(self, code: int) -> None:
         self.log(f"[server stopped, exit code {code}]\n", "ok" if code == 0 or self.stopping else "err")
+        taken, self.port_taken = getattr(self, "port_taken", None), None
+        was_stopping = self.stopping
         self.server = None
         self.stopping = False
         self.url = self.lan = self.public = ""
@@ -483,6 +492,33 @@ class App:
         if getattr(self, "_restart", False):
             self._restart = False
             self.start_server()
+        elif code != 0 and taken and not was_stopping:
+            self.offer_other_port(*taken)
+
+    def offer_other_port(self, port: int, title: str) -> None:
+        """Another program has the hub's port: offer the next free one, save it in .env and start again."""
+        new = next((p for p in range(port + 1, port + 50) if not port_open(p)), None)
+        who = f'another program ("{title}")' if title else "another program"
+        if new is None:
+            messagebox.showerror("Port in use", f"Port {port} is used by {who}, and no free port was found nearby. "
+                                 "Close that program, then press Start.")
+            return
+        if not messagebox.askyesno("Port in use",
+                                   f"Port {port} is used by {who}, so browsers would open it instead of Retro Hub.\n\n"
+                                   f"Use port {new} instead and start?\n\n"
+                                   f"Accounts are saved per address in each browser: at http://localhost:{new} "
+                                   f"everyone makes a new account or imports their backup (Export account). "
+                                   f"Or press No, close the other program, and press Start."):
+            return
+        try:
+            write_env({"PORT": str(new)})
+        except OSError as e:
+            messagebox.showerror("Port in use", f"Could not save .env: {e}")
+            return
+        if "PORT" in getattr(self, "vars", {}):
+            self.vars["PORT"].set(str(new))
+        self.log(f"Port set to {new} in .env.\n", "ok")
+        self.start_server()
 
     def stop_server(self, then=None) -> None:
         self.stopping = True

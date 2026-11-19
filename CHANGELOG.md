@@ -16,6 +16,7 @@ Released as **Retro Hub 0.3.4**. Fixes the launch bug in 0.3.3 where the browser
 - **Phones:** the Play / Lobby Browser / Off Site Games tabs fit a 390 px screen; before, the whole hub page could be dragged sideways.
 - No more error in every player's browser console on each hub load: the 🌐 Online check answers "not available here" for anyone but the owner on the hub's computer, instead of a 403.
 - Sign-in page: no **Back** button on a browser with no accounts yet (it only showed the same form again).
+- **Retro Hub window:** when another program has the hub's port, it now asks *"Use port 8081 instead and start?"* (the next free port), saves it and starts, instead of only printing the error in the log. It says which program it is when it can tell, and reminds you that accounts are per address (make a new one or import a backup there).
 
 ### Repository
 - **Downloading `main` gives a working hub.** `.gitignore` rules for `*.zip`, `*.bin`, `bios/` and `offsite-games.json` also caught files the hub ships, so a git checkout or GitHub's *Download ZIP* had no J2ME runtime image, no PC emulator BIOS, an empty Off Site Games list and no `roms/<player>/` folders. They're tracked now; your games, BIOS dumps and own `offsite-games.json` stay ignored.
