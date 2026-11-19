@@ -118,7 +118,9 @@ export async function descriptorFiles(file) {
 // A folder with code/*.rpx is one game. Its name: meta/meta.xml <shortname_en>, else the folder name without
 // the [Game] [title id] tags. Update (0005000E) and DLC (0005000C) folders have code/ too, but aren't games.
 const xmlTag = (xml, tag) => { const m = new RegExp(`<${tag}[^>]*>([^<]*)</${tag}>`, "i").exec(xml); return m ? m[1].trim() : ""; };
-const xmlText = s => s.replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&apos;/g, "'").replace(/\s+/g, " ").trim();
+const XML_ENT = { amp: "&", lt: "<", gt: ">", quot: '"', apos: "'" };
+// One pass, so "&amp;lt;" becomes "&lt;" (not "<").
+const xmlText = s => s.replace(/&(amp|lt|gt|quot|apos);/g, (_, e) => XML_ENT[e]).replace(/\s+/g, " ").trim();
 export async function wiiuTitle(dir, entries) {
   const sub = name => entries.find(e => e.isDirectory() && e.name.toLowerCase() === name);
   const code = sub("code");

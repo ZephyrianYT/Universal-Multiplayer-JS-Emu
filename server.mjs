@@ -84,8 +84,18 @@ function loadSecret() {
 const SECRET = loadSecret();
 const SESSION_DAYS = 30;
 
-const sha = s => crypto.createHash("sha256").update(String(s)).digest();
-const same = (a, b) => b !== "" && crypto.timingSafeEqual(sha(a), sha(b));
+// Constant-time compare of a submitted secret with the configured one. Nothing is stored: both sides go through
+// scrypt under a random per-process salt (a slow password hash, so guesses stay expensive). The configured
+// side is hashed once and cached; attempts are also rate-limited per IP.
+const CMP_SALT = crypto.randomBytes(16);
+const slowHash = s => crypto.scryptSync(String(s), CMP_SALT, 32);
+const expectedHash = new Map();
+const same = (a, b) => {
+  if (b === "" || b == null) return false;
+  let want = expectedHash.get(b);
+  if (!want) { want = slowHash(b); expectedHash.set(b, want); }
+  return crypto.timingSafeEqual(slowHash(a), want);
+};
 const sign = data => crypto.createHmac("sha256", SECRET).update(data).digest("base64url");
 
 function makeToken(name, role, id) {
@@ -458,8 +468,15 @@ function whatsNew(since) {
 // ---------------------------------------------------------------- speedrun.com lookup (offsite link)
 // "Super Mario World (USA) [!]" -> "Super Mario World": region / dump tags aren't part of speedrun.com's names.
 // "Legend of Zelda, The - A Link to the Past" (No-Intro style) -> "The Legend of Zelda - A Link to the Past".
-const cleanGameName = n => String(n || "").replace(/^[0-9A-F]{8}__/i, "").replace(/\s*[([][^)\]]*[)\]]/g, "").replace(/_/g, " ")
-  .replace(/\s+/g, " ").trim().replace(/^(.+?), (The|A|An)(?= - |$)/i, "$2 $1").slice(0, 100);
+// Input is capped before any regex runs, and every pattern is linear (no nested or overlapping repeats).
+function cleanGameName(n) {
+  let s = String(n || "").slice(0, 300).replace(/^[0-9A-F]{8}__/i, "").replace(/[([][^()[\]]*[)\]]/g, " ").replace(/_/g, " ")
+    .replace(/\s+/g, " ").trim();
+  const dash = s.indexOf(" - "), head = dash < 0 ? s : s.slice(0, dash), comma = head.lastIndexOf(", ");
+  const art = comma < 0 ? "" : head.slice(comma + 2);
+  if (/^(the|a|an)$/i.test(art)) s = `${art} ${head.slice(0, comma)}${s.slice(head.length)}`;
+  return s.slice(0, 100);
+}
 const srcCache = new Map();        // name -> { at, value }
 async function speedrunFind(name) {
   const key = name.toLowerCase(), hit = srcCache.get(key);

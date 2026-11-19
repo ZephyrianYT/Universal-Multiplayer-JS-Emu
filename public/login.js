@@ -9,7 +9,10 @@
   // Only same-site paths are allowed as a return address.
   function nextUrl() {
     const n = new URLSearchParams(location.search).get("next") || "/";
-    return n.startsWith("/") && !n.startsWith("//") && !n.startsWith("/\\") && !n.startsWith("/login.html") ? n : "/";
+    // Same-site paths only: resolve it, then keep it only if it stays on this hub.
+    let u; try { u = new URL(n, location.origin); } catch { return "/"; }
+    if (u.origin !== location.origin || !n.startsWith("/") || u.pathname.startsWith("/login.html")) return "/";
+    return u.pathname + u.search + u.hash;
   }
 
   let pending = null; // account waiting for the access code
