@@ -58,6 +58,8 @@
       if (c.fixed) { try { accts[i] = await Accounts.repair(accts[i], c.fixed); } catch {} }
     }
     const ul = $("acct-list"); ul.textContent = "";
+    // No accounts yet: nothing to go back to, so no Back button (it only re-showed this same form).
+    $("make-back").hidden = !accts.length;
     if (!accts.length) { $("make-title").textContent = "Make an account"; show("make"); $("name").focus(); return; }
     for (const a of accts) {
       const c = Accounts.check(a), damaged = !c.ok;

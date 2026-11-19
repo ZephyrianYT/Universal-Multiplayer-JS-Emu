@@ -11,7 +11,15 @@ Released as **Retro Hub 0.3.4**. Fixes the launch bug in 0.3.3 where the browser
   - The Retro Hub window only shows "already running (started elsewhere)" when Retro Hub itself answers on that port, so a leftover `run/retro-hub.json` no longer sends **Open hub** to another program.
   - `launch.py` waits for the server's own "ready" signal (after the check), not just for the port to open, so the browser is never opened on the wrong program.
 
+### Quality of life
+- **Phones:** the Buddy List no longer opens by itself on a first visit and covers most of the hub. It opens on its own only if you left it open last time, or on a first visit on a wide screen (1400 px and up) where it fits beside the hub. 👥 Buddy List is still one tap away.
+- **Phones:** the Play / Lobby Browser / Off Site Games tabs fit a 390 px screen; before, the whole hub page could be dragged sideways.
+- No more error in every player's browser console on each hub load: the 🌐 Online check answers "not available here" for anyone but the owner on the hub's computer, instead of a 403.
+- Sign-in page: no **Back** button on a browser with no accounts yet (it only showed the same form again).
+
 ### Repository
+- **Downloading `main` gives a working hub.** `.gitignore` rules for `*.zip`, `*.bin`, `bios/` and `offsite-games.json` also caught files the hub ships, so a git checkout or GitHub's *Download ZIP* had no J2ME runtime image, no PC emulator BIOS, an empty Off Site Games list and no `roms/<player>/` folders. They're tracked now; your games, BIOS dumps and own `offsite-games.json` stay ignored.
+- **One-click releases:** *Actions → Release → Run workflow* on GitHub (website or app) builds `RetroHub<release>.zip` from `main`, checks it installs and the hub starts, and publishes the release the updater installs. `python scripts/make_release.py` builds the same zip locally. See *Publishing a release* in README-ADVANCED.md.
 - The full Retro Hub source is back in the repository (it was only in the release zips). Fix log renamed to `FIXLOG.md`; the OBS guide is `docs/OBS-STREAMING.md`; the duplicate controllers readme was removed (`emulators/README.md` is the one).
 
 ## 1.26.0 - 2026-11-18

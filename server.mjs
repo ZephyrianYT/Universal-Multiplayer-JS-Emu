@@ -1156,7 +1156,9 @@ const server = http.createServer(async (req, res) => {
   // 🌐 Online services (core/online): status of each emulator's game-online service, and Cemu setup actions.
   // Owner on the hub's own PC only: it reads and writes emulator settings on this computer.
   if (urlPath === "/api/online" && req.method === "GET") {
-    if (!localOwner(req, session)) return json(res, 403, { error: ONLINE_LOCAL });
+    // Everyone else gets a plain "not here" (not a 403): the hub page asks on every load to decide whether to show
+    // the 🌐 button, and a 403 put an error in every player's browser console.
+    if (!localOwner(req, session)) return json(res, 200, { available: false, reason: ONLINE_LOCAL });
     try { return json(res, 200, await Online.onlineStatus({ root: ROOT, emuRoot: emuDirOf(ROOT, process.env.EMULATORS_DIR),
       cemu: () => native.pretendoStatus(true) })); }
     catch (e) { return json(res, 500, { error: `Couldn't check: ${e.message}` }); }

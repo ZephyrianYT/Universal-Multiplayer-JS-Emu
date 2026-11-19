@@ -823,7 +823,10 @@ dialog.wide { width: min(560px, calc(100vw - 32px)); }
 .news-body code { font-family: var(--mono); font-size: 12px; background: var(--coal-800); padding: 0 4px; border-radius: 3px; }
 
 /* Off Site Games tab (public/offsite.js) */
-.hub-tabs { margin: 0 0 14px; }
+.hub-tabs { margin: 0 0 14px; overflow-x: auto; scrollbar-width: none; }
+.hub-tabs::-webkit-scrollbar { display: none; }
+/* Three tabs didn't fit a 390 px phone (the page scrolled sideways): tighter on narrow screens. */
+@media (max-width: 480px) { .hub-tabs { gap: 0; } .hub-tabs button { padding: 8px 9px; letter-spacing: .02em; } }
 .offsite-panel .og-warn { margin: 4px 0 10px; }
 .offsite-panel #og-search { flex: 2 1 180px; width: auto; }
 .offsite-panel .og-cat { margin: 16px 0 0; }

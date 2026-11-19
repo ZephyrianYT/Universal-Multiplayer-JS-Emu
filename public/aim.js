@@ -751,7 +751,10 @@
       document.body.append(layer, dock);
       const btn = document.getElementById("friends-btn");
       if (btn) btn.onclick = toggleBuddyList;
-      if (Settings.get("aimBlOpen") !== false && !inGameView()) openBuddyList();
+      // Reopen it if it was left open. On a first visit, only open it by itself where it fits beside the hub: on a
+      // phone or a smaller window it covered most of the page before the player had seen anything.
+      const blWas = Settings.get("aimBlOpen");
+      if ((blWas === true || (blWas == null && innerWidth >= 1400)) && !inGameView()) openBuddyList();
       for (const id of Object.keys(hist)) if (isFriend(id) && hist[id].some(e => !e.sys)) openIm(id, { quiet: true });   // conversations survive a reload, minimized
       connect(); renderAll();
     },

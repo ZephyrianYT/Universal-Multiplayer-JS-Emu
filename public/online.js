@@ -18,6 +18,7 @@
     const r = await fetch("/api/online", { cache: "no-store" }).catch(() => null);
     if (!r || !r.ok) return null;
     data = await r.json().catch(() => null);
+    if (data?.available === false) data = null;      // not the owner on the hub's own computer: no 🌐 button
     return data;
   }
   const limitedRows = () => (data?.emulators || []).filter(e => e.installed && e.state === "limited");
