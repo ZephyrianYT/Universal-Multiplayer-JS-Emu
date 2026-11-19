@@ -421,6 +421,21 @@ The **Off Site Games** tab (next to **Play**) lists games that run on other webs
 - **Your own list**: copy that file to `offsite-games.json` in the hub's main folder and edit it. It replaces the default, is kept by the updater, and isn't shipped. Each game: `name`, `url` (`https://` only; anything else is dropped), `category`, optional `note`, and `"touch": true` for games that work on phones and tablets (they get a *Phone / tablet friendly* filter).
 - Mind what you link to: a list of unofficial copies of commercial games, or sites with heavy ads, reflects on your hub.
 
+### Pass the controller
+
+For single-player games played together: one player at a time controls P1, and the controller moves to the next seat every 15 s, 30 s, 1, 2 or 5 minutes (**🎮 Pass the controller** in the lobby's Match card, Co-op Netplay with a browser console).
+
+- The hub keeps the turn and the timer; everyone sees *Your turn* or *Name has the controller* with the time left at the bottom of the game. The host's **⏭ Pass now** hands it on early.
+- The host's page sends only the current player's buttons to P1, whatever seat they sit in, and drops everyone else's; a new turn starts with nothing held. A player who leaves passes the controller on at once.
+- Not for native emulators (they read the host's own controllers directly), Streamer Mode (seats already rotate), Shuffle or Ghost / Race.
+
+### Randomizers and co-op mods (links)
+
+Picking a game in **Host a game** shows **🎲 Randomizers for <game>** when one is known, and a link to the **Multiplayer Mods MΞGA-LIST** for co-op mods. All are *Offsite* links: make a seed on the randomizer's own site or app with your own copy of the game, then add the randomized ROM to the library (or pick it from your computer) like any other game.
+
+- The list is `public/randomizers.json`, built from [The BIG List of Video Game Randomizers](https://randomizers.debigare.com) ([rando-list](https://github.com/video-game-randomizers/rando-list), MIT) by `python scripts/update_randomizers.py` (newest commit, or `--commit <sha>`). Obsolete randomizers and non-web links are left out.
+- Matching is by name: `Legend of Zelda, The - A Link to the Past (USA)` and `The Legend of Zelda: A Link to the Past` are the same game (regions, tags, "The", punctuation and a trailing "Version" are ignored).
+
 ---
 
 ## 7. The ROM library
@@ -525,8 +540,14 @@ The library, its ROM downloads and its covers are owner-only by default. `LIBRAR
    | `emulators/xemu/` | xemu | Xbox | `roms/xbox/` |
    | `emulators/azahar/` (`lime3ds/`, `citra/`) | Azahar | 3DS | `roms/3ds/` |
    | `emulators/flycast/` | Flycast | Dreamcast | `roms/dreamcast/` |
+   | `emulators/flycast/` | Flycast | Arcade: NAOMI / NAOMI 2 / Atomiswave | `roms/naomi/`, `roms/atomiswave/`, or known NAOMI sets in the arcade folder |
+   | `emulators/teknoparrot/`, or TeknoParrot's own folder | TeknoParrot | Arcade PC (TeknoParrot) | TeknoParrot's `UserProfiles/` |
 
    Or use per-console **Library folders** instead of `roms/<console>/`.
+
+   **NAOMI / Atomiswave:** MAME-style sets (`hotd2.zip`), with `naomi.zip`, `naomi2.zip` and `awbios.zip` in Flycast's `data/` folder and a GD-ROM game's `.chd` in a folder named after its set. Known NAOMI, NAOMI 2 and Atomiswave sets (`NAOMI_SETS` in `core/library/rules.mjs`) found in an arcade folder are listed under this console instead of the browser's FBNeo, which can't run them. Any other set can be hosted on it by picking it under **Console**.
+
+   **TeknoParrot:** each game is the profile TeknoParrot writes when you set the game up (`UserProfiles/<Game>.xml`). Set the library folder for *Arcade PC (TeknoParrot)* to that `UserProfiles` folder. Profiles without a game path (the `GameProfiles/` templates) aren't listed, and names come from TeknoParrot's `Metadata/<Game>.json` when present. `TeknoParrotUi.exe` is found in the folder above `UserProfiles` (catalog key `near_game`) or in `emulators/teknoparrot/`, and is started with `--profile=<Game>.xml` (`{game_file}` in the catalog's args). Turn on *Windowed* in each profile. Profiles that need administrator rights won't start from the hub.
 2. **Set each emulator up once**, in the emulator itself: BIOS, firmware and keys (you supply these), graphics settings, **windowed mode** (fullscreen windows can't be captured reliably), and controller ports. Port 1 is your own controller. Ports 2–4 are guest seats (see below).
 3. Press **Check for Emus** in the hub, or open the window's Apps tab, and confirm a green ✔.
 4. As the owner, in a browser on the hub PC, pick the game from the server library and open a lobby. When the match starts, the hub launches the emulator. Press **Share the emulator window** and pick its window. For game sound, share the whole screen and tick **Share system audio** (Chrome and Edge on Windows), because a window share carries video only.
@@ -629,6 +650,13 @@ Settings are environment variables, usually from `.env`. Edit them in the window
 | `EMULATORS_DIR` | `./emulators` | Native emulator builds and `apps.json`. |
 | `NATIVE_INPUT` | `auto` | `auto`, `gamepad` or `keyboard` for guest input in native games. |
 | `NATIVE_PYTHON` | the launcher's Python (`RH_PYTHON`) | Python used for `apps.py` and `input_bridge.py`. |
+| `ANDROID_ADB` | found automatically | `adb` for Android games (see `emulators/README.md`). |
+| `ANDROID_PLAYER` | found automatically | Android emulator program to start when no device is connected. |
+| `ANDROID_SERIAL` | the only device / an emulator | Which `adb devices` device plays Android games. |
+| `ANDROID_CONNECT` | – | Extra `host:port` to `adb connect` to (an emulator on an unusual port). |
+| `ANDROID_SCRCPY` | found automatically | `scrcpy` (its `scrcpy-server` file next to it shows Android in the page). |
+| `ANDROID_VIEW` | `page` | `window` = share scrcpy's own window instead of showing Android in the page. |
+| `ANDROID_VIEW_SIZE` | `1280` | Longest side of the in-page Android picture. |
 | `PUBLIC_URL` | – | Public origin for invite links. Set automatically for quick tunnels. |
 | `TUNNEL_TOKEN` | – | Cloudflare named-tunnel token. Requires `PUBLIC_URL`. |
 | `TRUST_PROXY` | off | `1` trusts `X-Forwarded-For` / `CF-Connecting-IP` from a proxy on **another** machine. A local proxy is trusted automatically. |
