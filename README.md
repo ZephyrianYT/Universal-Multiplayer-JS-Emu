@@ -1,10 +1,4 @@
-0.3.4 fix is merged. Until the release zip is up tonight, either:
-
-1) Quick workaround on 0.3.3: open http://127.0.0.1:8080 instead of http://localhost:8080
-   (or change Port in the Retro Hub window: Settings, e.g. 8081, then Start).
-
-2) Get 0.3.4 now: on the GitHub repo page press Code > Download ZIP, unzip replace old files
-3) use updater
+> **0.3.5 is out:** it fixes the 0.3.3 launch bug (browser showing "freej2me-web … Loading…" instead of the hub). Update with the updater or download `RetroHub0.3.5.zip` from Releases.
 
 # Retro Hub
 
@@ -74,7 +68,7 @@ The Retro Hub window checks for new versions when it opens. Press **Update…** 
 | --- | --- |
 | The library tab is missing | Press **Unlock library** and enter the owner password. |
 | A friend can't connect | Use the Internet (Cloudflare Tunnel) mode, or see *TURN* in the advanced guide. |
-| The hub link opens some other page (for example "freej2me-web … Loading…") | Another program uses the same port. Retro Hub 0.3.4+ refuses to start and names it; close it or change **Port** in **Settings**. |
+| The hub link opens some other page (for example "freej2me-web … Loading…") | Another program uses the same port. Retro Hub 0.3.5+ refuses to start and names it; close it or change **Port** in **Settings**. |
 | An emulator shows ✖ | The window shows a **Setup needs a look** box with a fix button. |
 | A game is missing from the library | Check its folder in **Settings → Consoles…**, and **Show hidden** in the library. |
 

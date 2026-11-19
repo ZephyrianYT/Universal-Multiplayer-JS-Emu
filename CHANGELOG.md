@@ -2,7 +2,7 @@
 
 ## 1.26.2 - 2026-11-19
 
-Released as **Retro Hub 0.3.5**: a quality-of-life pass on top of 0.3.4's launch fix. Anyone who installed from a download of the repo since 0.3.4 also gets the files that download was missing.
+Released as **Retro Hub 0.3.5**: a quality-of-life pass together with the launch fix below (1.26.1). Anyone who installed from a download of the repo since that fix also gets the files that download was missing.
 
 ### Quality of life
 - **Phones:** the Buddy List no longer opens by itself on a first visit and covers most of the hub. It opens on its own only if you left it open last time, or on a first visit on a wide screen (1400 px and up) where it fits beside the hub. 👥 Buddy List is still one tap away.
@@ -17,7 +17,7 @@ Released as **Retro Hub 0.3.5**: a quality-of-life pass on top of 0.3.4's launch
 
 ## 1.26.1 - 2026-11-18
 
-Released as **Retro Hub 0.3.4**. Fixes the launch bug in 0.3.3 where the browser opened a "freej2me-web / Loading…" page instead of the hub.
+Not released on its own: ships in **Retro Hub 0.3.5**. Fixes the launch bug in 0.3.3 where the browser opened a "freej2me-web / Loading…" page instead of the hub.
 
 ### Fixes
 - **The hub opened as "freej2me-web … Loading…" on launch.** The hub listened on IPv4 only (`0.0.0.0`) and the launcher only checked `127.0.0.1` to see if the port was free, but browsers open `localhost` on IPv6 (`::1`) first: Firefox always, Chrome and Edge on Windows. Another program holding `[::1]:8080` (from the screenshot, a separate freej2me-web web server) therefore got the browser, and nothing warned about it. An existing account and cached page could hide it, which is why it showed up on fresh installs. Now:

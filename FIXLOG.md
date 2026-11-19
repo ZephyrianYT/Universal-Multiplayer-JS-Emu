@@ -1,6 +1,6 @@
 # Fix log: 1.26.2 (Retro Hub 0.3.5)
 
-Sections 1-9 are the fixes up to 1.19.0. Section 10 covers 1.25.0 (released as 0.3.1), section 11 covers 1.26.0 (released as 0.3.3), section 12 covers 1.26.1 (released as 0.3.4), section 13 covers 1.26.2 (released as 0.3.5).
+Sections 1-9 are the fixes up to 1.19.0. Section 10 covers 1.25.0 (released as 0.3.1), section 11 covers 1.26.0 (released as 0.3.3), sections 12 and 13 cover 1.26.1 and 1.26.2 (both released together as 0.3.5).
 
 ## 13. 1.26.2 (Retro Hub 0.3.5)
 
@@ -11,7 +11,7 @@ Sections 1-9 are the fixes up to 1.19.0. Section 10 covers 1.25.0 (released as 0
 - **Sign-in Back button** hidden when the browser has no accounts.
 - **Port taken: offer another one (window).** `RetroHub.pyw`: `TAKEN_RE`/`TITLE_RE` catch the launcher's and server's "Port N is already … by another program" lines; when the server then exits non-zero, `offer_other_port()` finds the next port free on both loopback addresses, asks, writes `PORT` to `.env` (other settings kept), updates the Settings field and starts. *Tested:* both messages parsed (port and title); with 8140 and 8141 taken it chose 8142, wrote only `PORT`, and started (dialogs stubbed: no display in the test container).
 
-## 12. 1.26.1 (Retro Hub 0.3.4)
+## 12. 1.26.1 (in Retro Hub 0.3.5)
 
 - **Launch opened "freej2me-web … Loading…" instead of the hub.**
   - *Symptom:* on Windows with Firefox (fresh profile, or after clearing site data), pressing Start opened `http://localhost:8080` showing a grey page titled *freej2me-web* with "Loading…" that never finished. With an existing account and cache it could go unnoticed, so 0.3.3 shipped with it.
