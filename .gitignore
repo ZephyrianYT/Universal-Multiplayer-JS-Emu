@@ -4,6 +4,10 @@ node_modules/
 # Never commit games: ROMs, BIOS files and disc images are copyrighted
 roms/*
 !roms/.gitkeep
+# ...but keep the empty per-player folders the hub ships (roms/j2me, roms/swf, ...)
+!roms/*/
+roms/*/*
+!roms/*/.gitkeep
 *.z64
 *.n64
 *.v64
@@ -21,6 +25,9 @@ roms/*
 *.pbp
 *.7z
 *.zip
+# Files the hub ships that these patterns would otherwise drop (J2ME runtime image, PC emulator BIOS)
+!public/j2me/init.zip
+!public/v86/*.bin
 
 # Native emulator builds (big, and some ship firmware/keys): keep only the folder layout
 emulators/*/*
@@ -59,7 +66,7 @@ release/
 library-folders.json
 library-hidden.json
 # The owner's own Off Site Games list (replaces core/offsite-games.json)
-offsite-games.json
+/offsite-games.json
 
 # Backups the updater makes of files it replaces
 backup/
@@ -71,5 +78,6 @@ backup/
 /patches/
 
 # Your own BIOS files (GBA BIOS for Dolphin GBA mode...): never shipped
-bios/
+bios/*
+!bios/README.txt
 emulators/dolphin/retrohub-gba-user/

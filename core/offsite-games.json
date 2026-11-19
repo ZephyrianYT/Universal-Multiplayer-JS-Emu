@@ -1,0 +1,125 @@
+{
+  "_comment": "Off Site Games tab: games that run on other websites, opened in a new tab. Retro Hub doesn't host, run or check them. Default list (checked 2026-11-16, extended 2026-11-17 from the CC0 AwesomeDecompGames list, github.com/SubmitGame/awesome-decomp-games): free / open-source games, officially free data, or ports that need your own copy of the game (they say your files stay on your device). Owners: to use your own list, copy this file to offsite-games.json in the hub's main folder and edit it there (it replaces this one and is kept by the updater). Each game: name, url (https only), category, optional note and optional \"touch\": true when it works on phones / tablets.",
+  "games": [
+    {
+      "category": "Shooters & Action",
+      "name": "Call of Duty: Zombies (NZ: Portable)",
+      "url": "https://nzp.gay/",
+      "note": "Free open-source fan game by the NZ:P team."
+    },
+    {
+      "category": "Shooters & Action",
+      "name": "Duke Nukem 3D (EDuke32)",
+      "url": "https://digitalcybersoft.github.io/eduke32-wasm/",
+      "note": "Open-source engine. Plays the free shareware episode, or load your own game files."
+    },
+    {
+      "category": "Shooters & Action",
+      "name": "Quake 3 Arena (Q3JS)",
+      "url": "https://q3js.com/",
+      "note": "Open-source ioquake3 with id Software's free demo data. Online servers."
+    },
+    {
+      "category": "Platformers & Metroidvanias",
+      "name": "Open Sonic",
+      "url": "https://clarkeadg.github.io/opensonic-js/",
+      "note": "Free, open-source fan game."
+    },
+    {
+      "category": "Platformers & Metroidvanias",
+      "name": "Ratchet & Clank (ReRAC)",
+      "url": "https://re-rac.github.io/",
+      "note": "Fan port. Needs your own North American PS2 disc, read once on your computer."
+    },
+    {
+      "category": "Platformers & Metroidvanias",
+      "name": "The Legend of Zelda: Ocarina of Time (Clean Room)",
+      "url": "https://andrewnakas.github.io/oot-cleanroom/",
+      "note": "Fan-made clean-room remake with generated assets. No ROM needed."
+    },
+    {
+      "category": "Platformers & Metroidvanias",
+      "name": "The Legend of Zelda: Twilight Princess (Dusklight)",
+      "url": "https://dusklight.pages.dev/",
+      "note": "Decompilation port. Needs your own disc image; it stays in your browser."
+    },
+    {
+      "category": "Platformers & Metroidvanias",
+      "name": "Zelda II: The Adventure of Link (z2rs)",
+      "url": "https://z2rs.com",
+      "note": "Open-source port. Needs your own Zelda II (USA) ROM; it stays in your browser."
+    },
+    {
+      "category": "RPGs",
+      "name": "The Elder Scrolls II: Daggerfall",
+      "url": "https://daggerfalljs.dev/",
+      "note": "Open-source rebuild. Needs your own copy of Daggerfall (free on Steam / GOG); your files stay on your device."
+    },
+    {
+      "category": "RPGs",
+      "name": "Golden Sun (Recomp)",
+      "url": "https://shmargus.github.io/GSRecomp/",
+      "note": "Recompilation. Bring your own game files."
+    },
+    {
+      "category": "Racing & Sports",
+      "name": "Cro-Mag Rally",
+      "url": "https://midzer.de/wasm/cromagrally/",
+      "note": "Pangea's racer, from its open-source update. About 165 MB to load."
+    },
+    {
+      "category": "Racing & Sports",
+      "name": "Mario Kart 64 (Golden Balloon port)",
+      "url": "https://akratch.github.io/golden-balloon/",
+      "note": "Fan source port from the decompilation. Needs your own ROM (US or EU 1.1); it stays in your browser."
+    },
+    {
+      "category": "Sandbox & Simulation",
+      "name": "SimCity (MicropolisJS)",
+      "url": "https://www.graememcc.co.uk/micropolisJS/",
+      "note": "Open-source (GPL) version of the original SimCity."
+    },
+    {
+      "category": "Strategy & Tower Defense",
+      "name": "Masters of Defense",
+      "url": "https://nomadic-ua.itch.io/master-of-defence",
+      "note": "Tower defense on itch.io."
+    },
+    {
+      "category": "Puzzle, Party & Arcade",
+      "name": "Beneath a Steel Sky",
+      "url": "https://scummweb.tsilva.eu/beneath-a-steel-sky/play",
+      "note": "Freeware since 2003, by its makers (Revolution). Runs in ScummVM."
+    },
+    {
+      "category": "RPGs",
+      "name": "Diablo (diabloweb)",
+      "url": "https://d07riv.github.io/diabloweb/",
+      "note": "Open-source port. Plays the free shareware version, or load DIABDAT.MPQ from your own copy (e.g. GOG)."
+    },
+    {
+      "category": "Shooters & Action",
+      "name": "Halo: Combat Evolved (Combat Lab)",
+      "url": "https://mitchellhynes.com/halo/halo.html",
+      "note": "Browser port. Needs an Xbox disc image (XISO) made from your own disc; processed in your browser."
+    },
+    {
+      "category": "Shooters & Action",
+      "name": "Half-Life / Counter-Strike 1.6 (WebXash)",
+      "url": "https://x8bitrain.github.io/webXash/",
+      "note": "Open-source Xash3D in the browser. Needs your own game files (valve / cstrike folders, e.g. from Steam)."
+    },
+    {
+      "category": "Shooters & Action",
+      "name": "Quake (NetQuake.io)",
+      "url": "https://www.netquake.io/",
+      "note": "Episode 1 (shareware) free; upload pak1.pak from your own copy for all 4 episodes, checked locally. Online servers."
+    },
+    {
+      "category": "Shooters & Action",
+      "name": "Doom multiplayer (Silent Space Marine)",
+      "url": "https://silentspacemarine.com/",
+      "note": "Cloudflare's open-source Chocolate Doom WebAssembly port with the shareware episode. Online deathmatch."
+    }
+  ]
+}
