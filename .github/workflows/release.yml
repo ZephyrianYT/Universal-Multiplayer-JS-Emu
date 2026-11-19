@@ -1,0 +1,73 @@
+# Publishes a Retro Hub release: builds RetroHub<release>.zip from main (scripts/make_release.py) and creates the
+# GitHub release the in-app updater installs. Start it from the website or the GitHub app:
+#   Actions > Release > Run workflow (on main).
+# The release number comes from package.json ("release", e.g. 0.3.4) and the text from that version's CHANGELOG.md
+# section. It stops without changing anything if that release already exists.
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      prerelease:
+        description: "Mark as a pre-release (the updater ignores pre-releases)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Check the code starts
+        run: |
+          node --check server.mjs
+          python -m py_compile launch.py RetroHub.pyw apps.py setup/update.py setup/shortcut.py stop.py scripts/make_release.py
+
+      - name: Build the zip
+        id: build
+        run: python scripts/make_release.py | tee build.log && grep -E '^(RELEASE|VERSION|ZIP)=' build.log >> "$GITHUB_OUTPUT"
+
+      - name: Check the zip installs and the hub starts
+        run: |
+          mkdir -p /tmp/try && cd /tmp/try
+          unzip -q "$GITHUB_WORKSPACE/${{ steps.build.outputs.ZIP }}"
+          cd retro-hub-*
+          npm ci --omit=dev --ignore-scripts --no-audit --no-fund
+          PORT=8080 node server.mjs > server.log 2>&1 &
+          for i in $(seq 1 40); do [ -f run/retro-hub.json ] && break; sleep 0.5; done
+          cat server.log
+          curl -fsS http://127.0.0.1:8080/api/instance
+          test "$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:8080/)" = 302
+
+      - name: Publish the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE: ${{ steps.build.outputs.RELEASE }}
+          ZIP: ${{ steps.build.outputs.ZIP }}
+          PRE: ${{ inputs.prerelease }}
+        run: |
+          TAG="RetroHub$RELEASE"
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "::error::Release $TAG already exists. Raise \"release\" (and \"version\") in package.json and package-lock.json, add a CHANGELOG.md section, then run this again."
+            exit 1
+          fi
+          FLAGS=""; [ "$PRE" = "true" ] && FLAGS="--prerelease"
+          gh release create "$TAG" "$ZIP" CHANGELOG.md README.md README-ADVANCED.md FIXLOG.md \
+            --title "Retro Hub $RELEASE" --notes-file release/notes.md --target "$GITHUB_SHA" $FLAGS
+          echo "Published $TAG: $(gh release view "$TAG" --json url -q .url)" >> "$GITHUB_STEP_SUMMARY"

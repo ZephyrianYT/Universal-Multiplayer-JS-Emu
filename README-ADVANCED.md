@@ -135,6 +135,13 @@ The question comes once (the answer is saved as `"promptedDesktopShortcut": true
 - An older version than the one installed isn't installed unless you confirm. The hub is stopped first; the window restarts itself afterwards.
 - From a terminal: `python setup/update.py check` / `apply` (`--force` for an older release).
 
+### Publishing a release (maintainers)
+
+1. On `main`, raise `"version"` and `"release"` in `package.json` (and the two `"version"` fields in `package-lock.json`), and add a `## <version>` section at the top of `CHANGELOG.md`.
+2. On GitHub (website or app): **Actions → Release → Run workflow**.
+
+The workflow (`.github/workflows/release.yml`) builds `RetroHub<release>.zip` with `scripts/make_release.py` (every file git tracks, in one `retro-hub-<release>/` folder), unzips it, checks the hub starts, then publishes the release `RetroHub<release>` with that CHANGELOG section as its text. The updater picks it up from there. It stops without changing anything if the versions don't match, the changelog section is missing, or that release already exists. `python scripts/make_release.py` builds the same zip locally into `release/` (`--check` only checks).
+
 The owner password is shown in the **Settings** tab (press **Show**), in `.env`, and in the server log.
 
 ---
