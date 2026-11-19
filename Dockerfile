@@ -1,5 +1,5 @@
 FROM node:22-alpine
-LABEL org.opencontainers.image.title="retro-hub" org.opencontainers.image.version="1.26.2"
+LABEL org.opencontainers.image.title="retro-hub" org.opencontainers.image.version="1.26.3"
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci --omit=dev --ignore-scripts && npm cache clean --force

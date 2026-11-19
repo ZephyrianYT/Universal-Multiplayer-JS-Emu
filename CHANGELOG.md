@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.26.3 - 2026-11-19
+
+Released as **Retro Hub 0.3.6**: a security update. Everyone should update.
+
+### Security
+- **Lobby lists could run code from another hub.** Player and seat counts from lobbies on other hubs (the LAN list and the master lobby pool) were put into the page without escaping, so a malicious hub could run its own script in your players' browsers. They're now always shown as plain numbers, and links to other hubs are re-checked as `http(s)` right where they're opened.
+- **Sign-in redirect:** after signing in, the hub only ever sends you to a page on the same hub.
+- **Passwords:** the owner password and access code are compared with scrypt (a slow password hash) instead of SHA-256. Nothing is stored; login attempts were and still are rate-limited.
+- **The launcher no longer prints passwords.** It says they are in `.env` instead, so they don't end up in terminal scrollback or logs. Open `.env` to see your owner password.
+- **Smaller fixes:** the speedrun.com game-name cleanup can't be slowed down by a very long name; Wii U `meta.xml` titles are decoded once (`&amp;lt;` no longer turns into `<`); the RPCS3 online check matches config keys exactly; messages from the hub can only call the page's own handlers.
+
 ## 1.26.2 - 2026-11-19
 
 Released as **Retro Hub 0.3.5**: a quality-of-life pass together with the launch fix below (1.26.1). Anyone who installed from a download of the repo since that fix also gets the files that download was missing.
