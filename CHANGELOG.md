@@ -1,5 +1,52 @@
 # Changelog
 
+## 1.29.0 - 2026-11-19
+
+Released as **Retro Hub 0.4.0**: a security release, plus the OBS overlay, simpler System Link rooms and Wii U guided setup. Everyone should update.
+
+### 🛡️ Security
+Everything that runs a program, writes a file or turns someone's input into keys on your PC was traced back to who can reach it. Details: `docs/SECURITY-LOCAL.md`.
+- **Keyboard mode** (guests' buttons as keys, used when no virtual gamepad driver is installed): keys now go only to the emulator's **main** window, never to a dialog it opened. Before, a guest could type into an emulator's file dialog and confirm it.
+- **Emulator cores are hash-checked:** all 200 EmulatorJS 4.2.3 core files have a pinned size and SHA-256. A changed or unknown file is never served; a damaged cached copy is replaced.
+- **Websites can't reach the hub through your browser:** the OBS overlays, System Link and GBA link routes check the `Host` and refuse requests from other sites (DNS rebinding), the lobby connection checks where the page came from, and no route ever allows cross-site access.
+- The link-cable host from another hub can't start with `-` (it goes on the emulator's command line); the updater never overwrites `.env` and your other files whatever their letter case; lobby messages with names like `constructor` are ignored and a bad message can't take the hub down.
+- The 🌐 Online panel shows your home folder as `%USERPROFILE%`, so your Windows user name doesn't show on stream.
+
+### 📺 OBS overlay
+- ☰ → **📺 OBS overlay** (owner, on the hub's PC): Corner, Bottom bar or Full frame (transparent holes for your camera and chat), live preview, **Copy** for the Browser Source URL, **New link** to change its private key.
+- Updates the moment something changes (no polling); pop-ups for joins, game changes, save states and RetroAchievements unlocks (`mute=1` for no sounds); "Reconnecting…" instead of old data while the hub restarts, then it recovers by itself.
+- Stream-safe: never file paths, IP addresses or account IDs; the room code only if you tick it. Works only on the hub's own computer.
+
+### 🎮 System Link, simpler
+- **Same network (LAN)** or **Remote / virtual LAN** instead of a list of network adapters (that's under Advanced); **Copy room address** for the host.
+- "2 of 4 ready · at least 2 ready to start" with a bar, and plain **Same game / Different version / Wrong game** badges (IDs under Details).
+
+### 🧭 Wii U online, guided
+- In 🌐 Online → Cemu: **Guided setup** in three steps: drop your Wii U dump (it recognises `otp.bin`, `seeprom.bin`, `account.dat`, `network_services.xml`), pick Pretendo / your own server / custom, then **Save & open Cemu**.
+- Your key files stay on your PC (sizes checked, never logged), what they replace is backed up, and an existing Wii U profile is only replaced when you say so.
+
+## 1.28.0 - 2026-11-19
+
+Released as **Retro Hub 0.3.8**: a ROM patcher and Xbox 360 System Link rooms.
+
+### 🩹 Patcher
+- **🩹 Patcher…** in Host a game (owner, library games): patch a game and save the result **next to it** in `patched/<coop|randomizer|translation|qol|custom>/<Game> [<Patch>]`. The original ROM is never changed; the same patch again reuses the file.
+- **Formats:** IPS, BPS, UPS, PPF, xdelta / VCDIFF, APS (N64 and GBA), BSDiff, and Archipelago `.ap*` patch files (the single bsdiff4 step). Shows the ROM's CRC32, MD5 and SHA-1.
+- **SNES copier headers** are removed or added automatically when a patch that checks its ROM (BPS, UPS, xdelta) was made for the other kind; or choose by hand.
+- **Online patches** from a catalog matched by the ROM's checksums: patch files only (never ROMs), GitHub only, SHA-256 checked before use. Built-in: Super Mario 64 Splitscreen Multiplayer. Add your own in `patches/catalog.json`.
+- **Combo randomizers** (SMZ3, Archipelago): links to their generators, and drop the finished ROM in to save it in `patched/randomizer`.
+- In the library, patched copies sit right after their game with a 🩹 badge; **Launch patched** picks one to host. Browser saves are separate per copy (native emulators may share saves with the original).
+- 🧩 Patches & variants also reads the new formats.
+
+### 🔗 Xbox 360 System Link rooms
+- 2-4 hubs play one System Link game together, each PC running **its own** Xenia with **its own** copy of the game. Host a room, others join from the nearby hubs list or by typing the host's address.
+- **Same game check:** a different game is refused; a different release, build or title update is a warning before Start.
+- Start needs 2-4 players marked Ready; every hub then opens Xenia in System Link mode on the network you chose (LAN, or a virtual LAN like Radmin VPN or ZeroTier; Tailscale doesn't carry the broadcasts games use). Your Xenia settings file isn't changed.
+- Needs the **Xenia Canary netplay build** (`xenia_canary_netplay.exe`) in `emulators/xenia/`; normal Xenia Canary has no System Link. Details: `docs/SYSTEM-LINK.md`.
+
+### Fixes
+- **Stop** now always closes a native emulator that hung or has no window (some Python installs left it running).
+
 ## 1.27.0 - 2026-11-19
 
 Released as **Retro Hub 0.3.7**: zero-setup native emulators, plus the features built since 0.3.6.
