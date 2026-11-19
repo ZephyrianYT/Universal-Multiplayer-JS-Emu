@@ -85,10 +85,17 @@ const SECRET = loadSecret();
 const SESSION_DAYS = 30;
 
 // Constant-time compare of a submitted secret with the configured one. Nothing is stored: both sides go through
-// an HMAC under a random per-process key only so they have equal length for timingSafeEqual.
-const CMP_KEY = crypto.randomBytes(32);
-const mac = s => crypto.createHmac("sha256", CMP_KEY).update(String(s)).digest();
-const same = (a, b) => b !== "" && crypto.timingSafeEqual(mac(a), mac(b));
+// scrypt under a random per-process salt (a slow password hash, so guesses stay expensive). The configured
+// side is hashed once and cached; attempts are also rate-limited per IP.
+const CMP_SALT = crypto.randomBytes(16);
+const slowHash = s => crypto.scryptSync(String(s), CMP_SALT, 32);
+const expectedHash = new Map();
+const same = (a, b) => {
+  if (b === "" || b == null) return false;
+  let want = expectedHash.get(b);
+  if (!want) { want = slowHash(b); expectedHash.set(b, want); }
+  return crypto.timingSafeEqual(slowHash(a), want);
+};
 const sign = data => crypto.createHmac("sha256", SECRET).update(data).digest("base64url");
 
 function makeToken(name, role, id) {
