@@ -47,7 +47,7 @@ function yamlSection(txt, name) {
 // From RPCS3's source: rpcn.yml (Emu/NP/rpcn_config.h: Host default np.rpcs3.net, NPID, Password, Token) and
 // custom_configs/config_<SERIAL>.yml live in <config dir> = <exe>/config/ on Windows; both network switches default
 // to Disconnected. Firmware: <dev_flash>/vsh/etc/version.txt (util/sysinfo.cpp), dev_flash from config/vfs.yml.
-const yamlKey = (txt, key) => ((new RegExp(`^${key.replace(/[/$]/g, "\\$&")}:\\s*(.*)$`, "m").exec(txt || "") || [])[1] || "").trim().replace(/^["'](.*)["']$/, "$1");
+const yamlKey = (txt, key) => ((new RegExp(`^${key.replace(/[.*+?^${}()|[\]\\/]/g, "\\$&")}:\\s*(.*)$`, "m").exec(txt || "") || [])[1] || "").trim().replace(/^["'](.*)["']$/, "$1");
 function checkRpcs3(exeDir) {
   const out = { problems: [], facts: [] };
   const cfgDir = path.join(exeDir, "config");

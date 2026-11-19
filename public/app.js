@@ -6,6 +6,9 @@
   const { Settings, Modal, guard, toast, Sfx, pingClass, pingLabel } = UI;
   const $ = id => document.getElementById(id);
   const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const num = n => { n = Number(n); return Number.isFinite(n) ? n : 0; };   // counts from other hubs: never raw text in HTML
+  // Only plain http(s) links from other hubs are ever opened or put in an href.
+  const safeHttp = u => { try { const x = new URL(u); return x.protocol === "http:" || x.protocol === "https:" ? x.href : null; } catch { return null; } };
   const wsUrl = () => (location.protocol === "https:" ? "wss://" : "ws://") + location.host + "/ws";
   const fmtSize = n => n > 1 << 20 ? (n / (1 << 20)).toFixed(1) + " MB" : Math.max(1, Math.round(n / 1024)) + " KB";
   const showErr = (el, text) => { el.textContent = text || ""; el.hidden = !text; };
@@ -567,13 +570,13 @@
       li.innerHTML = `
         <div class="grow">
           <div class="title" title="${esc(r.game || "Untitled game")}">${esc(r.game || "Untitled game")}</div>
-          <div class="sub trunc">${esc(r.host)} <span class="id">#${esc(prettyId(r.hostKey))}</span>${sys ? " · " + esc(sys) : ""}${r.spectators ? ` · ${r.spectators} watching` : ""}</div>
+          <div class="sub trunc">${esc(r.host)} <span class="id">#${esc(prettyId(r.hostKey))}</span>${sys ? " · " + esc(sys) : ""}${r.spectators ? ` · ${num(r.spectators)} watching` : ""}</div>
         </div>
         ${r.mode === "ghost" ? `<span class="badge mode-ghost" title="${esc(r.race ? "Race: everyone runs their own copy, timed by the hub. " + GHOST_TIP : GHOST_TIP)}">${r.race ? "Race" : "Ghost"}</span>` : ""}
         ${r.phase && r.phase !== "lobby" ? `<span class="badge">${r.phase === "playing" ? "In game" : r.phase === "countdown" ? "Starting" : "Loading"}</span>` : ""}
         <span class="ping ${pingClass(ping)}" title="Estimated ping through the hub">${pingLabel(ping)}</span>
         ${r.locked ? '<span class="badge lock" title="Needs a lobby password">🔒</span>' : ""}
-        <span class="badge ${r.open ? "" : "full"}">${r.players}/${r.max}</span>
+        <span class="badge ${r.open ? "" : "full"}">${num(r.players)}/${num(r.max)}</span>
         <button class="small icon" data-act="copy" title="Copy invite link" aria-label="Copy invite link for ${esc(r.game || "this lobby")}">⧉</button>
         <button class="small ${canJoin || canWatch ? "primary" : ""}" data-act="join" ${canJoin || canWatch ? "" : "disabled"}>${mine ? "Yours" : canJoin ? "Join" : canWatch ? "Watch" : "Full"}</button>`;
       li.querySelector("[data-act=copy]").addEventListener("click", () => copyInvite(r.code));
@@ -607,10 +610,10 @@
         ${l.netplay_mode === "pretendo" ? '<span class="badge" title="The host\'s Cemu is online through Pretendo Network">Pretendo</span>' : ""}
         ${l.phase && l.phase !== "lobby" ? `<span class="badge">${l.phase === "playing" ? "In game" : "Starting"}</span>` : ""}
         ${l.locked ? '<span class="badge lock" title="Needs a lobby password">🔒</span>' : ""}
-        <span class="badge ${open ? "" : "full"}">${l.current_players}/${l.max_players}</span>
+        <span class="badge ${open ? "" : "full"}">${num(l.current_players)}/${num(l.max_players)}</span>
         ${l.link
           ? `<button class="small ${open ? "primary" : ""}" data-act="link" ${open && linkState?.available ? "" : "disabled"} title="${linkState?.available ? "Start your VBA-M linked to this session" : "Only the owner, on this hub's own computer, can join link sessions"}">${open ? "Join link" : "Full"}</button>`
-          : `<a class="btn small ${open ? "primary" : ""}" href="${esc(l.connection_string)}" rel="noopener noreferrer">${open ? "Join" : "Open"}</a>`}`;
+          : `<a class="btn small ${open ? "primary" : ""}" href="${esc(safeHttp(l.connection_string) || "#")}" rel="noopener noreferrer">${open ? "Join" : "Open"}</a>`}`;
       li.querySelector("[data-act=link]")?.addEventListener("click", e => linkJoin(l, e.currentTarget));
       ul.appendChild(li);
     }
@@ -843,16 +846,16 @@
           <div class="sub trunc">${esc(row.host)}${row.friends.length ? ` · <span class="lb-friend" title="Friends in this lobby">👥 ${esc(row.friends.join(", "))}</span>` : ""}</div></td>
         <td class="lb-c-sys trunc" title="${esc(sys)}">${esc(sys)}</td>
         <td class="lb-c-mode">${esc(MODE_LABEL[row.mode] || row.mode)}</td>
-        <td><span class="badge ${row.open > 0 ? "" : "full"}">${row.players}/${row.max}</span>${row.locked ? ' <span class="badge lock" title="Needs a lobby password">🔒</span>' : ""} ${phaseBadge}</td>
+        <td><span class="badge ${row.open > 0 ? "" : "full"}">${num(row.players)}/${num(row.max)}</span>${row.locked ? ' <span class="badge lock" title="Needs a lobby password">🔒</span>' : ""} ${phaseBadge}</td>
         <td class="lb-c-ping">${row.src === "hub" ? `<span class="ping ${pingClass(row.ping)}">${pingLabel(row.ping)}</span>` : "<span class=\"muted small\">—</span>"}</td>
-        <td class="lb-c-where"><span class="badge" title="${esc(row.where)}">${SRC_LABEL[row.src]}</span></td>
+        <td class="lb-c-where"><span class="badge" title="${esc(row.where)}">${esc(SRC_LABEL[row.src] || "")}</span></td>
         <td class="lb-c-act">${lbActions(row)}</td>`;
       tb.appendChild(tr);
       if (LB.open.has(row.key)) {
         const d = document.createElement("tr"); d.className = "lb-detail";
         const who = row.names.length ? row.names.map(n => `<span class="lb-name${row.friends.includes(n.name) ? " friend" : ""}">${esc(n.name)}${n.host ? " <small>host</small>" : n.watching ? " <small>watching</small>" : ""}</span>`).join("")
           : `<span class="muted">${row.src === "hub" ? "Nobody yet." : "Player names aren't shared between hubs."}</span>`;
-        d.innerHTML = `<td colspan="7"><div class="lb-who">${who}</div><div class="small muted">${esc(sys)} · ${esc(MODE_LABEL[row.mode] || row.mode)} · ${row.open} open seat${row.open === 1 ? "" : "s"} · ${esc(row.src === "hub" ? "on this hub, lobby code " + row.code : row.where)}</div></td>`;
+        d.innerHTML = `<td colspan="7"><div class="lb-who">${who}</div><div class="small muted">${esc(sys)} · ${esc(MODE_LABEL[row.mode] || row.mode)} · ${num(row.open)} open seat${row.open === 1 ? "" : "s"} · ${esc(row.src === "hub" ? "on this hub, lobby code " + row.code : row.where)}</div></td>`;
         tb.appendChild(d);
       }
       if (row.key === focusKey) (focusAct ? tr.querySelector(`[data-act="${focusAct}"]`) : tr)?.focus();
@@ -861,7 +864,7 @@
   function lbActions(row) {
     if (row.src !== "hub") {
       if (row.mode === "link") return `<button class="small" data-act="tab-play" title="Link cable sessions are joined from the GBA / Game Boy link cable panel on the Play tab">Link panel</button>`;
-      return `<a class="btn small ${row.open > 0 ? "primary" : ""}" data-act="go" href="${esc(row.href)}" rel="noopener noreferrer" title="Opens that hub (you make an account there)">${row.open > 0 ? "Join" : "Open"} ↗</a>`;
+      return `<a class="btn small ${row.open > 0 ? "primary" : ""}" data-act="go" href="${esc(safeHttp(row.href) || "#")}" rel="noopener noreferrer" title="Opens that hub (you make an account there)">${row.open > 0 ? "Join" : "Open"} ↗</a>`;
     }
     if (row.mine) return '<span class="small muted">Yours</span>';
     const w = LB.waiting?.code === row.code;
@@ -962,7 +965,7 @@
       seen.add(row.key);
       if (LB.alerted.has(row.key)) continue;
       LB.alerted.add(row.key);
-      const go = row.src === "hub" ? () => { $("tab-lobbies").click(); openJoin(row.r, false, row.open === 0 && row.watchable); } : () => window.open(row.href, "_blank", "noopener,noreferrer");
+      const go = row.src === "hub" ? () => { $("tab-lobbies").click(); openJoin(row.r, false, row.open === 0 && row.watchable); } : () => { const u = safeHttp(row.href); if (u) window.open(u, "_blank", "noopener,noreferrer"); };
       lbAlert(`Lobby found: ${row.host} is hosting ${row.game}${config.systems[row.system] ? " (" + config.systems[row.system] + ")" : ""}${row.src === "hub" ? "" : " on " + row.where}.`,
         { label: row.open > 0 ? "Join" : "Show", run: go }, "rh-watch-" + row.key);
     }
@@ -1564,7 +1567,7 @@
               const err = new Error(m.msg || "Could not join."); err.code = m.code; err.watchable = m.watchable; return reject(err);
             }
             if (m.t === "error") { sock.handlers.fatal?.(m); sock.closed = true; ws.close(); return; }
-            sock.handlers[m.t]?.(m);
+            if (typeof m.t === "string" && Object.hasOwn(sock.handlers, m.t)) sock.handlers[m.t](m);
           };
           ws.onclose = () => {
             if (first) { first = false; return reject(new Error("Lost the connection to the hub.")); }

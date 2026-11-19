@@ -84,8 +84,11 @@ function loadSecret() {
 const SECRET = loadSecret();
 const SESSION_DAYS = 30;
 
-const sha = s => crypto.createHash("sha256").update(String(s)).digest();
-const same = (a, b) => b !== "" && crypto.timingSafeEqual(sha(a), sha(b));
+// Constant-time compare of a submitted secret with the configured one. Nothing is stored: both sides go through
+// an HMAC under a random per-process key only so they have equal length for timingSafeEqual.
+const CMP_KEY = crypto.randomBytes(32);
+const mac = s => crypto.createHmac("sha256", CMP_KEY).update(String(s)).digest();
+const same = (a, b) => b !== "" && crypto.timingSafeEqual(mac(a), mac(b));
 const sign = data => crypto.createHmac("sha256", SECRET).update(data).digest("base64url");
 
 function makeToken(name, role, id) {
@@ -458,8 +461,15 @@ function whatsNew(since) {
 // ---------------------------------------------------------------- speedrun.com lookup (offsite link)
 // "Super Mario World (USA) [!]" -> "Super Mario World": region / dump tags aren't part of speedrun.com's names.
 // "Legend of Zelda, The - A Link to the Past" (No-Intro style) -> "The Legend of Zelda - A Link to the Past".
-const cleanGameName = n => String(n || "").replace(/^[0-9A-F]{8}__/i, "").replace(/\s*[([][^)\]]*[)\]]/g, "").replace(/_/g, " ")
-  .replace(/\s+/g, " ").trim().replace(/^(.+?), (The|A|An)(?= - |$)/i, "$2 $1").slice(0, 100);
+// Input is capped before any regex runs, and every pattern is linear (no nested or overlapping repeats).
+function cleanGameName(n) {
+  let s = String(n || "").slice(0, 300).replace(/^[0-9A-F]{8}__/i, "").replace(/[([][^()[\]]*[)\]]/g, " ").replace(/_/g, " ")
+    .replace(/\s+/g, " ").trim();
+  const dash = s.indexOf(" - "), head = dash < 0 ? s : s.slice(0, dash), comma = head.lastIndexOf(", ");
+  const art = comma < 0 ? "" : head.slice(comma + 2);
+  if (/^(the|a|an)$/i.test(art)) s = `${art} ${head.slice(0, comma)}${s.slice(head.length)}`;
+  return s.slice(0, 100);
+}
 const srcCache = new Map();        // name -> { at, value }
 async function speedrunFind(name) {
   const key = name.toLowerCase(), hit = srcCache.get(key);

@@ -347,10 +347,12 @@ def main() -> None:
     if ip:
         print(f"  Friends on your Wi-Fi:  http://{ip}:{port}")
     print("  Friends: open the link, make an account, join your lobby with its password.")
+    # Passwords are never printed (terminal scrollback and logs keep them); say where they are instead.
     if env.get("ACCESS_PASSWORD"):
-        print(f"  Server access code:     {env['ACCESS_PASSWORD']}")
+        print("  Server access code:     the one you passed with --access-password" if args.access_password
+              else f"  Server access code:     ACCESS_PASSWORD in {ENV_FILE}")
     if env.get("ADMIN_PASSWORD"):
-        print(f"  Owner unlock password:  {env['ADMIN_PASSWORD']}")
+        print(f"  Owner unlock password:  ADMIN_PASSWORD in {ENV_FILE}")
     print("  Press Ctrl+C to stop.")
     print("=" * 60 + "\n")
     if not args.no_browser:
