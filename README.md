@@ -1,4 +1,4 @@
-> **0.3.7 is out:** native emulators now check and set themselves up the first time you host (controllers by seat, no pop-ups that stop a stream), plus the Android console, Patches & variants, dance mats and new themes. Use the updater or download `RetroHub0.3.7.zip` from Releases.
+> **0.4.0 is out:** a security release (an outside-in review for anything that could run code on your PC: keyboard mode, emulator cores, WebSockets, the updater) plus a new 📺 **OBS overlay** (live, three layouts, stream-safe), simpler **Xbox 360 System Link** rooms and a 🧭 **Wii U online** guided setup. Everyone should update. Use the updater or download `RetroHub0.4.0.zip` from Releases.
 
 # Retro Hub
 
@@ -13,7 +13,7 @@
 
 ## Get started (Windows)
 
-1. **Unzip** `RetroHub0.3.7.zip` anywhere (for example `C:\Games\retro-hub`).
+1. **Unzip** `RetroHub0.4.0.zip` anywhere (for example `C:\Games\retro-hub`).
 2. **Double-click `launch.bat`.**
    - Missing Python or Node.js? It offers to download and install them for you, and checks every download first.
    - It asks whether you want a **desktop shortcut** with the Retro Hub duck. Say yes, and next time just click the duck.
