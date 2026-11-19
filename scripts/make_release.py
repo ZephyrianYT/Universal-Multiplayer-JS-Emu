@@ -28,7 +28,7 @@ ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "release"
 # The updater refuses a zip without these three together (setup/update.py safe_members).
 REQUIRED = ("server.mjs", "package.json", "apps.py")
-# Files a release must have for features to work (each was missing from a git checkout once, see CHANGELOG 1.26.1).
+# Files a release must have for features to work (each was missing from a git checkout once, see CHANGELOG 1.26.2).
 MUST_SHIP = ("launch.bat", "launch.py", "RetroHub.pyw", "core/offsite-games.json", "public/index.html",
              "public/j2me/init.zip", "public/v86/seabios.bin", "public/v86/vgabios.bin")
 FIXED_TIME = (2020, 1, 1, 0, 0, 0)   # same bytes for the same files, whenever it's built

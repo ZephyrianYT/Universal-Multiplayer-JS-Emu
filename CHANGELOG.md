@@ -1,15 +1,8 @@
 # Changelog
 
-## 1.26.1 - 2026-11-18
+## 1.26.2 - 2026-11-19
 
-Released as **Retro Hub 0.3.4**. Fixes the launch bug in 0.3.3 where the browser opened a "freej2me-web / Loading…" page instead of the hub.
-
-### Fixes
-- **The hub opened as "freej2me-web … Loading…" on launch.** The hub listened on IPv4 only (`0.0.0.0`) and the launcher only checked `127.0.0.1` to see if the port was free, but browsers open `localhost` on IPv6 (`::1`) first: Firefox always, Chrome and Edge on Windows. Another program holding `[::1]:8080` (from the screenshot, a separate freej2me-web web server) therefore got the browser, and nothing warned about it. An existing account and cached page could hide it, which is why it showed up on fresh installs. Now:
-  - The hub listens on IPv4 **and** IPv6 (`HOST=::`, falling back to IPv4 on computers without IPv6). In localhost-only and tunnel modes it listens on both `127.0.0.1` and `::1`.
-  - Before it says it's running, the hub asks both `127.0.0.1` and `::1` who they are (`/api/instance`). If another program answers, it stops with a message naming it (page title), the port, and how to find or avoid it. The launcher refuses to start the same way, and checks both addresses.
-  - The Retro Hub window only shows "already running (started elsewhere)" when Retro Hub itself answers on that port, so a leftover `run/retro-hub.json` no longer sends **Open hub** to another program.
-  - `launch.py` waits for the server's own "ready" signal (after the check), not just for the port to open, so the browser is never opened on the wrong program.
+Released as **Retro Hub 0.3.5**: a quality-of-life pass on top of 0.3.4's launch fix. Anyone who installed from a download of the repo since 0.3.4 also gets the files that download was missing.
 
 ### Quality of life
 - **Phones:** the Buddy List no longer opens by itself on a first visit and covers most of the hub. It opens on its own only if you left it open last time, or on a first visit on a wide screen (1400 px and up) where it fits beside the hub. 👥 Buddy List is still one tap away.
@@ -21,6 +14,19 @@ Released as **Retro Hub 0.3.4**. Fixes the launch bug in 0.3.3 where the browser
 ### Repository
 - **Downloading `main` gives a working hub.** `.gitignore` rules for `*.zip`, `*.bin`, `bios/` and `offsite-games.json` also caught files the hub ships, so a git checkout or GitHub's *Download ZIP* had no J2ME runtime image, no PC emulator BIOS, an empty Off Site Games list and no `roms/<player>/` folders. They're tracked now; your games, BIOS dumps and own `offsite-games.json` stay ignored.
 - **One-click releases:** *Actions → Release → Run workflow* on GitHub (website or app) builds `RetroHub<release>.zip` from `main`, checks it installs and the hub starts, and publishes the release the updater installs. `python scripts/make_release.py` builds the same zip locally. See *Publishing a release* in README-ADVANCED.md.
+
+## 1.26.1 - 2026-11-18
+
+Released as **Retro Hub 0.3.4**. Fixes the launch bug in 0.3.3 where the browser opened a "freej2me-web / Loading…" page instead of the hub.
+
+### Fixes
+- **The hub opened as "freej2me-web … Loading…" on launch.** The hub listened on IPv4 only (`0.0.0.0`) and the launcher only checked `127.0.0.1` to see if the port was free, but browsers open `localhost` on IPv6 (`::1`) first: Firefox always, Chrome and Edge on Windows. Another program holding `[::1]:8080` (from the screenshot, a separate freej2me-web web server) therefore got the browser, and nothing warned about it. An existing account and cached page could hide it, which is why it showed up on fresh installs. Now:
+  - The hub listens on IPv4 **and** IPv6 (`HOST=::`, falling back to IPv4 on computers without IPv6). In localhost-only and tunnel modes it listens on both `127.0.0.1` and `::1`.
+  - Before it says it's running, the hub asks both `127.0.0.1` and `::1` who they are (`/api/instance`). If another program answers, it stops with a message naming it (page title), the port, and how to find or avoid it. The launcher refuses to start the same way, and checks both addresses.
+  - The Retro Hub window only shows "already running (started elsewhere)" when Retro Hub itself answers on that port, so a leftover `run/retro-hub.json` no longer sends **Open hub** to another program.
+  - `launch.py` waits for the server's own "ready" signal (after the check), not just for the port to open, so the browser is never opened on the wrong program.
+
+### Repository
 - The full Retro Hub source is back in the repository (it was only in the release zips). Fix log renamed to `FIXLOG.md`; the OBS guide is `docs/OBS-STREAMING.md`; the duplicate controllers readme was removed (`emulators/README.md` is the one).
 
 ## 1.26.0 - 2026-11-18
