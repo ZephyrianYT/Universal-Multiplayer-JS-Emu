@@ -1,13 +1,43 @@
-> **0.4.3 is out:** a 🪟 pop-out capture window for the OBS overlay (for Window Capture, Firefox, Discord and virtual cameras: chroma backgrounds, mirror / flip, no sound doubling) and 🏆 RetroAchievements support for PCSX2, PPSSPP, Flycast and Dolphin. Use the updater or download `RetroHub0.4.3.zip` from Releases.
+> **0.4.3 is out:** ▶ YouTube chat on stream (read-only, no login), a 🪟 pop-out capture window for the OBS overlay (for Window Capture, Firefox, Discord and virtual cameras: chroma backgrounds, mirror / flip, no sound doubling) and 🏆 RetroAchievements support for PCSX2, PPSSPP, Flycast and Dolphin. Use the updater or download `RetroHub0.4.3.zip` from Releases.
 
 # Retro Hub
 
 **Play retro games with your friends from a link.** You run Retro Hub on your PC, friends open the link in their browser, and you play together: co-op, races, or side by side as ghosts. Nothing to install for your friends, and no games are ever uploaded anywhere.
 
 - 🎮 **Browser consoles**: NES, SNES, N64, Game Boy, Game Boy Color, GBA, DS, PS1, PSP, Genesis, Saturn, arcade and more.
-- 🖥️ **Big consoles** (PS2, GameCube, Wii, Wii U, Switch, 3DS, Xbox, Dreamcast…) run in real emulators on your PC and stream to your friends.
-- 🏁 **Race / speedrun mode**, 🏆 **RetroAchievements**, voice chat, save states, and a link cable for GBA.
-- 🔒 **Private by design**: your games stay on your PC, and accounts live in each player's browser.
+- 🖥️ **Big consoles** (PS2, GameCube, Wii, Wii U, Switch, 3DS, Xbox, Xbox 360, PS3, Dreamcast, arcade…) and **Android games** run in real emulators on your PC and stream to your friends.
+- 🏁 **Race / speedrun mode**, 🏆 **RetroAchievements**, voice chat, save states, a 👥 buddy list, and a link cable for GBA.
+- 📺 **Made for streaming**: an OBS overlay that shows the game, the players and your Twitch / YouTube chat, with viewer effects chat can trigger.
+- 🔒 **Private by design**: your games stay on your PC, accounts live in each player's browser, and the hub's private tools only answer to your own computer.
+
+---
+
+## How it works
+
+Retro Hub has two halves:
+
+1. **The hub** runs on your PC (the one with the games). It's a small web server: it serves the website, keeps the list of lobbies and introduces players to each other. You start and stop it from the **Retro Hub window**.
+2. **Everyone's browser** is the actual game machine and screen. There's nothing to install for players: a link and a browser are enough, on PC, Mac, tablet or phone.
+
+When you play together, the hub only does the introductions. The game itself goes **straight between the players' browsers** (WebRTC, the same tech as video calls), so it's as fast as your connections allow and the hub never has to carry the video.
+
+There are three ways to play a game together, and you pick one when you host:
+
+| Mode | What happens | Pick it when |
+| --- | --- | --- |
+| **Co-op** | The host's browser runs the game and streams the picture and sound to everyone. Friends' controllers drive players 2-4. | You want to play *one* game together, like on a couch. Friends don't need the game. |
+| **Ghost** | Everyone runs their own copy of the same game, side by side. Other players show as see-through ghosts over yours. | Single-player games, playing "together" with no lag at all. Everyone needs the game. |
+| **Race / Speedrun** | Ghost mode plus one shared timer, splits and results. Alone, it's a speedrun timer with personal bests. | Racing friends, or practising runs. |
+
+**Big consoles** (PS2 and newer) are too heavy for a browser, so they run in a real emulator on your PC. The hub starts it for you, your browser captures its window, and from then on it streams to friends exactly like a Co-op game.
+
+## Why it works this way
+
+- **Your games never leave your PC.** In Co-op, friends get a video stream, not the game file. In Ghost and Race, each player uses their own copy, and only a checksum is compared to make sure it's the same game.
+- **No accounts on a server.** Your account is a key made and kept by your browser. Signing in proves you have the key; there is no password database to leak. Keep a backup with **Export account**.
+- **Nothing for friends to install** means anyone with a link can join in a minute, and there's no software on their side to update or trust.
+- **Your PC isn't opened up.** The owner's tools (emulators, library folders, the OBS overlay and its controls) only work from your own computer, and are checked several ways so other websites or the internet can't reach them.
+- **The trade-off:** in Co-op, every button press travels to the host and the picture travels back, so far-away friends feel some delay. That's what Ghost and Race are for.
 
 ---
 
@@ -18,9 +48,9 @@
    - Missing Python or Node.js? It offers to download and install them for you, and checks every download first.
    - It asks whether you want a **desktop shortcut** with the Retro Hub duck. Say yes, and next time just click the duck.
 3. In the Retro Hub window, press **▶ Start**. Your browser opens the hub.
-4. Type a name to **make your account** (one click, no password).
+4. Type a name to **make your account** (one click, no password). Then **Export account** from the top bar and keep the file somewhere safe: it's the only way to move or restore your account.
 
-**macOS / Linux:** install Python 3 and Node.js 18+, then run `python3 RetroHub.pyw` (or `./launch.sh`) in the folder.
+**macOS / Linux:** install Python 3 and Node.js 18+, then run `python3 RetroHub.pyw` (or `./launch.sh`) in the folder. **Docker / NAS:** see the [advanced guide](README-ADVANCED.md#10-docker-and-nas).
 
 ## Add your games
 
@@ -28,51 +58,74 @@
 - Or point each console at the folder your games are already in: **Settings → Consoles…** in the Retro Hub window.
 - In the hub, press **Unlock library** and enter the owner password (in the window: **Settings → Owner password → Show**).
 
-Disc games show up once (the `.cue` or `.m3u`, not every track), and BIOS files are left out on their own.
+Disc games show up once (the `.cue` or `.m3u`, not every track), and BIOS files are left out on their own. Friends can also play a game file from their own computer; it stays on their computer. How the library decides what's a game: [The ROM library](README-ADVANCED.md#7-the-rom-library).
 
 ## Play with friends
 
-1. **Host a game**: pick a mode (**Co-op**, **Ghost**, or **Race / Speedrun**), pick a game, press **Open lobby**.
+1. **Host a game**: pick a mode (**Co-op**, **Ghost**, **Race / Speedrun** or **🔀 Shuffle**), pick a game, press **Open lobby**.
 2. **Copy invite link** and send it to your friends. Set a lobby password if you like (send it separately).
 3. When everyone is ready, press **Start match**. After the game, **↻ Play again** brings everyone back to the lobby.
 
-**Friends on the same Wi-Fi** can use the *Copy Wi-Fi link* button. **Friends anywhere** need the Internet mode: in the window, pick **Internet (Cloudflare Tunnel)** before pressing Start. It's free, no account needed. The hub still opens on localhost for you; invite links use the public address.
+**Friends on the same Wi-Fi** can use the *Copy Wi-Fi link* button. **Friends anywhere** need the Internet mode: in the window, pick **Internet (Cloudflare Tunnel)** before pressing Start. It's free, no account needed. The hub still opens on localhost for you; invite links use the public address. More: [Playing over the internet](README-ADVANCED.md#9-playing-over-the-internet).
 
-**Streaming?** Turn on **Streamer Mode** in a Co-op lobby: viewers wait in line and take turns in the seats (↻ Rotate, 👑 winner stays, optional turn timer), 🎲 **viewer effects** let viewers spend points on things like inverted controls, double speed or an upside-down screen, and `http://localhost:8080/overlay/queue` is an OBS overlay with who's playing and who's next ([OBS guide](docs/OBS-STREAMING.md)).
-
-**🔀 Shuffler** (link under *Host a game*): load 2-8 games and it jumps between them at random, right where you left each one. Mark games beaten (F8) until you've beaten them all. With friends: pick the **🔀 Shuffle** mode in *Host a game*.
-
-**🎸 Guitar Hero / Rock Band**: these run in the native emulators on the host's PC. Friends set up their guitar or drum kit once in **🎸 Instruments** (☰ menu) and play along; the host maps them in the emulator (`emulators/INSTRUMENTS.md`).
-
-**Lobby Browser** (tab next to *Play*): every lobby on this hub and nearby hubs, with search and filters. Full? **⏳ Wait for a seat** joins you when one opens. **🔔 Alert me** tells you when a lobby you'd like opens.
-
-**👥 Buddy List**: a classic-style messenger. Add buddies by the ID next to their name (or **＋ Buddy** in a lobby, or **Find a Buddy**). Once you've both added each other you see when they're on, send instant messages, set an away message and profile, join their lobby, or invite them to yours.
-
-**Off Site Games** (the tab next to *Play*) links to games that run on other websites, in a new tab. It also has the hub's own extra players: **🎞️ Flash** (.swf), **📱 Phone games** (J2ME .jar), **🗝️ ScummVM** adventures and **🖥️ PC** (DOS / Windows 9x disk images). Load your own files, or the owner puts games in `roms/swf`, `roms/j2me`, `roms/scummvm` and `roms/x86` (one folder per game).
+In a match: **/** to chat, the 🎙 button for voice, **F2** / **F4** to save and load (co-op host), **📶 Stream** to change the quality. Every shortcut: the **⌨** button.
 
 ## Big consoles (PS2, GameCube, Switch…)
 
-Drop a portable build of the emulator into its folder in `emulators/` (for example `emulators/pcsx2/`). **Check for Emus** in the hub shows which ones it found. Details: [emulators/README.md](emulators/README.md).
+1. Drop a portable build of the emulator into its folder in `emulators/` (for example `emulators/pcsx2/`). You supply BIOS, firmware and keys yourself.
+2. Press **Check for Emus** in the hub: it shows which ones it found.
+3. Host the game from the hub on your own PC. The first time, a short **setup check** says if anything is missing and sets up controllers for your friends (without touching your own settings).
+4. When the match starts, press **Share the window** once.
+
+Every emulator, its folder and its quirks: [emulators/README.md](emulators/README.md). How it works: [Native emulators](README-ADVANCED.md#8-native-emulators-and-pc-games). Online play in the emulators themselves (Pretendo, RPCN, Insignia…): the **🌐 Online** button and [Online services](README-ADVANCED.md#online-services).
+
+## Streaming
+
+Turn on **Streamer Mode** in a Co-op lobby: viewers wait in line and take turns in the seats (↻ Rotate, 👑 winner stays, optional turn timer), and 🎲 **viewer effects** let them spend points on things like inverted controls or an upside-down screen.
+
+For OBS: **☰ → 📺 OBS overlay** gives you one Browser Source URL with **the game itself**, the players, a clock, pop-ups and your **Twitch or YouTube chat** (read-only, no login), where chat can fire effects with `!flip`, `!mirror`… There's also a control dock for OBS and a 🪟 **pop-out window** for apps that capture a window instead. Full guide: [docs/OBS-STREAMING.md](docs/OBS-STREAMING.md).
+
+## More to try
+
+| Feature | Where | Read more |
+| --- | --- | --- |
+| 🔀 **Shuffler**: 2-8 games, it jumps between them at random right where you left each one | link under *Host a game*, or the 🔀 Shuffle mode | [Shuffler](README-ADVANCED.md#shuffler) |
+| 🏆 **RetroAchievements**: progress and unlocks in the match | 🏆 in the top bar | [RetroAchievements](README-ADVANCED.md#retroachievements), [docs/ACHIEVEMENTS.md](docs/ACHIEVEMENTS.md) |
+| 👥 **Buddy List**: a classic messenger: see who's on, IM, join their lobby | 👥 in the top bar | [Buddy List](README-ADVANCED.md#buddy-list-messenger) |
+| 🔎 **Lobby Browser**: every lobby here and on nearby hubs, ⏳ wait for a seat, 🔔 alerts | tab next to *Play* | [Lobby Browser](README-ADVANCED.md#lobby-browser) |
+| 🩹 **Patcher**: translations, hacks, randomizers, co-op patches (makes a copy, never changes the original) | *Patches & variants* when you pick a library game | [Patches and the Patcher](README-ADVANCED.md#patches-variants-and-the-patcher) |
+| 🤝 **Co-op ROM hacks**: 2-4 player N64 hacks, set up in one click | *Host a game* with a known N64 ROM | [Co-op ROM hacks](README-ADVANCED.md#co-op-rom-hacks) |
+| 🎸💃 **Guitars, drum kits, dance mats** for friends over the stream | 🎸 Instruments (☰) | [Guitars, drums, dance mats](README-ADVANCED.md#guitars-drum-kits-and-dance-mats) |
+| 🎞️📱🗝️🖥️ **Flash, phone games, ScummVM, DOS / Windows 9x** | Off Site Games tab | [Hub players](README-ADVANCED.md#hub-players-flash-phone-games-scummvm-and-pc) |
+| 🔗 **Link play**: GBA link cable, Four Swords GBA screens, Xbox 360 System Link | *Play* tab panels | [GBA link](README-ADVANCED.md#gba-and-game-boy-link-cable-vba-m), [GBA screens](README-ADVANCED.md#four-swords-adventures-gba-screens), [System Link](README-ADVANCED.md#xbox-360-system-link-rooms) |
+| 🎨 **Themes**: 14 looks, launcher styles, or make and share your own | 🎨 Theme in the top bar | [Themes and emotes](README-ADVANCED.md#themes-and-emotes) |
 
 ## Staying up to date
 
-The Retro Hub window checks for new versions when it opens. Press **Update…** (or **Check for updates**): your settings, games and emulators are kept, and replaced files are backed up first.
-
-## Make it yours
-
-**🎨 Theme** in the top bar (☰ on phones) switches the colors: Coal, Midnight, Synthwave, Forest, Crimson, Pocket or Paper (light). Click **Retro Hub** at the top left any time to get back to the home screen.
+The Retro Hub window checks for new versions when it opens. Press **Update…** (or **Check for updates**): your settings, games and emulators are kept, replaced files are backed up first, and the download is checked before it's installed. What changed: [CHANGELOG.md](CHANGELOG.md).
 
 ## Need help?
 
 | Problem | Try this |
 | --- | --- |
 | The library tab is missing | Press **Unlock library** and enter the owner password. |
-| A friend can't connect | Use the Internet (Cloudflare Tunnel) mode, or see *TURN* in the advanced guide. |
-| The hub link opens some other page (for example "freej2me-web … Loading…") | Another program uses the same port. Retro Hub 0.3.5+ refuses to start and names it; close it or change **Port** in **Settings**. |
+| A friend can't connect | Use the Internet (Cloudflare Tunnel) mode, or see *TURN* in the [advanced guide](README-ADVANCED.md#9-playing-over-the-internet). |
+| The game lags for a friend far away | Try **Ghost** or **Race** mode (no lag), or lower **📶 Stream** quality. |
+| The hub link opens some other page (for example "freej2me-web … Loading…") | Another program uses the same port. Retro Hub refuses to start and names it; close it or change **Port** in **Settings**. |
 | An emulator shows ✖ | The window shows a **Setup needs a look** box with a fix button. |
 | A game is missing from the library | Check its folder in **Settings → Consoles…**, and **Show hidden** in the library. |
+| Lost your account | Import the file from **Export account** on the sign-in page. Without one, make a new account. |
 
-**Everything else** (all settings, the security model, Docker, how it works inside): see the **[advanced guide](README-ADVANCED.md)**. What changed: [CHANGELOG.md](CHANGELOG.md).
+**Where to find everything else**
+
+| You want… | Go to |
+| --- | --- |
+| Every setting, the window's tabs, the command-line launcher | [Advanced guide §4-5, §11](README-ADVANCED.md#4-the-retro-hub-window-launcher-and-admin-panel) |
+| How lobbies, streaming, input and accounts work inside | [Architecture](README-ADVANCED.md#1-architecture-at-a-glance), [Internals](README-ADVANCED.md#13-internals-api-websocket-protocol-webrtc) |
+| What's protected and how | [Security model](README-ADVANCED.md#12-security-model), [docs/SECURITY-LOCAL.md](docs/SECURITY-LOCAL.md) |
+| Docker / NAS | [Docker and NAS](README-ADVANCED.md#10-docker-and-nas) |
+| Where files live, what to back up | [Files and folders](README-ADVANCED.md#14-files-and-folders) |
+| More fixes | [Troubleshooting](README-ADVANCED.md#15-troubleshooting), [FIXLOG.md](FIXLOG.md) |
 
 ---
 
