@@ -1,5 +1,30 @@
 # Changelog
 
+## 1.30.0 - 2026-11-20
+
+Released as **Retro Hub 0.4.1**: everything for streamers, in one OBS Browser Source. Plus a security fix: everyone should update.
+
+### 🛡️ Fixes
+- **A signed-in user could stop the hub** by sending one oversized message on the lobby connection (also the Android view and native-input connections). Now only that connection is closed.
+- **Pedals and handbrakes** that rest at full deflection no longer hold Up + Left on their seat for the whole game.
+
+### 🎬 The game in the OBS overlay
+- Host a lobby from this computer and the 📺 OBS overlay shows **the game itself**, for every console: browser games, native emulators (after *Share the window*), Android, shuffles; in a race, your own run. No Window Capture needed.
+- Tick **Control audio via OBS** for the game's sound as its own mixer channel. Viewer effects like Upside down also flip the overlay's picture, with a banner saying who did it.
+- The video goes straight from your lobby page to OBS on the same PC; the hub only passes the connection setup.
+
+### 🎥 Streamer tools
+- **Presets:** 🎮 Game night, 🔀 Shuffle / chairs (big seat-rotation countdown), ⏱ Speedrun, 🎲 Chat chaos. **Layouts:** Corner, Bottom bar, Full frame, Game only, **Vertical** (1080 × 1920 for Shorts / TikTok).
+- **💬 Twitch chat**, read-only and anonymous (no login, it can never post): a chat box in the overlay, `!flip` `!mirror` … effects paid with chat points (bits add points), `!points`, mods and you for free, and **channel-point rewards** linked to effects. Rate-limited per person; only the effects you tick. **Send a test message** to place the chat box.
+- **⏱ Speedrun timer** with splits on the overlay; race lobbies show their own clock and finishers.
+- **🎛 Control dock** for OBS (Docks → Custom Browser Docks): timer (Space / Enter / Backspace), Rotate seats now, every effect as a free button, seats, up next and chat. It has its own key.
+- **🎮 Controller display:** every seat's buttons and stick, live.
+- **Looks:** Sharp pixels or CRT scanlines (on the game only). **Game and overlay as two sources** for OBS filters (obs-shaderfilter) and Source Record; the dialog lists plugins that pair well.
+- The overlay and dock URLs stay blurred in the dialog until you point at them.
+
+### 🎮 Controllers
+- New option **Real controllers get seats first** (lobby → Sound, controls & stream): gamepads get P1, P2… first; a wheel, pedals or handbrake only gets a seat once you use it. Off by default (connection order, as before).
+
 ## 1.29.0 - 2026-11-19
 
 Released as **Retro Hub 0.4.0**: a security release, plus the OBS overlay, simpler System Link rooms and Wii U guided setup. Everyone should update.
