@@ -1,6 +1,22 @@
-# Fix log: 1.27.0 (Retro Hub 0.3.7)
+# Fix log: 1.31.0 (Retro Hub 0.4.3)
 
-Sections 1-9 are the fixes up to 1.19.0. Section 10 covers 1.25.0 (released as 0.3.1), section 11 covers 1.26.0 (released as 0.3.3), sections 12 and 13 cover 1.26.1 and 1.26.2 (both released together as 0.3.5), section 14 covers 1.26.3 (released as 0.3.6), section 15 covers 1.27.0 (released as 0.3.7).
+Sections 1-9 are the fixes up to 1.19.0. Section 10 covers 1.25.0 (released as 0.3.1), section 11 covers 1.26.0 (released as 0.3.3), sections 12 and 13 cover 1.26.1 and 1.26.2 (both released together as 0.3.5), section 14 covers 1.26.3 (released as 0.3.6), section 15 covers 1.27.0 (released as 0.3.7), section 16 covers 1.30.0 (released as 0.4.1) and section 17 covers 1.31.0 (released as 0.4.3).
+
+## 17. 1.31.0 (Retro Hub 0.4.3)
+
+No bug fixes in this release; it adds the OBS overlay's 🪟 pop-out capture window and RetroAchievements support (see CHANGELOG.md). Notes on how the pop-out avoids known capture problems:
+
+- **Window captures of a covered or unfocused browser window froze timers.** Browsers slow a hidden window's timers to once a second (Chrome: once a minute after 5 minutes). *Change:* in the pop-out only, the overlay's clock tick, chat fade, pop-up removal and reconnect run on a Web Worker timer (50 ms, with a 250 ms page timer as fallback). OBS Browser Sources keep the plain timers, as before.
+- **Black or blank frames in Windows Graphics Capture / BitBlt** from `backdrop-filter`, 3D transforms or WebGL without `preserveDrawingBuffer`. *Change:* the pop-out uses flat colours and 2D transforms only; mirror / flip are `scaleX(-1)` / `scaleY(-1)` on one wrapper.
+- **Frame layout with mirror / flip on:** the frame's cut-outs came from `getBoundingClientRect`, which reports flipped positions. *Change:* `rect()` maps them back before the clip path is drawn.
+- If the browser itself stops drawing a fully covered window, that's outside the page: docs/OBS-STREAMING.md lists the Chrome / Edge and Firefox settings.
+
+## 16. 1.30.0 (Retro Hub 0.4.1)
+
+- **A signed-in user could stop the hub** (security). *Cause:* the WebSocket servers had no `error` listener, so any message over the size limit (lobby `/ws` 64 KB, Android view 256 B, native input 1 KB) threw an unhandled error and ended the process. *Change:* `ws.on("error", () => {})` on every connection in `server.mjs`, `core/streaming/android-mirror.mjs` and `core/streaming/native.mjs`; now only that connection closes. Found by the OBS stream-tools tests.
+- **Pedals and handbrakes held Up + Left on P1 for the whole game.** *Cause:* devices that rest at full deflection (axes at -1) were read as a held stick / D-pad. *Change:* `public/input.js` `attachGamepads` marks axes first seen beyond 0.9 as "pinned" and ignores them for stick and D-pad. Found live with a USB handbrake as gamepad 0.
+- **New option, not a fix:** *Real controllers get seats first* (lobby → Sound, controls & stream; off by default): standard gamepads get P1, P2… first; wheels, pedals and handbrakes only get a seat once used. Reassigning a device releases its held buttons on the old seat.
+- **OBS overlay feed after a host page reload:** the overlay re-asks the host whenever the host's connection changes (a resume keeps the same host object with a new socket), so the game reconnects by itself.
 
 ## 15. 1.27.0 (Retro Hub 0.3.7)
 
