@@ -2,7 +2,7 @@
 
 ## 1.31.0 - 2026-11-20
 
-Released as **Retro Hub 0.4.3**: a pop-out capture window for the OBS overlay, and RetroAchievements support.
+Released as **Retro Hub 0.4.3**: a pop-out capture window for the OBS overlay, YouTube chat on stream, and RetroAchievements support.
 
 ### 🪟 Pop-out capture window
 - ☰ → **📺 OBS overlay** → **🪟 Pop-out capture window**: the overlay in its own clean window (no bars, borders or scrollbars) for apps that capture a window instead of a Browser Source: OBS / Streamlabs Window Capture, Discord, Firefox or Chrome screen sharing, virtual cameras. Or copy its link into another browser on this computer.
@@ -11,6 +11,18 @@ Released as **Retro Hub 0.4.3**: a pop-out capture window for the OBS overlay, a
 - A toolbar that shows only while you move the mouse over the window; hold and drag it out of the way. Keys work without showing anything: B background, 1-4 pick one, X mirror, Y flip, H keep the toolbar shown.
 - Follows the hub live and keeps its clock running while covered or unfocused. No game sound unless you tick it, so it never doubles your stream's audio.
 - Your existing OBS Browser Source and dock links work exactly as before.
+
+### ▶ YouTube chat on stream
+- 📺 OBS overlay → **💬 Chat on stream**: type your YouTube **@handle**, channel link or live video link. The chat shows in the overlay (with a red ▶) and the dock, next to Twitch chat if you simulcast.
+- Read-only with **no login and no API key**: the hub reads the public chat the way youtube.com's own chat box does, from your PC only. It can never post.
+- The same chat commands and points as Twitch (`!flip`, `!points`…); a Super Chat or Super Sticker adds 5 points. Messages that were already there when it connects can't fire anything.
+- Not live yet? It checks once a minute and connects when you go live.
+
+### 🛡️ Safer chat on stream (Twitch and YouTube)
+- Messages your mods **delete**, and everything from someone they **time out or ban**, now disappear from the overlay and the dock too. Before, they stayed up until newer lines pushed them out.
+- **Links show as 🔗** by default, so nobody can put a scam link on your stream (*Show links* turns them back on).
+- **Hide messages with these words**: your own list of words or phrases (any case, also in fancy Unicode letters). Matching names and messages are hidden and can't use chat commands.
+- The hub's own lines (like *Send a test message*) carry a **HUB** badge, so a viewer named "Retro Hub" can't pass for it.
 
 ### 🏆 RetroAchievements
 - Shows which consoles support RetroAchievements (PCSX2, PPSSPP, Flycast; Dolphin with notes) under Console in *Host a game*, on library tiles, in the 🏆 panel and the RA dialog.
