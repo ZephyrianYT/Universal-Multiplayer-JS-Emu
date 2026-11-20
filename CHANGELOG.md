@@ -1,5 +1,23 @@
 # Changelog
 
+## 1.31.0 - 2026-11-20
+
+Released as **Retro Hub 0.4.3**: a pop-out capture window for the OBS overlay, and RetroAchievements support.
+
+### 🪟 Pop-out capture window
+- ☰ → **📺 OBS overlay** → **🪟 Pop-out capture window**: the overlay in its own clean window (no bars, borders or scrollbars) for apps that capture a window instead of a Browser Source: OBS / Streamlabs Window Capture, Discord, Firefox or Chrome screen sharing, virtual cameras. Or copy its link into another browser on this computer.
+- Sizes 1280 × 720, 1920 × 1080, 960 × 540 and vertical. Backgrounds: transparent, chroma green `#00FF00`, chroma magenta `#FF00FF`, solid black.
+- **Mirror** and **Flip** for captures that come out reversed or upside down; also in the link (`flipX=1`, `flipY=1`), so they stay on next time.
+- A toolbar that shows only while you move the mouse over the window; hold and drag it out of the way. Keys work without showing anything: B background, 1-4 pick one, X mirror, Y flip, H keep the toolbar shown.
+- Follows the hub live and keeps its clock running while covered or unfocused. No game sound unless you tick it, so it never doubles your stream's audio.
+- Your existing OBS Browser Source and dock links work exactly as before.
+
+### 🏆 RetroAchievements
+- Shows which consoles support RetroAchievements (PCSX2, PPSSPP, Flycast; Dolphin with notes) under Console in *Host a game*, on library tiles, in the 🏆 panel and the RA dialog.
+- Owner: see whether each emulator has achievements on, is signed in and uses hardcore; switch them on in one click (backed up first), or open the emulator to sign in.
+- Checks whether your game file is a dump RetroAchievements recognises, and lists the files it accepts.
+- `apps.py add-ra-emulator` adds a RetroArch-family emulator you downloaded as its own console. Details: `docs/ACHIEVEMENTS.md`.
+
 ## 1.30.0 - 2026-11-20
 
 Released as **Retro Hub 0.4.1**: everything for streamers, in one OBS Browser Source. Plus a security fix: everyone should update.
