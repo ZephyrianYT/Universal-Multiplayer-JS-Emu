@@ -1,4 +1,7 @@
 > **0.4.3 is out:** ▶ YouTube chat on stream (read-only, no login), a 🪟 pop-out capture window for the OBS overlay (for Window Capture, Firefox, Discord and virtual cameras: chroma backgrounds, mirror / flip, no sound doubling) and 🏆 RetroAchievements support for PCSX2, PPSSPP, Flycast and Dolphin. Use the updater or download `RetroHub0.4.3.zip` from Releases.
+Common Questions:
+Retro Achievments does not work in EmulatorJS the log in and tracking is intended to be used with native, tracking and for hub accessibility
+N64 Achievments are Handled by LunaProject64, that is the choice client, and is unaffiliated with this project.
 
 # Retro Hub
 
