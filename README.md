@@ -1,4 +1,4 @@
-> **0.4.1 is out:** the 📺 OBS overlay now shows **the game itself** (every console) in one Browser Source, plus 💬 Twitch chat with chat-point effects and channel-point rewards, a ⏱ speedrun timer, a 🎛 control dock for OBS, a 🎮 controller display, CRT / vertical layouts, and a fix that stops a signed-in user from crashing the hub. Use the updater or download `RetroHub0.4.1.zip` from Releases.
+> **0.4.3 is out:** a 🪟 pop-out capture window for the OBS overlay (for Window Capture, Firefox, Discord and virtual cameras: chroma backgrounds, mirror / flip, no sound doubling) and 🏆 RetroAchievements support for PCSX2, PPSSPP, Flycast and Dolphin. Use the updater or download `RetroHub0.4.3.zip` from Releases.
 
 # Retro Hub
 
@@ -13,7 +13,7 @@
 
 ## Get started (Windows)
 
-1. **Unzip** `RetroHub0.4.1.zip` anywhere (for example `C:\Games\retro-hub`).
+1. **Unzip** `RetroHub0.4.3.zip` anywhere (for example `C:\Games\retro-hub`).
 2. **Double-click `launch.bat`.**
    - Missing Python or Node.js? It offers to download and install them for you, and checks every download first.
    - It asks whether you want a **desktop shortcut** with the Retro Hub duck. Say yes, and next time just click the duck.
