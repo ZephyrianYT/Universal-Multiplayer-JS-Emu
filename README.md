@@ -1,4 +1,4 @@
-> **0.4.3.2 is out:** bezels and your theme on the OBS overlay, an overlay PiP for one-monitor streamers, 4-player setup for native emulators, PS4, PS Vita and N-Gage, and arcade BIOS from roms/bios. Use the updater or download `RetroHub0.4.3.2.zip` from Releases.
+> **0.4.4.1 is out:** 📺 Big screen mode for TVs and controllers, plus Triforce arcade games, a BIOS folder that sets your emulators up by itself, MAME 2003-Plus, RetroArch consoles, a clearer home screen and a 📖 Setup guide. Use the updater or download `RetroHub0.4.4.1.zip` from Releases.
 
 # Retro Hub
 
@@ -43,7 +43,7 @@ There are three ways to play a game together, and you pick one when you host:
 
 ## Get started (Windows)
 
-1. **Unzip** `RetroHub0.4.3.zip` anywhere (for example `C:\Games\retro-hub`).
+1. **Unzip** `RetroHub0.4.4.1.zip` anywhere (for example `C:\Games\retro-hub`).
 2. **Double-click `launch.bat`.**
    - Missing Python or Node.js? It offers to download and install them for you, and checks every download first.
    - It asks whether you want a **desktop shortcut** with the Retro Hub duck. Say yes, and next time just click the duck.
