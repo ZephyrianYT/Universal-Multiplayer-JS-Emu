@@ -1,5 +1,55 @@
 # Changelog
 
+## 1.33.1 - 2026-11-23
+
+Released as **Retro Hub 0.4.4.1**:
+
+- 📺 **Big screen mode** (☰ Menu > Big screen, or /big.html): a 10-foot, controller-first launcher. Consoles across,
+  games down, cover and details on the side; Continue, Lobbies and Web players rows; search with an on-screen keyboard.
+  A / B / LB / RB / LT / RT / Y / Start, or arrows, Enter, Esc, Q / E, [ ], /, F, M. Play and Join hand off to the normal
+  lobby, which returns to big screen when you leave. (The lobby page itself still needs a mouse or keyboard.)
+  Menu (Start / M): 🪟 OBS pop-out window and 📌 overlay on screen (owner on the hub's PC; uses your saved OBS options).
+- 🔑 Web page lobbies only type guests' keys into a tab showing that lobby's own random key.
+- 🧩 Flycast gets NAOMI / Atomiswave BIOS from roms/bios; PLAYCHIVE added to Off Site Games.
+
+## 1.33.0 - 2026-11-23
+
+Released as **Retro Hub 0.4.4**: Triforce arcade games, a BIOS folder that sets emulators up by itself, MAME 2003-Plus
+next to FBNeo, RetroArch consoles, a clearer home screen with a 📖 Setup guide, and many community requests.
+
+- 🕹 **Triforce** (F-Zero AX, Mario Kart Arcade GP 1/2, Virtua Striker) on Dolphin 2512-395+: a `triforce` folder anywhere
+  in your GameCube games, `segaboot.gcm` copied from roms/bios, no controller-port overrides; docs/TRIFORCE.md.
+- 🧩 **BIOS folder automation**: roms/bios/<console>/ (ps2, switch, wiiu, triforce, ps3, psv, xemu…). PS2 BIOS, Switch keys,
+  Wii U keys.txt and RetroArch core BIOS are copied where the emulator looks (never overwriting); firmware to install is named
+  exactly. The empty folder tree ships with the zip.
+- 🗂 **Sort one library folder into several consoles**: a sub-folder named after a console (`fbneo`, `mame`, `triforce`,
+  `naomi`, `model3`…) gives its games to that console.
+- 🕹 **Arcade (MAME 2003-Plus)** browser console next to Arcade (FBNeo), sharing the arcade BIOS sets.
+- 🕹 **RetroArch consoles** (found by itself, including the Steam copy): ZX Spectrum, Amiga, DOS, WASM-4, TIC-80, MSX, Vectrex,
+  Atari 5200, Supervision, PC-98, X68000, Pokémon Mini, PC-FX, CD-i, Palm OS. Your retroarch.cfg is never changed.
+- 🆕 Sega Model 3 (Supermodel), Symbian S60v3 .sis (EKA2L1), iPhone OS (touchHLE).
+- 🏠 **Home screen**: Start here with Host / Join / Setup guide, Host a game first while nobody hosts, numbered host steps
+  (pick a game → how to play → open), password and seats under More options, link cable and System Link folded away,
+  ☰ Menu at every width.
+- 📖 **Setup guide** (☰ Menu): games, BIOS, emulators, arcade, Triforce, friends and streaming, with a live checklist for the owner.
+- 📽 OBS **Projector** layout (game, P1-P4 cards, scrolling Up next) and the lobby's **📋 Up next** game queue.
+- 🌐 **Web page lobbies**: 📡 Host a lobby on the Flash, phone, Java applet, ScummVM and PC pages; guests' keys only reach those pages.
+- ☕ **Java applets** page (CheerpJ). 🌐 Off Site Games: 7 more (GTA2, Freeciv-web, TETR.IO, Suroi, Hypersomnia, PokéRogue,
+  Deadvale Prom) and an Online multiplayer filter.
+- Fixes: a stray .zip was listed as an N-Gage game; a web page host's reload lost its share steps.
+
+## 1.32.0 - 2026-11-23
+
+Released as **Retro Hub 0.4.3.2**: bezels and your theme on the OBS overlay, an overlay PiP on the hub page, 4-player setup for native emulators, PS4 (shadPS4), PS Vita (Vita3K), N-Gage (EKA2L1) and arcade BIOS from roms/bios.
+
+- 🖼 The Bezel Project bezels on the overlay, pop-out and the host's play screen (toggle); overlay uses your hub theme.
+- 📌 Overlay PiP on the hub page for one-monitor streamers, with a 🙈 hide-codes switch (now also blurs account IDs).
+- 🔊 Docs: getting the game's sound to viewers (OBS projector, Window Capture, Discord).
+- 🎮 4-player check; PCSX2, RPCS3 and Ryujinx map guests to Xbox pads 2-4; the hub picks a Python that has vgamepad.
+- 🆕 PS4 (shadPS4 Qt launcher), PS Vita (Vita3K, installs NoNpDrm dumps on first start), N-Gage (EKA2L1).
+- 🕹 Arcade games that need a BIOS (Neo Geo, PGM…) get it from roms/bios.
+- Updater understands four-part release numbers.
+
 ## 1.31.0 - 2026-11-20
 
 Released as **Retro Hub 0.4.3**: a pop-out capture window for the OBS overlay, YouTube chat on stream, and RetroAchievements support.
