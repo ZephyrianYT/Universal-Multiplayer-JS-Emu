@@ -1,7 +1,4 @@
-> **0.4.3 is out:** ▶ YouTube chat on stream (read-only, no login), a 🪟 pop-out capture window for the OBS overlay (for Window Capture, Firefox, Discord and virtual cameras: chroma backgrounds, mirror / flip, no sound doubling) and 🏆 RetroAchievements support for PCSX2, PPSSPP, Flycast and Dolphin. Use the updater or download `RetroHub0.4.3.zip` from Releases.
-Common Questions:
-Retro Achievments does not work in EmulatorJS the log in and tracking is intended to be used with native, tracking and for hub accessibility
-N64 Achievments are Handled by LunaProject64, that is the choice client, and is unaffiliated with this project.
+> **0.4.3.2 is out:** bezels and your theme on the OBS overlay, an overlay PiP for one-monitor streamers, 4-player setup for native emulators, PS4, PS Vita and N-Gage, and arcade BIOS from roms/bios. Use the updater or download `RetroHub0.4.3.2.zip` from Releases.
 
 # Retro Hub
 
