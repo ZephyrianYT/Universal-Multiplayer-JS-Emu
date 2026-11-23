@@ -497,18 +497,30 @@ The **Off Site Games** tab (next to **Play**) lists games that run on other webs
 - **Your own list**: copy that file to `offsite-games.json` in the hub's main folder and edit it. It replaces the default, is kept by the updater, and isn't shipped. Each game: `name`, `url` (`https://` only; anything else is dropped), `category`, optional `note`, and `"touch": true` for games that work on phones and tablets (they get a *Phone / tablet friendly* filter).
 - Mind what you link to: a list of unofficial copies of commercial games, or sites with heavy ads, reflects on your hub.
 
-### Hub players: Flash, phone games, ScummVM and PC
+### Hub players: Flash, phone games, Java applets, ScummVM and PC
 
-Four extra players in the Off Site Games tab, each in its own page, solo only (no lobbies). Players can load their own files (read in the browser, never uploaded), and the owner can put games on the hub, one folder per game:
+Five extra players in the Off Site Games tab, each in its own page, solo by default (the owner can share one into a lobby: see *Web page lobbies* below). Players can load their own files (read in the browser, never uploaded), and the owner can put games on the hub, one folder per game:
 
 | Player | Files | Hub folder | Engine |
 | --- | --- | --- | --- |
 | **🎞️ Flash** | `.swf` | `roms/swf/<Game>/` (biggest `.swf` = the game, an image = its cover) | [Ruffle](https://ruffle.rs), self-hosted in `public/ruffle/`, with networking, links and scripting to the page turned off |
 | **📱 Phone games** | J2ME `.jar` / `.jad` | `roms/j2me/<Game>/` | [freej2me-web](https://github.com/zb3/freej2me-web) (GPL-3.0) on CheerpJ; needs internet (CheerpJ's loader comes from leaningtech.com, allowed on `/j2me/` pages only) |
+| **☕ Java applets** | an applet's `.jar` + its original `.html` page (the `<applet>` tag is read) or an `applet.json` (`code`, `archive`, `width`, `height`, `params`) | `roms/applets/<Game>/` only | CheerpJ 5.0 (Java 8) from leaningtech.com, needs internet (allowed on `/applet/` pages only); the hub serves only the game's own file types (`.jar`, `.class`, images, sounds, data) |
 | **🗝️ ScummVM** | the game's data files | `roms/scummvm/<Game>/` only (the engine can't open a local folder) | Official ScummVM web build; its files are fetched from GitHub on first use, checked against pinned sizes and hashes (`core/scummvm-files.json`) and cached in `cache/scummvm/` |
 | **🖥️ PC** | `.img` / `.ima` floppy, `.iso` CD, hard-disk image, `.v86state` snapshot | `roms/x86/<Machine>/` | [v86](https://github.com/copy/v86) (BSD-2) in `public/v86/`, with networking off; RAM 32-256 MB, CD and floppy swap, Ctrl+Alt+Del, snapshot download |
 
 Hub games use the library's access rule (`LIBRARY_ACCESS`), and each page only serves its own file types from its own folder.
+
+#### Web page lobbies
+
+The owner, in a browser on the hub's own computer, sees **📡 Host a lobby** at the top of the Flash, Phone games,
+Java applets, ScummVM and PC pages. It opens the hub in a new tab with a lobby for that page's game, on the **Web page** console.
+Nothing gets launched: start the game in its page, press **Start match**, then **📺 Share the game's tab** and pick that
+tab with *Share tab audio* on. Guests watch it like a native game. Their buttons arrive as the keys browser games use
+(arrows, Z, X, C, Space, Enter, Shift: table in `emulators/KEYBOARD.md`), every seat pressing the same keys, and only
+while that game page is the window in front. Each web page lobby makes a random key that only this computer's own
+game pages hear (they show **🔑 key** in their tab title); keys are typed only into a browser window whose title holds
+it, so another website can't receive them by copying the page's name. Windows hosts only for guest controls.
 
 ### Pass the controller
 
@@ -791,6 +803,7 @@ Settings are environment variables, usually from `.env`. Edit them in the window
 | `CORES_CACHE` | `./cache/cores` | Downloaded EmulatorJS cores. `session.key` sits next to it. |
 | `SESSION_SECRET` | random `session.key` | Cookie signing key. Changing it signs everyone out. |
 | `EMULATORS_DIR` | `./emulators` | Native emulator builds and `apps.json`. |
+| `RETROARCH_DIR` | found automatically | RetroArch's folder for the RetroArch consoles (else `emulators/retroarch/`, Steam libraries, standard folders; see `emulators/README.md`). |
 | `NATIVE_INPUT` | `auto` | `auto`, `gamepad` or `keyboard` for guest input in native games. |
 | `NATIVE_PYTHON` | the launcher's Python (`RH_PYTHON`) | Python used for `apps.py` and `input_bridge.py`. |
 | `ANDROID_ADB` | found automatically | `adb` for Android games (see `emulators/README.md`). |
