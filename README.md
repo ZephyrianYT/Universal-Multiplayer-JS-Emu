@@ -1,3 +1,4 @@
+<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/5b08d2a0-6854-4e57-b776-60a4f236c24c" />
 > **0.4.4.1 is out:** 📺 Big screen mode for TVs and controllers, plus Triforce arcade games, a BIOS folder that sets your emulators up by itself, MAME 2003-Plus, RetroArch consoles, a clearer home screen and a 📖 Setup guide. Use the updater or download `RetroHub0.4.4.1.zip` from Releases.
 
 # Retro Hub
