@@ -1,5 +1,47 @@
 # Changelog
 
+## 1.33.4 - 2026-11-24
+
+Released as **RetroDuck 0.4.4.4**: easier for first-time hosts.
+
+- 🌍 **Internet link** (☰ Menu, owner on the hub's PC): one switch opens a free Cloudflare quick tunnel while the hub
+  runs and shows its address with a Copy button; invite links use it at once. No router setup, no restart. It needs
+  cloudflared (the dialog says how to get it). Friends who come in through it are visitors: the owner's tools stay on
+  this PC. Invite links on a 192.168.x.x / 10.x address now say *same Wi-Fi / LAN only* when copied.
+- 🔎 **Emulators installed on this PC**: Check for Emus also looks in Program Files and AppData (read only) for built-in
+  emulators installed with their own installer (Dolphin, PCSX2, PPSSPP…) and offers **Use it**. The emulator keeps
+  RetroDuck's launch settings and its own settings folder. Also `python apps.py discover` and
+  `python apps.py use-install <id> [exe]` (no exe = back to the emulators folder).
+- 💾 **Save your backup file** right after making an account: your account lives in that browser only, and the file
+  brings it back if the browser's data is cleared. *Later* skips it (Export account in ☰ still works).
+- 🎮 **Drag a game file onto "My files"** to pick it. Ghost / Race mode: when your ROM differs from the host's, the
+  lobby now shows the host's file name, checksum and size so you can find the matching copy.
+- ⚡ **Faster, safer updates**: the server dependency is installed again only when package-lock.json changes (and an
+  update that changes it now really reinstalls it); offline, the hub keeps the installed one and still starts.
+
+
+Released as **RetroDuck 0.4.4.3**: Retro Hub is now **RetroDuck**.
+
+- 🦆 **RetroDuck**: new name on every page, window, shortcut text and doc. Your accounts, saved settings, library,
+  emulators and the updater keep working as before (only the visible name changed).
+- 🎨 **RetroDuck theme**, the new default: a pixel title screen at dusk. Pixel meadow along the bottom of the window,
+  duck yellow, MOOD MKII pixel type for the brand and headings, chunky press-down buttons and hard pixel shadows. Anyone
+  who picked a theme keeps it; Coal (the old default) is still in 🎨 Theme. "RetroHub NetRunner" is now "RetroDuck NetRunner".
+- 📺 Big screen: a **RetroDuck splash** (logo, Press Start) once per visit, **🔊 menu sounds** for move / select / back /
+  menu (Start > Menu sounds turns them off), the meadow under the Carousel's cover row, readable names on top of it.
+- 🕹 **Front-end home**: the Play tab now looks like a game launcher. A big banner for the game you played last (its
+  cover blurred behind it) with ▶ Play, Lobby options and 🎲 Surprise me, a *Jump back in* row, a console shelf, a wider
+  cover wall with ▶ quick play on every game, and lobbies in a side column.
+- 📺 Big screen **Match theme** (new default layout): every theme gets its own big screen. NetRunner = **Terminal**
+  (3-pane file browser with a size column, HUD readout and a boot scan), Cubic = **Cube grid** (chunky press-down
+  tiles), Bootup = Dial, all others = **Carousel** (the game's art blurred behind, a cover row and an open-lobbies strip).
+  Plus a **🎞 Screensaver** after 2 idle minutes (any button wakes it without doing anything else).
+- 🔍 Big screen checked end to end (all 8 layouts, all 18 themes, keyboard and gamepad, Play > lobby > back). Fixed: the
+  selected row in Crossbar and Panels and the selected tile in Cube grid had their highlight cut off at the edge; Cube
+  grid up/down now always stays in the same column.
+- ☕ **Support RetroDuck**: Ko-fi and YouTube links in ☰ Menu, the hub footer, the sign-in page and Big screen > Start.
+- Art: `public/art/` (see `ART-LICENSES.md`).
+
 ## 1.33.2 - 2026-11-23
 
 Released as **Retro Hub 0.4.4.2**:
