@@ -450,11 +450,35 @@ The **Lobby Browser** tab (next to *Play*) is one table of every lobby: this hub
 - **Limits** (on the hub): 10 IMs per 10 s, 1000 characters each. **Warn** works like the classic one: +10% per warning (once per 5 minutes per sender), it drops 1% a minute, and at 50% that person can send one IM per 5 s.
 - **Privacy**: your list lives in your browser, per account (export the account to move it). The page sends it over its own socket; the hub keeps it in memory only while the page is open and stores nothing. Buddies on other hubs don't show.
 
+### 📺 Big screen mode
+
+A 10-foot, controller-first launcher for a TV: ☰ Menu > **📺 Big screen** (or `/big.html`). Consoles across, games down,
+the cover and actions on the side; rows for *Continue* (recently played), *Lobbies* and *Web players*.
+
+| Control | Gamepad | Keyboard |
+| --- | --- | --- |
+| Move / pick | D-pad, left stick | arrows |
+| Select / back | A / B | Enter or Space / Esc or Backspace |
+| Jump console / letter | LB RB / LT RT | Q E / [ ] |
+| Search (on-screen keys) / menu | Y / Start | / / M |
+
+**▶ Play** opens the normal lobby for the game (Race for browser consoles); leaving the lobby comes back here. The menu
+has **🧭 Layout** (Standard, Crossbar, Panels, Dial; remembered per browser), fullscreen, search, reload, exit, and for the
+owner on the hub's PC the **🪟 OBS pop-out** and **📌 overlay on screen** (using the OBS dialog's saved options). Big
+screen uses the active theme, its background picture and Wave ribbons. The lobby page itself still needs a mouse or
+keyboard, and native games need a click for *Share the window*.
+
+### 🐣 Pocket Duck
+
+A small virtual pet (Off Site Games, or Big screen > Web players): feed it, play a left-or-right game, clean up, turn the
+lights off, give medicine. It hatches and grows up in real time, also while the hub is closed, and never dies (neglect
+makes it sick until you care for it). Saved per account in this browser (`localStorage` rh-pet:<account>).
+
 ### Themes and emotes
 
 **🎨 Theme** (top bar; ☰ on phones) changes the look for this browser.
 
-- **Colors**: Coal (default), Midnight, Synthwave, Forest, Crimson, Pocket, Paper (light) and Durag Duck. **Launcher styles**: Lounge (soft, rounded), Marquee (glass panels, serif headings), Couch (big tiles and focus ring for the TV), Shelf (media-server tiles), Wave (animated ribbons behind the page) and Gloss (glossy buttons, chrome bar). Every card shows a small mock-up.
+- **Colors**: Coal (default), Midnight, Synthwave, Forest, Crimson, Pocket, Paper (light) and Durag Duck. **Launcher styles**: Lounge (soft, rounded), Marquee (glass panels, serif headings), Couch (big tiles and focus ring for the TV), Shelf (media-server tiles), Wave (animated ribbons behind the page) Gloss (glossy buttons, chrome bar), Bootup (light, late-90s console menu), Cubic (indigo, chunky 3D tiles) and RetroHub NetRunner (hacker HUD with bracket frames and scanlines). Every card shows a small mock-up.
 - **🎲 Surprise me** picks one at random; **↩ Undo changes** goes back to what you had when you opened the dialog; **Match my system** keeps one theme for light mode and one for dark and follows Windows / macOS.
 - **Make your own**: start from any theme, then set background, panel, line, text and accent colors, font, corner radius, heading case, a background picture (kept in this browser, darkened as you like), the launcher look and a background effect (glow, ribbons, scanlines). A contrast readout warns when text or the accent gets hard to read. **Copy code** gives a share code (`RH-THEME:…`, without the picture) that anyone can paste.
 - The Wave ribbons draw at 30 fps on a small canvas, only while that theme is on, the tab is visible and no game is running; *reduce motion* turns them into one still picture.
@@ -623,6 +647,22 @@ The library, its ROM downloads and its covers are owner-only by default. `LIBRAR
 
 ---
 
+### Sorting one folder into several consoles
+
+A sub-folder named after a console inside a library folder gives its games to that console (when it takes that file
+type): for example `GameCube/Games/triforce/` → Arcade: Triforce, `Arcade/fbneo/` → Arcade (FBNeo), `Arcade/mame/` →
+Arcade (MAME 2003-Plus), plus `naomi`, `model3`, `dos`, `msx`, `amiga`, `ouya` and the other console folder names.
+
+### The BIOS folder (roms/bios)
+
+Put your own BIOS, firmware and key files in `roms/bios/<console>/` (the zip ships the empty folders and a README).
+Before each native game the hub copies what that emulator reads from a plain folder to where it looks, and never
+replaces a file that is already there: PS2 BIOS → PCSX2, Switch `prod.keys` / `title.keys` → Ryujinx / Eden, Wii U
+`keys.txt` → Cemu, `segaboot.gcm` → Dolphin's Triforce folder, NAOMI / Atomiswave BIOS → Flycast, and the BIOS each
+RetroArch core lists → RetroArch's `system` folder. Firmware an emulator must install itself (PS3, Switch, PS Vita) is
+named exactly in the pre-flight check. Arcade BIOS sets (`neogeo.zip`…) anywhere under `roms/bios` serve FBNeo and
+MAME 2003-Plus. The 📖 Setup guide (☰ Menu) has the full table and a live checklist for the owner.
+
 ## 8. Native emulators and PC games
 
 ### Setup
@@ -735,6 +775,18 @@ LAN multiplayer for Xbox 360 games between hubs on the same network (or a virtua
 - **Same game check**: each hub reads the game's title ID, media, version and title update; a different game is refused, a different version or update warns first.
 - The room's peer routes only answer to private network addresses or an address inside one of this PC's own adapter subnets, with no proxy headers, rate-limited.
 - Full details, verified Xenia settings and what isn't tested: [docs/SYSTEM-LINK.md](docs/SYSTEM-LINK.md).
+
+### Triforce, RetroArch consoles and OUYA
+
+- **Arcade: Triforce (Dolphin)**: F-Zero AX, Mario Kart Arcade GP 1/2, Virtua Striker on Dolphin 2512-395 or newer;
+  dumps in a `triforce` folder; `segaboot.gcm` (optional, for the test menu) from `roms/bios/triforce/`. Full guide:
+  `docs/TRIFORCE.md`.
+- **RetroArch consoles**: one RetroArch (found by itself, also the Steam copy) runs ZX Spectrum, Amiga, DOS, WASM-4,
+  TIC-80, MSX, Vectrex, Atari 5200, Supervision, PC-98, X68000, Pokémon Mini, PC-FX, CD-i and Palm OS once it has the
+  core. Your `retroarch.cfg` is never changed (`--appendconfig cache/retroarch-hub.cfg`). `python apps.py retroarch`
+  shows what was found.
+- **OUYA (Android)**: OUYA APKs in an `ouya` folder run through the Android console (adb + an Android emulator); install
+  your own copy of the OUYA Framework on the emulator once. See `emulators/README.md`.
 
 ## 9. Playing over the internet
 
