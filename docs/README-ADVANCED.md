@@ -1,8 +1,8 @@
-# Retro Hub: advanced guide
+# RetroDuck: advanced guide
 
 > New here? [README.md](../README.md) is the short version: install, start, invite friends.
 
-Retro Hub is a self-hosted game hub for playing retro and modern console games with friends. One person (the **owner**) runs the hub on their PC or home server. Friends open a link in their browser, make an account with one click, and join a lobby.
+RetroDuck is a self-hosted game hub for playing retro and modern console games with friends. One person (the **owner**) runs the hub on their PC or home server. Friends open a link in their browser, make an account with one click, and join a lobby.
 
 - **Browser consoles** (NES through PS1, N64, GBA, DS, PSP and more) run inside the host's browser with [EmulatorJS](https://emulatorjs.org). The host streams video and audio to the guests over WebRTC, and the guests send back only their controller input.
 - **Native consoles** (PS2, GameCube, Wii, PS3, Xbox, Xbox 360, Wii U, Switch, 3DS, Dreamcast, arcade NAOMI / Atomiswave and TeknoParrot, plus PSP, DS, N64 and GBA link in their desktop emulators), **Android games** and **PC games** run in real programs on the owner's PC. The browser captures that window and streams it the same way.
@@ -28,7 +28,7 @@ This guide covers installing the hub, using it day to day, and how it works insi
 1. [Architecture at a glance](#1-architecture-at-a-glance)
 2. [Requirements](#2-requirements)
 3. [Installing (fresh install)](#3-installing-fresh-install)
-4. [The Retro Hub window (launcher and admin panel)](#4-the-retro-hub-window-launcher-and-admin-panel)
+4. [The RetroDuck window (launcher and admin panel)](#4-the-retro-hub-window-launcher-and-admin-panel)
 5. [Command-line launcher](#5-command-line-launcher)
 6. [Using the hub](#6-using-the-hub)
    - [Accounts](#accounts) · [Hosting](#hosting-a-game) · [Joining](#joining) · [In the match](#in-the-match) · [Race / speedrun](#race--speedrun-mode) · [RetroAchievements](#retroachievements)
@@ -103,7 +103,7 @@ Game media (video, audio and input) travels **directly between browsers** over W
 | Native emulator builds | Native consoles only | You supply portable builds plus your own BIOS, firmware and keys. See [section 8](#8-native-emulators-and-pc-games). |
 | `vgamepad` + ViGEmBus (Windows) or `evdev` (Linux) | Optional | Analog virtual gamepads for guests in native games. Without them, keyboard mode is used. |
 
-On Windows you don't have to install these by hand: `launch.bat` offers Python and Node.js, and the Retro Hub window offers Node.js, ViGEmBus and `vgamepad`. Each one is downloaded from its official source and checked first (`setup/deps.ps1`: SHA-256 against the publisher's checksum where one is published, publisher signature, Microsoft Defender scan). Run it yourself with `powershell -ExecutionPolicy Bypass -File setup\deps.ps1` (`-Check` only reports).
+On Windows you don't have to install these by hand: `launch.bat` offers Python and Node.js, and the RetroDuck window offers Node.js, ViGEmBus and `vgamepad`. Each one is downloaded from its official source and checked first (`setup/deps.ps1`: SHA-256 against the publisher's checksum where one is published, publisher signature, Microsoft Defender scan). Run it yourself with `powershell -ExecutionPolicy Bypass -File setup\deps.ps1` (`-Check` only reports).
 
 ---
 
@@ -135,7 +135,7 @@ A fresh install has **no games, accounts, settings or emulators**. `roms/` is em
 
 ### Desktop shortcut
 
-`setup/shortcut.py` makes it, with the Retro Hub mascot icon from `assets/icon/`:
+`setup/shortcut.py` makes it, with the RetroDuck mascot icon from `assets/icon/`:
 
 | System | What is created | Opens |
 | --- | --- | --- |
@@ -152,7 +152,7 @@ The question comes once (the answer is saved as `"promptedDesktopShortcut": true
 - **Kept**: `.env`, `library-folders.json`, `library-hidden.json`, `.retrohub-config.json`, `emulators/` (your builds and `apps.json`; only its README / KEYBOARD / INSTRUMENTS docs update), `roms/`, `cache/`, `run/`, `node_modules/`.
 - **Backed up**: every file it replaces goes to `backup/<date-time>-before-<release>/` first.
 - **Checked** before anything changes: downloaded only from GitHub over HTTPS, SHA-256 against the checksum GitHub publishes for the file, a Microsoft Defender scan (Windows), and the zip itself (no paths outside its folder, must contain `server.mjs`, `package.json`, `apps.py`). A failed check deletes the download and changes nothing.
-- **Newer?** It compares release numbers: this install's (`"release"` in `package.json`) against the newest release's name or tag (e.g. `RetroHub0.3.3`, `v0.3.3`). Release zips may have the Retro Hub folder at any depth.
+- **Newer?** It compares release numbers: this install's (`"release"` in `package.json`) against the newest release's name or tag (e.g. `RetroHub0.3.3`, `v0.3.3`). Release zips may have the RetroDuck folder at any depth.
 - An older version than the one installed isn't installed unless you confirm. The hub is stopped first; the window restarts itself afterwards.
 - From a terminal: `python setup/update.py check` / `apply` (`--force` for an older release).
 
@@ -167,7 +167,7 @@ The owner password is shown in the **Settings** tab (press **Show**), in `.env`,
 
 ---
 
-## 4. The Retro Hub window (launcher and admin panel)
+## 4. The RetroDuck window (launcher and admin panel)
 
 `RetroHub.pyw` is a single-file Tk program that uses only the standard library. It is the intended way to run the hub on a desktop PC.
 
@@ -181,11 +181,11 @@ The owner password is shown in the **Settings** tab (press **Show**), in `.env`,
 | **This computer + Wi-Fi/LAN** | Default. Listens on all interfaces, and the log shows a *Friends on your Wi-Fi* link. |
 | **This computer only** | `--localhost-only`: listens on `127.0.0.1`. |
 | **Internet (Cloudflare Tunnel)** | `--tunnel`: starts `cloudflared` and gives the hub a public HTTPS address. The hub then listens on `127.0.0.1` only, unless **Tunnel: keep Wi-Fi link too** (`--lan`) is ticked. |
-| **Open browser when ready** | Opens the hub address once the log shows *Retro Hub is running*. |
+| **Open browser when ready** | Opens the hub address once the log shows *RetroDuck is running*. |
 | **Open hub / Copy link / Copy Wi-Fi link** | Uses the addresses read from the log. |
 | **Check for updates** | See [Updating](#updating). |
 
-**Setup needs a look** appears above the connection options when something would stop the hub finding games or emulators, each with a button that fixes it: an emulators or ROM folder that is missing, empty or inside another Retro Hub folder (a `.env` copied from an older version), console folders that can't be reached (a drive that isn't plugged in), consoles that share a games folder, and an available update.
+**Setup needs a look** appears above the connection options when something would stop the hub finding games or emulators, each with a button that fixes it: an emulators or ROM folder that is missing, empty or inside another RetroDuck folder (a `.env` copied from an older version), console folders that can't be reached (a drive that isn't plugged in), consoles that share a games folder, and an available update.
 
 The status line shows *Starting… / Running / Stopping… / Stopped*. If a hub started some other way is already running (found through `run/retro-hub.json` and an open port), it shows **Running (started elsewhere)**, and **Stop** works on it too.
 
@@ -341,7 +341,7 @@ Pick **Race / Speedrun** when hosting (or in the lobby's *Mode*). It is Single-P
 
 - The game is found by its **ROM hash** (RetroAchievements' rules: copier headers skipped, N64 byte order fixed) for cartridge consoles, else by title. Library games are hashed by the hub (a `.zip` by the ROM inside it; arcade sets by their name, as RetroAchievements does), a file from your computer is hashed in your browser. Disc consoles, DS and PSP match by title (their RetroAchievements hash needs the disc data, e.g. decoding `.chd`); library games are title-matched by their file name. The emulator itself checks the real disc hash when the game starts.
 - **Offsite links**: the panel links to the game's page and your profile on retroachievements.org, and the 🏆 dialog has a sign-up link. Links to other sites are drawn with an **Offsite · site** tag and a dashed border, open in a new tab and send no referrer.
-- **Where achievements can be earned** (full table and sources: [docs/ACHIEVEMENTS.md](ACHIEVEMENTS.md)). Only emulators RetroAchievements approves can award unlocks, and you sign in **inside that emulator**: Retro Hub never asks for, stores or forwards a RetroAchievements password, and never fakes or relays an unlock. Every game says which case it is: **Host a game** shows a line under **Console** (✔ / ⚠ / ✖, with *Why · how*), library tiles show 🏆✔ / 🏆⚠ and the reason on hover, and the 🏆 panel repeats it in a match.
+- **Where achievements can be earned** (full table and sources: [docs/ACHIEVEMENTS.md](ACHIEVEMENTS.md)). Only emulators RetroAchievements approves can award unlocks, and you sign in **inside that emulator**: RetroDuck never asks for, stores or forwards a RetroAchievements password, and never fakes or relays an unlock. Every game says which case it is: **Host a game** shows a line under **Console** (✔ / ⚠ / ✖, with *Why · how*), library tiles show 🏆✔ / 🏆⚠ and the reason on hover, and the 🏆 panel repeats it in a match.
   - ✔ **PCSX2** (PS2), **PPSSPP** (PSP (PPSSPP)), **Flycast** (Dreamcast, NAOMI / Atomiswave). ⚠ **Dolphin**: GameCube needs 2407-68 or newer, Wii 2603a or newer, and RetroAchievements asks for *Enable Dual Core* off.
   - ✖ **Browser games (EmulatorJS)**: it has no RetroAchievements client (its maintainers marked it "not planned"). ✖ **melonDS, VBA-M, Project64** (no RetroAchievements in these builds; RAProject64, RAVBA, RetroArch cores do). ✖ **3DS, Wii U, Switch, PS3, Xbox, Xbox 360, TeknoParrot, Android, PC**: RetroAchievements has no achievements for them.
   - In a streamed co-op lobby the unlocks go to the account signed in to the emulator on the **host's** PC; guests don't earn them.
@@ -377,7 +377,7 @@ For streams where viewers take turns playing. **Co-op Netplay** lobbies only (in
 
 ### Viewer effects (Streamer Mode)
 
-Retro Hub's own take on stream "chaos" effects, for any game and without outside services. Turn on **🎲 Viewer effects** in the Streamer Mode box and untick any effect you don't want.
+RetroDuck's own take on stream "chaos" effects, for any game and without outside services. Turn on **🎲 Viewer effects** in the Streamer Mode box and untick any effect you don't want.
 
 | Effect | Points | Lasts | Works with |
 | --- | --- | --- | --- |
@@ -404,7 +404,7 @@ Everything for streaming in one OBS Browser Source, set up by the owner on the h
 - **⏱ Speedrun timer** with splits (dialog or dock); race lobbies show their own clock and finishers.
 - **💬 Twitch chat**, read-only and anonymous (`core/net/twitchchat.mjs`: Twitch's documented `justinfan` reader, no login or token, it can never post). A chat box in the overlay; `!flip`, `!mirror` … paid with chat points (start 3, +1 a minute while chatting, bits add points); `!points`; mods and you for free; **channel-point rewards** linked to effects. One command per person every 1.5 s, one effect every 8 s, overlay pop-ups at most every 4 s, and only the effects you tick. Settings: `cache/stream-chat.json`.
 - **What shows on stream:** messages your mods delete, and everything from someone they time out or ban, disappear from the overlay and the dock too (Twitch and YouTube). Links show as 🔗 unless you tick *Show links*. *Hide messages with these words* (up to 100 words or phrases, any case, also in fancy Unicode letters) hides matching names and messages, and they can't run commands. The hub's own lines carry a **HUB** badge no chatter can get. The overlay only gets a line number for this, never the chatter's login or channel ID.
-- **▶ YouTube chat**, read-only (`core/net/youtubechat.mjs`): your @handle, channel link or live video link. YouTube has no anonymous chat feed, so the hub reads the public chat the way youtube.com's own chat box does: the watch page once, then YouTube's chat endpoint every 1.5–5 s (its own suggested wait). No login, no API key, no tracking cookies (only `SOCS=CAI`, YouTube's "reject all"), and it can never post. Requests go only to `https://www.youtube.com`, built from a validated handle / channel id / video id; redirects are followed by hand and only within that host; values read from YouTube's page must match strict patterns; answers are size- and time-limited; failures back off to 60 s; not live = a check once a minute. Messages already in the chat when it connects are shown but can't fire commands. Same commands and points as Twitch; Super Chats and Super Stickers add 5 points. Unofficial (it follows the approach of the MIT-licensed [youtube-chat](https://github.com/LinaTsukusu/youtube-chat) library, rewritten without dependencies), so a YouTube page change can stop it until Retro Hub is updated.
+- **▶ YouTube chat**, read-only (`core/net/youtubechat.mjs`): your @handle, channel link or live video link. YouTube has no anonymous chat feed, so the hub reads the public chat the way youtube.com's own chat box does: the watch page once, then YouTube's chat endpoint every 1.5–5 s (its own suggested wait). No login, no API key, no tracking cookies (only `SOCS=CAI`, YouTube's "reject all"), and it can never post. Requests go only to `https://www.youtube.com`, built from a validated handle / channel id / video id; redirects are followed by hand and only within that host; values read from YouTube's page must match strict patterns; answers are size- and time-limited; failures back off to 60 s; not live = a check once a minute. Messages already in the chat when it connects are shown but can't fire commands. Same commands and points as Twitch; Super Chats and Super Stickers add 5 points. Unofficial (it follows the approach of the MIT-licensed [youtube-chat](https://github.com/LinaTsukusu/youtube-chat) library, rewritten without dependencies), so a YouTube page change can stop it until RetroDuck is updated.
 - **🎛 Control dock** (OBS → Docks → Custom Browser Docks): timer (Space start/pause, Enter split, Backspace undo, R twice reset), **Rotate seats now**, every effect as a free button, seats, up next and chat. It has its own key (`cache/dock.key`) because it can act; the overlay's key can't.
 - **🎮 Controller display**: every seat's buttons and stick, live, over a data channel from the host page.
 - **🪟 Pop-out capture window**: the overlay in its own clean window (`/overlay?key=…&popout=1`) for Window Capture, Streamlabs, Discord, Firefox / Chrome screen sharing and virtual cameras. Backgrounds transparent, chroma green `#00FF00`, chroma magenta `#FF00FF` or black; **Mirror** / **Flip** (`flipX=1`, `flipY=1`); sizes 1280 × 720, 1920 × 1080, 960 × 540 and vertical. Its toolbar shows only while the mouse moves over it and can be dragged out of the way; keys B, 1-4, X, Y, H. Game sound is off unless ticked. A Web Worker timer keeps its clock running while it's covered or unfocused; changes made in the dialog reach it live over a BroadcastChannel.
@@ -450,6 +450,14 @@ The **Lobby Browser** tab (next to *Play*) is one table of every lobby: this hub
 - **Limits** (on the hub): 10 IMs per 10 s, 1000 characters each. **Warn** works like the classic one: +10% per warning (once per 5 minutes per sender), it drops 1% a minute, and at 50% that person can send one IM per 5 s.
 - **Privacy**: your list lives in your browser, per account (export the account to move it). The page sends it over its own socket; the hub keeps it in memory only while the page is open and stores nothing. Buddies on other hubs don't show.
 
+### 🦆 RetroDuck look (0.4.4.3)
+
+The default theme is **RetroDuck**: a pixel title screen at dusk with a pixel meadow along the bottom of the window,
+duck-yellow accent and pixel headings. Pick any other theme in ☰ Menu > 🎨 Theme (Coal is the old default). The Play tab
+is a game launcher: a banner for the game you played last (▶ Play opens its lobby, 🎲 Surprise me picks another), a
+*Jump back in* row, a console shelf, and a cover wall where every game has a ▶ quick-play button. The art lives in
+`public/art/`; its licenses are in `ART-LICENSES.md` (it is not covered by the GPL).
+
 ### 📺 Big screen mode
 
 A 10-foot, controller-first launcher for a TV: ☰ Menu > **📺 Big screen** (or `/big.html`). Consoles across, games down,
@@ -463,7 +471,11 @@ the cover and actions on the side; rows for *Continue* (recently played), *Lobbi
 | Search (on-screen keys) / menu | Y / Start | / / M |
 
 **▶ Play** opens the normal lobby for the game (Race for browser consoles); leaving the lobby comes back here. The menu
-has **🧭 Layout** (Standard, Crossbar, Panels, Dial; remembered per browser), fullscreen, search, reload, exit, and for the
+has **🧭 Layout** (Match theme, Standard, Crossbar, Panels, Dial, Terminal, Cube grid, Carousel; remembered per browser;
+*Match theme*, the default, uses Dial for Bootup, Terminal for NetRunner, Cube grid for Cubic and Carousel for the rest),
+**🔊 Menu sounds** (on by default; a browser plays them after the first key press or click),
+**🎞 Screensaver** (also starts by itself after 2 idle minutes: covers from your library, any button wakes it), fullscreen,
+search, reload, exit, and for the
 owner on the hub's PC the **🪟 OBS pop-out** and **📌 overlay on screen** (using the OBS dialog's saved options). Big
 screen uses the active theme, its background picture and Wave ribbons. The lobby page itself still needs a mouse or
 keyboard, and native games need a click for *Share the window*.
@@ -497,7 +509,7 @@ Hacks that put 2-4 players into one N64 game, played in **Project64** on the hub
 
 - Pick the base ROM from the server library in **Host a game**. If `core/coop-hacks.json` knows it, the host form says **✓ Recognized** and offers **🤝 Patch for co-op: <hack>**. A close-but-wrong ROM (a retail OoT for a Debug ROM hack, the PAL Debug ROM, an already-patched build) gets a note instead.
 - The patch file is found by SHA-256 next to the ROM, in the console folder up to 3 levels (e.g. `N64/Patches/...`) or in `patches/` in the hub folder; **add the file…** in the host form saves it there (only files whose checksum is in the list). Nothing is downloaded.
-- When the game starts, the server writes the patched copy to `cache/coop/` (reused next time), writes the hack's required cheats to `emulators/project64/.../Config/Cheats-User/Retro Hub co-op <id>.cht` with `On By Default=1`, and launches Project64 with the copy.
+- When the game starts, the server writes the patched copy to `cache/coop/` (reused next time), writes the hack's required cheats to `emulators/project64/.../Config/Cheats-User/RetroDuck co-op <id>.cht` with `On By Default=1`, and launches Project64 with the copy.
 - `ports` in the list sends each online seat to the controller the hack reads (`null` = not used). Map controllers 2-4 in Project64 (Options > Configure Controller Plugin, Plugged in) to the hub's virtual controllers.
 - Formats: IPS, BPS (source/target checksums checked), UPS, PPF 1/2/3. Code: `core/library/romhack.mjs`, `GET /api/coop`, `POST /api/coop/patch-file`, `coop` in `POST /api/native/launch` (owner, from the hub's PC).
 
@@ -511,11 +523,11 @@ For translations, quality-of-life hacks, randomizer seats and co-op patches on c
   - **Combo randomizers**: links to samus.link (SMZ3), archipelago.gg and multiworld.gg; drop the finished ROM they give you to add it, or an `.ap*` file to apply it.
 - The result is a **new file**: `<rom folder>/patched/<coop|randomizer|translation|qol|custom>/<game> [<label>].<ext>` (written to a temporary name, renamed, read back and checked). **The original is never changed.** A copy shows right after its game with a 🩹 badge, and **Launch patched** hosts it. Browser games keep separate saves per copy; native emulators may share saves with the original (Project64 names them by the ROM's internal name).
 - **🧩 Patches & variants** (turn it on per browser): patch files already next to a ROM or in `patches/<console>/<game>/` are found automatically and can be stacked into a variant, cached in `cache/variants/` (safe to delete).
-- Formats are implemented in Retro Hub itself (`core/library/patchfmt.mjs`, `romhack.mjs`, `patcher.mjs`); no outside tool runs. Disc images, archives and files over 128 MB are refused.
+- Formats are implemented in RetroDuck itself (`core/library/patchfmt.mjs`, `romhack.mjs`, `patcher.mjs`); no outside tool runs. Disc images, archives and files over 128 MB are refused.
 
 ### Off Site Games
 
-The **Off Site Games** tab (next to **Play**) lists games that run on other websites, by category, with search. They open in a new tab with no referrer, marked *Offsite*; lobbies, netplay, saves and achievements don't apply, and Retro Hub doesn't host or check them.
+The **Off Site Games** tab (next to **Play**) lists games that run on other websites, by category, with search. They open in a new tab with no referrer, marked *Offsite*; lobbies, netplay, saves and achievements don't apply, and RetroDuck doesn't host or check them.
 
 - The default list is `core/offsite-games.json`: free or open-source games, and ports that use your own game files.
 - **Your own list**: copy that file to `offsite-games.json` in the hub's main folder and edit it. It replaces the default, is kept by the updater, and isn't shipped. Each game: `name`, `url` (`https://` only; anything else is dropped), `category`, optional `note`, and `"touch": true` for games that work on phones and tablets (they get a *Phone / tablet friendly* filter).
@@ -706,7 +718,7 @@ Before an emulator starts, the host page runs a quick **pre-flight check** and, 
 
 - **Blocking checks** (they disable *Set up and start*): PCSX2 BIOS, RPCS3 firmware, Ryujinx / Eden `prod.keys`, xemu's BIOS / HDD paths, TeknoParrot's game path, .NET 4.8 and the Visual C++ runtime.
 - **Guest seats**: Cemu and Dolphin get controller profiles so P2-P4 work with the hub's virtual controllers (seat *n* = Xbox controller *n*-1), only for as many players as are seated. Dolphin also gets "confirm on stop" and panic pop-ups turned off for that launch (command line only), so a hidden window can't hang.
-- **What it never does**: overwrite your settings. A whole file is written only if it doesn't exist or is still exactly what Retro Hub wrote; a single setting only if it's at the emulator's default or Retro Hub's own value. Everything changed is backed up to `backup/provision-<date>/` first and recorded in `emulators/provision.json`. A setup error never blocks the launch.
+- **What it never does**: overwrite your settings. A whole file is written only if it doesn't exist or is still exactly what RetroDuck wrote; a single setting only if it's at the emulator's default or RetroDuck's own value. Everything changed is backed up to `backup/provision-<date>/` first and recorded in `emulators/provision.json`. A setup error never blocks the launch.
 - Command line: `python apps.py preflight|provision|first-boot --app <id>`. Design and the verified settings: [docs/EMULATOR-ADAPTERS.md](EMULATOR-ADAPTERS.md).
 
 ### What happens when a native game is hosted
@@ -734,7 +746,7 @@ Limits: co-op only (no ghost mode); only the owner, on the hub PC, can host nati
 
 ### Android games (APK)
 
-Retro Hub doesn't emulate Android itself: it installs the game with `adb` on an Android device this PC can reach (an Android emulator such as MuMu, BlueStacks, LDPlayer, Nox, MEmu or Android Studio's, or a phone with USB debugging), starts it, and streams it like any native game.
+RetroDuck doesn't emulate Android itself: it installs the game with `adb` on an Android device this PC can reach (an Android emulator such as MuMu, BlueStacks, LDPlayer, Nox, MEmu or Android Studio's, or a phone with USB debugging), starts it, and streams it like any native game.
 
 - **What you need**: `adb` (the official [scrcpy](https://github.com/Genymobile/scrcpy) zip unpacked into `emulators/scrcpy/` has it), and a device with ADB turned on. If no device is running, the hub starts the emulator it finds in `emulators/android/` or its usual install folder.
 - **In the page**: with scrcpy 2.0+ the host page shows the Android screen with its sound (Android 11+, Chrome / Edge); click or tap to touch, right-click for Back, **Show Android** when the game is ready. `ANDROID_VIEW=window` shares scrcpy's own window instead.
@@ -754,11 +766,11 @@ Retro Hub doesn't emulate Android itself: it installs the game with `adb` on an 
 | Dolphin (GC / Wii) | NetPlay, Wiimmfi | A NetPlay helper with host code and ping (see [GBA screens](#four-swords-adventures-gba-screens)). |
 | Azahar, Eden | Built-in rooms | Guide only. |
 
-The panel tells you once when something changes, and a limited console shows a note when you host it. Step-by-step guides: [emulators/ONLINE.md](../emulators/ONLINE.md). Retro Hub never logs in to these services for you.
+The panel tells you once when something changes, and a limited console shows a note when you host it. Step-by-step guides: [emulators/ONLINE.md](../emulators/ONLINE.md). RetroDuck never logs in to these services for you.
 
 ### GBA and Game Boy link cable (VBA-M)
 
-Link play runs in **VBA-M**, never in EmulatorJS (its GBA and GB cores can't link). Everyone runs their own Retro Hub and ROM on the same network; see the **GBA / Game Boy link cable** panel. When you pick a GBA, GB or GBC game from the library and VBA-M is installed, **Play in → VBA-M link cable** hosts a link session straight from *Host a game* (remembered; games in VBA-M's own folders default to it). GB / GBC link depends on your VBA-M version's network link support.
+Link play runs in **VBA-M**, never in EmulatorJS (its GBA and GB cores can't link). Everyone runs their own RetroDuck and ROM on the same network; see the **GBA / Game Boy link cable** panel. When you pick a GBA, GB or GBC game from the library and VBA-M is installed, **Play in → VBA-M link cable** hosts a link session straight from *Host a game* (remembered; games in VBA-M's own folders default to it). GB / GBC link depends on your VBA-M version's network link support.
 
 ### Four Swords Adventures: GBA screens
 
@@ -789,6 +801,11 @@ LAN multiplayer for Xbox 360 games between hubs on the same network (or a virtua
   your own copy of the OUYA Framework on the emulator once. See `emulators/README.md`.
 
 ## 9. Playing over the internet
+
+**Quickest way (0.4.4.4):** ☰ Menu > **🌍 Internet link** > *Turn on* (owner, on the hub's PC). RetroDuck starts a
+Cloudflare quick tunnel (`cloudflared tunnel --url http://127.0.0.1:<port>`) and shows the `https://….trycloudflare.com`
+address; invite links use it while it's on. It changes each time; for a fixed address use a named tunnel
+(`TUNNEL_TOKEN` + `PUBLIC_URL`, below). Needs cloudflared: `winget install --id Cloudflare.cloudflared`.
 
 Friends need only a browser and your link. You need a public HTTPS address.
 
@@ -874,7 +891,7 @@ Settings are environment variables, usually from `.env`. Edit them in the window
 | `UPDATE_REPO` | `ZephyrianYT/Universal-Multiplayer-JS-Emu` | GitHub `owner/repo` that updates come from. |
 | `RETROHUB_DESKTOP` | the user's Desktop | Folder for the desktop shortcut. |
 
-`EMULATORS_DIR`: a configured folder that is missing or empty falls back to this install's `./emulators` (with a warning), so a `.env` copied from an older Retro Hub folder doesn't hide your emulators.
+`EMULATORS_DIR`: a configured folder that is missing or empty falls back to this install's `./emulators` (with a warning), so a `.env` copied from an older RetroDuck folder doesn't hide your emulators.
 
 Other state, not set through environment variables: `library-folders.json` (per-console folders, set in the hub), `library-hidden.json` (games the owner hid), `emulators/apps.json` (your emulators, PC games and the emulator chosen per console, set in the Apps tab, Consoles… or with `apps.py`), `.retrohub-config.json` (first-run answers) and `cache/installed-release.json` (the release the updater installed).
 
@@ -897,8 +914,8 @@ Other state, not set through environment variables: `library-folders.json` (per-
 | Updates | GitHub only (HTTPS, host checked after redirects), SHA-256 against GitHub's published checksum, Defender scan, zip checked for unsafe paths, user files never overwritten, replaced files backed up. |
 | OBS overlay, dock, pop-out | Only from the hub's own computer as `localhost` / `127.0.0.1` / `[::1]` with the port (`core/net/localguard.mjs`: loopback source AND Host allowlist against DNS rebinding AND no proxy headers AND not requested by another site), plus a random key. The dock's actions also need its own key and an `X-Retro-Hub` header. Twitch and YouTube chat are read-only with no login (YouTube: requests only to `https://www.youtube.com` from a validated id, capped and rate-limited); chat can only fire the effects the owner ticked, rate-limited, on the lobby hosted from this PC. |
 | Messenger | Buddies see each other only when both added each other. 10 IMs per 10 s, 1000 characters, warning levels slow abusers, Block and Appear offline. Lists aren't stored on the server. |
-| ROM patching | Owner only, with an `X-Retro-Hub` header and same-origin check. Patches are parsed by Retro Hub's own code; online patches only from GitHub over HTTPS with a pinned SHA-256; results go to a new file, originals are never written. |
-| Native setup | Settings files are only written when absent or still Retro Hub's own; single keys only at default or Retro Hub's value; backups first. |
+| ROM patching | Owner only, with an `X-Retro-Hub` header and same-origin check. Patches are parsed by RetroDuck's own code; online patches only from GitHub over HTTPS with a pinned SHA-256; results go to a new file, originals are never written. |
+| Native setup | Settings files are only written when absent or still RetroDuck's own; single keys only at default or RetroDuck's value; backups first. |
 | System Link / LAN | Peer routes only from private or same-subnet addresses, no proxy headers, rate-limited; the owner's routes need owner + same origin + header. |
 | Downloaded engines | ScummVM files: pinned commit, size and git hash checked. Ruffle, v86, freej2me-web: shipped in the zip, hashes checked when they were added. |
 | Offsite links | speedrun.com and retroachievements.org links open in a new tab with `noopener noreferrer`, so the hub's address isn't passed on. The page itself still talks only to the hub (the speedrun.com lookup goes through the hub, only when you point at the link). |
@@ -1035,7 +1052,7 @@ Back up `.env`, `library-folders.json`, `library-hidden.json` and `emulators/app
 
 ## 16. Legal and license
 
-Retro Hub contains **no games, BIOS files, firmware or keys**. Only play games you own and dump your own system files. ROMs never leave the owner's server or the host's computer.
+RetroDuck contains **no games, BIOS files, firmware or keys**. Only play games you own and dump your own system files. ROMs never leave the owner's server or the host's computer.
 
 GPL-3.0. See [LICENSE](../LICENSE). Bundles [EmulatorJS](https://github.com/EmulatorJS/EmulatorJS) 4.2.3 (GPL-3.0) in `public/data` and [TweetNaCl.js](https://github.com/dchest/tweetnacl-js) 1.0.3 (public domain) in `public/vendor`. The YouTube chat reader follows the approach of [youtube-chat](https://github.com/LinaTsukusu/youtube-chat) (MIT, (c) 2021 LinaTsukusu). Emulator cores and native emulators are licensed by their own authors.
 
