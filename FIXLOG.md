@@ -1,6 +1,27 @@
-# Fix log: 1.31.0 (Retro Hub 0.4.3)
+# Fix log: 1.33.2 (Retro Hub 0.4.4.2)
 
-Sections 1-9 are the fixes up to 1.19.0. Section 10 covers 1.25.0 (released as 0.3.1), section 11 covers 1.26.0 (released as 0.3.3), sections 12 and 13 cover 1.26.1 and 1.26.2 (both released together as 0.3.5), section 14 covers 1.26.3 (released as 0.3.6), section 15 covers 1.27.0 (released as 0.3.7), section 16 covers 1.30.0 (released as 0.4.1) and section 17 covers 1.31.0 (released as 0.4.3).
+Sections 1-9 are the fixes up to 1.19.0. Section 10 covers 1.25.0 (released as 0.3.1), section 11 covers 1.26.0 (released as 0.3.3), sections 12 and 13 cover 1.26.1 and 1.26.2 (both released together as 0.3.5), section 14 covers 1.26.3 (released as 0.3.6), section 15 covers 1.27.0 (released as 0.3.7), section 16 covers 1.30.0 (released as 0.4.1) section 17 covers 1.31.0 (released as 0.4.3) and section 18 covers 1.32.0 to 1.33.2 (released as 0.4.3.2 to 0.4.4.2).
+
+## 18. 1.32.0 to 1.33.2 (Retro Hub 0.4.3.2 to 0.4.4.2)
+
+- **Web page lobbies typed guests' keys into any tab titled "Retro Hub · …".** A website could name itself that way.
+  *Change:* each lobby makes a random key that only this computer's own game pages hear (same-origin channel); keys go
+  only to a browser window whose title shows "🔑 <key>". Malformed keys are refused.
+- **A web page lobby's host lost the share steps after a page reload** (and the page hit an error). *Change:* the rejoin
+  restores the web page game from the lobby's own name.
+- **A stray .zip in an unrelated folder was listed as an N-Gage game.** *Change:* N-Gage only takes zips from its own folders.
+- **The Dreamcast folder's chdman.exe and .bat files showed up as DOS games** once the DOS console existed. *Change:*
+  RetroArch consoles (and other "folderOnly" consoles) list games only from their own folders.
+- **Triforce games couldn't start the arcade board**: the hub's controller-port settings override Dolphin's automatic
+  Triforce baseboard. *Change:* Triforce launches skip those settings.
+- **NAOMI / Atomiswave games had no BIOS** although the owner's arcade BIOS folder had naomi.zip / awbios.zip. *Change:*
+  they are copied into Flycast's data folder (never overwriting).
+- **Release zips had duplicate entries** (every RetroArch console shares emulators/retroarch/). *Change:* the builder
+  keeps one entry per name.
+- Big screen: thumbnails whose cover failed stayed blank (now initials); the theme's background picture and Wave ribbons
+  didn't show (now they do).
+- Checked after a "no picture" report: NES, SNES, N64, FBNeo, MAME 2003-Plus and a guest stream all render; a hub still
+  running old server code with new page files can show nothing until it is restarted and the page is reloaded (Ctrl+F5).
 
 ## 17. 1.31.0 (Retro Hub 0.4.3)
 
