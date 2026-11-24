@@ -1,7 +1,7 @@
 # Publishes a Retro Hub release: builds RetroHub<release>.zip from main (scripts/make_release.py) and creates the
 # GitHub release the in-app updater installs. Start it from the website or the GitHub app:
 #   Actions > Release > Run workflow (on main).
-# The release number comes from package.json ("release", e.g. 0.3.4) and the text from that version's CHANGELOG.md
+# The release number comes from package.json ("release", e.g. 0.3.4) and the text from that version's docs/CHANGELOG.md
 # section. It stops without changing anything if that release already exists.
 name: Release
 
@@ -64,10 +64,10 @@ jobs:
         run: |
           TAG="RetroHub$RELEASE"
           if gh release view "$TAG" >/dev/null 2>&1; then
-            echo "::error::Release $TAG already exists. Raise \"release\" (and \"version\") in package.json and package-lock.json, add a CHANGELOG.md section, then run this again."
+            echo "::error::Release $TAG already exists. Raise \"release\" (and \"version\") in package.json and package-lock.json, add a docs/CHANGELOG.md section, then run this again."
             exit 1
           fi
           FLAGS=""; [ "$PRE" = "true" ] && FLAGS="--prerelease"
-          gh release create "$TAG" "$ZIP" CHANGELOG.md README.md README-ADVANCED.md FIXLOG.md \
+          gh release create "$TAG" "$ZIP" README.md docs/CHANGELOG.md docs/README-ADVANCED.md docs/FIXLOG.md \
             --title "Retro Hub $RELEASE" --notes-file release/notes.md --target "$GITHUB_SHA" $FLAGS
           echo "Published $TAG: $(gh release view "$TAG" --json url -q .url)" >> "$GITHUB_STEP_SUMMARY"

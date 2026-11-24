@@ -1,24 +1,24 @@
 # Retro Hub: advanced guide
 
-> New here? [README.md](README.md) is the short version: install, start, invite friends.
+> New here? [README.md](../README.md) is the short version: install, start, invite friends.
 
 Retro Hub is a self-hosted game hub for playing retro and modern console games with friends. One person (the **owner**) runs the hub on their PC or home server. Friends open a link in their browser, make an account with one click, and join a lobby.
 
 - **Browser consoles** (NES through PS1, N64, GBA, DS, PSP and more) run inside the host's browser with [EmulatorJS](https://emulatorjs.org). The host streams video and audio to the guests over WebRTC, and the guests send back only their controller input.
 - **Native consoles** (PS2, GameCube, Wii, PS3, Xbox, Xbox 360, Wii U, Switch, 3DS, Dreamcast, arcade NAOMI / Atomiswave and TeknoParrot, plus PSP, DS, N64 and GBA link in their desktop emulators), **Android games** and **PC games** run in real programs on the owner's PC. The browser captures that window and streams it the same way.
 - **Nothing is uploaded.** ROMs stay on the owner's disk or on the player's own computer. Accounts are keys kept in each browser, so the server has no account database.
-- **Nothing is exposed.** Everything that works without a login (the OBS overlay, the dock, the owner's tools) only answers to the hub's own computer, checked several ways; see [section 12](#12-security-model) and [docs/SECURITY-LOCAL.md](docs/SECURITY-LOCAL.md).
+- **Nothing is exposed.** Everything that works without a login (the OBS overlay, the dock, the owner's tools) only answers to the hub's own computer, checked several ways; see [section 12](#12-security-model) and [docs/SECURITY-LOCAL.md](SECURITY-LOCAL.md).
 
 This guide covers installing the hub, using it day to day, and how it works inside. Some topics have their own guide:
 
 | Guide | What's in it |
 | --- | --- |
-| [docs/OBS-STREAMING.md](docs/OBS-STREAMING.md) | Streaming with OBS: the overlay, layouts, chat, the dock, the pop-out capture window, plugins, troubleshooting. |
-| [docs/ACHIEVEMENTS.md](docs/ACHIEVEMENTS.md) | RetroAchievements: which emulators can award them, how to switch them on, recognised dumps. |
-| [docs/SYSTEM-LINK.md](docs/SYSTEM-LINK.md) | Xbox 360 System Link rooms between hubs (Xenia netplay build). |
-| [docs/EMULATOR-ADAPTERS.md](docs/EMULATOR-ADAPTERS.md) | How the hub sets native emulators up on first launch, and what it never touches. |
-| [docs/SECURITY-LOCAL.md](docs/SECURITY-LOCAL.md) | What is reachable without a login, and how each part is protected. |
-| [emulators/README.md](emulators/README.md) | Every native emulator: folder, files, BIOS, quirks. Also [KEYBOARD.md](emulators/KEYBOARD.md), [INSTRUMENTS.md](emulators/INSTRUMENTS.md), [ONLINE.md](emulators/ONLINE.md). |
+| [docs/OBS-STREAMING.md](OBS-STREAMING.md) | Streaming with OBS: the overlay, layouts, chat, the dock, the pop-out capture window, plugins, troubleshooting. |
+| [docs/ACHIEVEMENTS.md](ACHIEVEMENTS.md) | RetroAchievements: which emulators can award them, how to switch them on, recognised dumps. |
+| [docs/SYSTEM-LINK.md](SYSTEM-LINK.md) | Xbox 360 System Link rooms between hubs (Xenia netplay build). |
+| [docs/EMULATOR-ADAPTERS.md](EMULATOR-ADAPTERS.md) | How the hub sets native emulators up on first launch, and what it never touches. |
+| [docs/SECURITY-LOCAL.md](SECURITY-LOCAL.md) | What is reachable without a login, and how each part is protected. |
+| [emulators/README.md](../emulators/README.md) | Every native emulator: folder, files, BIOS, quirks. Also [KEYBOARD.md](../emulators/KEYBOARD.md), [INSTRUMENTS.md](../emulators/INSTRUMENTS.md), [ONLINE.md](../emulators/ONLINE.md). |
 | [CHANGELOG.md](CHANGELOG.md) / [FIXLOG.md](FIXLOG.md) | What changed in each version / what was broken, why, and how it was fixed. |
 
 ---
@@ -341,7 +341,7 @@ Pick **Race / Speedrun** when hosting (or in the lobby's *Mode*). It is Single-P
 
 - The game is found by its **ROM hash** (RetroAchievements' rules: copier headers skipped, N64 byte order fixed) for cartridge consoles, else by title. Library games are hashed by the hub (a `.zip` by the ROM inside it; arcade sets by their name, as RetroAchievements does), a file from your computer is hashed in your browser. Disc consoles, DS and PSP match by title (their RetroAchievements hash needs the disc data, e.g. decoding `.chd`); library games are title-matched by their file name. The emulator itself checks the real disc hash when the game starts.
 - **Offsite links**: the panel links to the game's page and your profile on retroachievements.org, and the 🏆 dialog has a sign-up link. Links to other sites are drawn with an **Offsite · site** tag and a dashed border, open in a new tab and send no referrer.
-- **Where achievements can be earned** (full table and sources: [docs/ACHIEVEMENTS.md](docs/ACHIEVEMENTS.md)). Only emulators RetroAchievements approves can award unlocks, and you sign in **inside that emulator**: Retro Hub never asks for, stores or forwards a RetroAchievements password, and never fakes or relays an unlock. Every game says which case it is: **Host a game** shows a line under **Console** (✔ / ⚠ / ✖, with *Why · how*), library tiles show 🏆✔ / 🏆⚠ and the reason on hover, and the 🏆 panel repeats it in a match.
+- **Where achievements can be earned** (full table and sources: [docs/ACHIEVEMENTS.md](ACHIEVEMENTS.md)). Only emulators RetroAchievements approves can award unlocks, and you sign in **inside that emulator**: Retro Hub never asks for, stores or forwards a RetroAchievements password, and never fakes or relays an unlock. Every game says which case it is: **Host a game** shows a line under **Console** (✔ / ⚠ / ✖, with *Why · how*), library tiles show 🏆✔ / 🏆⚠ and the reason on hover, and the 🏆 panel repeats it in a match.
   - ✔ **PCSX2** (PS2), **PPSSPP** (PSP (PPSSPP)), **Flycast** (Dreamcast, NAOMI / Atomiswave). ⚠ **Dolphin**: GameCube needs 2407-68 or newer, Wii 2603a or newer, and RetroAchievements asks for *Enable Dual Core* off.
   - ✖ **Browser games (EmulatorJS)**: it has no RetroAchievements client (its maintainers marked it "not planned"). ✖ **melonDS, VBA-M, Project64** (no RetroAchievements in these builds; RAProject64, RAVBA, RetroArch cores do). ✖ **3DS, Wii U, Switch, PS3, Xbox, Xbox 360, TeknoParrot, Android, PC**: RetroAchievements has no achievements for them.
   - In a streamed co-op lobby the unlocks go to the account signed in to the emulator on the **host's** PC; guests don't earn them.
@@ -396,7 +396,7 @@ Retro Hub's own take on stream "chaos" effects, for any game and without outside
 
 ### OBS overlay and stream tools
 
-Everything for streaming in one OBS Browser Source, set up by the owner on the hub's own computer: ☰ → **📺 OBS overlay**. The full guide (URL options, OBS settings, plugins, troubleshooting) is [docs/OBS-STREAMING.md](docs/OBS-STREAMING.md).
+Everything for streaming in one OBS Browser Source, set up by the owner on the hub's own computer: ☰ → **📺 OBS overlay**. The full guide (URL options, OBS settings, plugins, troubleshooting) is [docs/OBS-STREAMING.md](OBS-STREAMING.md).
 
 - **The game itself**: host a lobby from this PC and the overlay shows the game for every console (browser games, native emulators after *Share the window*, Android, shuffles; in a race, your own run). The video goes straight from your lobby page to OBS on the same PC over WebRTC; the hub only passes the connection setup (`/overlay/signal`), for up to 4 overlays at once. Tick **Control audio via OBS** for the game's sound as its own mixer channel.
 - **Presets and layouts**: 🎮 Game night, 🔀 Shuffle / chairs, ⏱ Speedrun, 🎲 Chat chaos; layouts Corner, Bottom bar, Full frame (holes for camera and chat), Game only and Vertical (1080 × 1920). Looks: Sharp pixels or CRT scanlines (on the game only). **Game and overlay as two sources** splits it for OBS filters or Source Record. The dialog shows a live preview with sample data.
@@ -707,7 +707,7 @@ Before an emulator starts, the host page runs a quick **pre-flight check** and, 
 - **Blocking checks** (they disable *Set up and start*): PCSX2 BIOS, RPCS3 firmware, Ryujinx / Eden `prod.keys`, xemu's BIOS / HDD paths, TeknoParrot's game path, .NET 4.8 and the Visual C++ runtime.
 - **Guest seats**: Cemu and Dolphin get controller profiles so P2-P4 work with the hub's virtual controllers (seat *n* = Xbox controller *n*-1), only for as many players as are seated. Dolphin also gets "confirm on stop" and panic pop-ups turned off for that launch (command line only), so a hidden window can't hang.
 - **What it never does**: overwrite your settings. A whole file is written only if it doesn't exist or is still exactly what Retro Hub wrote; a single setting only if it's at the emulator's default or Retro Hub's own value. Everything changed is backed up to `backup/provision-<date>/` first and recorded in `emulators/provision.json`. A setup error never blocks the launch.
-- Command line: `python apps.py preflight|provision|first-boot --app <id>`. Design and the verified settings: [docs/EMULATOR-ADAPTERS.md](docs/EMULATOR-ADAPTERS.md).
+- Command line: `python apps.py preflight|provision|first-boot --app <id>`. Design and the verified settings: [docs/EMULATOR-ADAPTERS.md](EMULATOR-ADAPTERS.md).
 
 ### What happens when a native game is hosted
 
@@ -716,7 +716,7 @@ Before an emulator starts, the host page runs a quick **pre-flight check** and, 
 3. The host's browser captures the window with `getDisplayMedia` and passes the track to the normal netplay pipeline, so guests get the same stream, quality controls, codecs, stats and voice.
 4. Guest controller state reaches the host's browser over the data channel. The browser forwards it on a loopback-only WebSocket, `/native-input` (owner on the hub PC, same origin). `input_bridge.py` turns it into input:
    - **gamepad** mode: one virtual Xbox 360 controller per online seat (P2, P3, P4 in order). This needs `pip install -r requirements-native.txt` (Windows: `vgamepad` + the ViGEmBus driver; Linux: `evdev` with write access to `/dev/uinput`).
-   - **keyboard** mode (Windows, nothing to install): each seat gets its own keys ([`emulators/KEYBOARD.md`](emulators/KEYBOARD.md)), sent with `SendInput` **only while a window inside the emulator's job has focus**. Sticks become 8-way digital.
+   - **keyboard** mode (Windows, nothing to install): each seat gets its own keys ([`emulators/KEYBOARD.md`](../emulators/KEYBOARD.md)), sent with `SendInput` **only while a window inside the emulator's job has focus**. Sticks become 8-way digital.
    - `NATIVE_INPUT=auto` (the default) uses gamepads when possible and keys otherwise.
 5. On stop, the runner sends `WM_CLOSE` to the job's windows so emulators save, waits up to 5 s, then ends whatever is left.
 
@@ -754,7 +754,7 @@ Retro Hub doesn't emulate Android itself: it installs the game with `adb` on an 
 | Dolphin (GC / Wii) | NetPlay, Wiimmfi | A NetPlay helper with host code and ping (see [GBA screens](#four-swords-adventures-gba-screens)). |
 | Azahar, Eden | Built-in rooms | Guide only. |
 
-The panel tells you once when something changes, and a limited console shows a note when you host it. Step-by-step guides: [emulators/ONLINE.md](emulators/ONLINE.md). Retro Hub never logs in to these services for you.
+The panel tells you once when something changes, and a limited console shows a note when you host it. Step-by-step guides: [emulators/ONLINE.md](../emulators/ONLINE.md). Retro Hub never logs in to these services for you.
 
 ### GBA and Game Boy link cable (VBA-M)
 
@@ -774,7 +774,7 @@ LAN multiplayer for Xbox 360 games between hubs on the same network (or a virtua
 - The host opens a room for a game; others join from the LAN list or by typing the host hub's address. Up to 4 players, Ready, then Start launches Xenia on every PC with System Link on the chosen network adapter (command-line only; your Xenia config isn't touched).
 - **Same game check**: each hub reads the game's title ID, media, version and title update; a different game is refused, a different version or update warns first.
 - The room's peer routes only answer to private network addresses or an address inside one of this PC's own adapter subnets, with no proxy headers, rate-limited.
-- Full details, verified Xenia settings and what isn't tested: [docs/SYSTEM-LINK.md](docs/SYSTEM-LINK.md).
+- Full details, verified Xenia settings and what isn't tested: [docs/SYSTEM-LINK.md](SYSTEM-LINK.md).
 
 ### Triforce, RetroArch consoles and OUYA
 
@@ -972,7 +972,7 @@ JSON messages with a `t` field.
 | `public/ruffle/`, `public/v86/`, `public/j2me/`, `public/scummvm/` | yes | The Flash, PC, phone-game and ScummVM players (each with its license). |
 | `core/online/`, `core/patch-catalog.json`, `core/coop-hacks.json`, `core/offsite-games.json` | yes | Online-service info, known patches, co-op hacks, the Off Site list. |
 | `public/obs-*` | yes | OBS overlay (`obs-overlay.*`, incl. the pop-out window), control dock (`obs-dock.*`), game feed (`obs-feed.js`) and the hub's OBS dialog (`obs-setup.js`). |
-| `docs/` | yes | Longer guides: OBS streaming, achievements, emulator adapters, local security. |
+| `docs/` | yes | This guide, `CHANGELOG.md` (also the hub's "What's new"), `FIXLOG.md`, and longer guides: OBS streaming, achievements, emulator adapters, local security. |
 | `assets/icon/` | yes | The mascot icon: `retrohub.svg` (source), `.png` sizes, `.ico`, `.icns`, and `make_icon.py` that builds them (needs Pillow; only to change the icon). |
 | `setup/deps.ps1` | yes | Windows: finds, downloads, safety-checks and installs Python, Node.js and controller support. |
 | `setup/update.py` | yes | The updater. |
@@ -981,7 +981,8 @@ JSON messages with a `t` field.
 | `emulators/<id>/` | empty | Put portable emulator builds here. `README.md` and `KEYBOARD.md` explain the setup. |
 | `roms/` | empty | The default main library. |
 | `requirements-native.txt` | yes | Optional virtual-gamepad packages. |
-| `Dockerfile`, `docker-compose.yml`, `.dockerignore`, `.github/` | yes | Docker build and publishing. |
+| `Dockerfile`, `docker-compose.yml`, `.dockerignore` | yes | Docker build. |
+| `.github/` | yes | Release and Docker publishing workflows, `SECURITY.md` (security policy). |
 | `.env.example` | yes | Every setting, documented. |
 | `.env` | created | Your settings and secrets. |
 | `node_modules/` | created | `ws`, installed on first start. |
@@ -1036,6 +1037,6 @@ Back up `.env`, `library-folders.json`, `library-hidden.json` and `emulators/app
 
 Retro Hub contains **no games, BIOS files, firmware or keys**. Only play games you own and dump your own system files. ROMs never leave the owner's server or the host's computer.
 
-GPL-3.0. See [LICENSE](LICENSE). Bundles [EmulatorJS](https://github.com/EmulatorJS/EmulatorJS) 4.2.3 (GPL-3.0) in `public/data` and [TweetNaCl.js](https://github.com/dchest/tweetnacl-js) 1.0.3 (public domain) in `public/vendor`. The YouTube chat reader follows the approach of [youtube-chat](https://github.com/LinaTsukusu/youtube-chat) (MIT, (c) 2021 LinaTsukusu). Emulator cores and native emulators are licensed by their own authors.
+GPL-3.0. See [LICENSE](../LICENSE). Bundles [EmulatorJS](https://github.com/EmulatorJS/EmulatorJS) 4.2.3 (GPL-3.0) in `public/data` and [TweetNaCl.js](https://github.com/dchest/tweetnacl-js) 1.0.3 (public domain) in `public/vendor`. The YouTube chat reader follows the approach of [youtube-chat](https://github.com/LinaTsukusu/youtube-chat) (MIT, (c) 2021 LinaTsukusu). Emulator cores and native emulators are licensed by their own authors.
 
 Release notes: [CHANGELOG.md](CHANGELOG.md).
