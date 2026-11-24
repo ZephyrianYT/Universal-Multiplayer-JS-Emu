@@ -16,6 +16,12 @@
 
 
 **FIRST TIME USERS, PLEASE NOTE, YOU NEED TO ENTER THE PASSWORD FOUND IN YOUR ENV. FILE TO UNLOCK THE LIBRARY ACCESS, OTHERWISE U ONLY ACCESS BROWSER EMUS OVER SINGLE FILE LOAD**
+
+<img width="995" height="723" alt="image" src="https://github.com/user-attachments/assets/b4245a97-5c01-49ae-81ce-458157a79216" />
+<img width="1871" height="931" alt="image" src="https://github.com/user-attachments/assets/9a92e256-1199-47c7-82ae-9db8a67857bf" />
+<img width="1767" height="766" alt="image" src="https://github.com/user-attachments/assets/794c5d69-7f28-4390-9c28-a7a8082578a1" />
+
+
 ## How it works
 
 RetroDuck has two halves:
