@@ -1,8 +1,8 @@
-> **0.4.4.2 is out:** 📺 Big screen mode with 4 TV layouts, 3 new themes (Bootup, Cubic, NetRunner), 🐣 Pocket Duck, OUYA games on Android, Discord-with-sound tips, plus 0.4.4's Triforce, BIOS folder, MAME 2003-Plus and RetroArch consoles. Use the updater or download `RetroHub0.4.4.2.zip` from Releases.
+> **RetroDuck 0.4.4.4 is out:** 🌍 one-switch **Internet link** for friends anywhere (no router setup), Check for Emus finds emulators you installed with their installers, a backup-file step for new accounts, drag-and-drop games, plus 0.4.4.3's new 🦆 RetroDuck look. Use the updater or download `RetroDuck0.4.4.4.zip` from Releases.
 
-# Retro Hub
+# RetroDuck
 
-**Play retro games with your friends from a link.** You run Retro Hub on your PC, friends open the link in their browser, and you play together: co-op, races, or side by side as ghosts. Nothing to install for your friends, and no games are ever uploaded anywhere.
+**Play retro games with your friends from a link.** You run RetroDuck on your PC, friends open the link in their browser, and you play together: co-op, races, or side by side as ghosts. Nothing to install for your friends, and no games are ever uploaded anywhere.
 
 - 🎮 **Browser consoles**: NES, SNES, N64, Game Boy, Game Boy Color, GBA, DS, PS1, PSP, Genesis, Saturn, arcade and more.
 - 🖥️ **Big consoles** (PS2, GameCube, Wii, Wii U, Switch, 3DS, Xbox, Xbox 360, PS3, Dreamcast, arcade…) and **Android games** run in real emulators on your PC and stream to your friends.
@@ -14,9 +14,9 @@
 
 ## How it works
 
-Retro Hub has two halves:
+RetroDuck has two halves:
 
-1. **The hub** runs on your PC (the one with the games). It's a small web server: it serves the website, keeps the list of lobbies and introduces players to each other. You start and stop it from the **Retro Hub window**.
+1. **The hub** runs on your PC (the one with the games). It's a small web server: it serves the website, keeps the list of lobbies and introduces players to each other. You start and stop it from the **RetroDuck window**.
 2. **Everyone's browser** is the actual game machine and screen. There's nothing to install for players: a link and a browser are enough, on PC, Mac, tablet or phone.
 
 When you play together, the hub only does the introductions. The game itself goes **straight between the players' browsers** (WebRTC, the same tech as video calls), so it's as fast as your connections allow and the hub never has to carry the video.
@@ -46,8 +46,8 @@ There are three ways to play a game together, and you pick one when you host:
 1. **Unzip** `RetroHub0.4.4.2.zip` anywhere (for example `C:\Games\retro-hub`).
 2. **Double-click `launch.bat`.**
    - Missing Python or Node.js? It offers to download and install them for you, and checks every download first.
-   - It asks whether you want a **desktop shortcut** with the Retro Hub duck. Say yes, and next time just click the duck.
-3. In the Retro Hub window, press **▶ Start**. Your browser opens the hub.
+   - It asks whether you want a **desktop shortcut** with the RetroDuck duck. Say yes, and next time just click the duck.
+3. In the RetroDuck window, press **▶ Start**. Your browser opens the hub.
 4. Type a name to **make your account** (one click, no password). Then **Export account** from the top bar and keep the file somewhere safe: it's the only way to move or restore your account.
 
 **macOS / Linux:** install Python 3 and Node.js 18+, then run `python3 RetroHub.pyw` (or `./launch.sh`) in the folder. **Docker / NAS:** see the [advanced guide](README-ADVANCED.md#10-docker-and-nas).
@@ -55,7 +55,7 @@ There are three ways to play a game together, and you pick one when you host:
 ## Add your games
 
 - Put games in the **`roms`** folder, one folder per console: `roms/snes`, `roms/gba`, `roms/psx`…
-- Or point each console at the folder your games are already in: **Settings → Consoles…** in the Retro Hub window.
+- Or point each console at the folder your games are already in: **Settings → Consoles…** in the RetroDuck window.
 - In the hub, press **Unlock library** and enter the owner password (in the window: **Settings → Owner password → Show**).
 
 Disc games show up once (the `.cue` or `.m3u`, not every track), and BIOS files are left out on their own. Friends can also play a game file from their own computer; it stays on their computer. How the library decides what's a game: [The ROM library](README-ADVANCED.md#7-the-rom-library).
@@ -102,7 +102,14 @@ For OBS: **☰ → 📺 OBS overlay** gives you one Browser Source URL with **th
 
 ## Staying up to date
 
-The Retro Hub window checks for new versions when it opens. Press **Update…** (or **Check for updates**): your settings, games and emulators are kept, replaced files are backed up first, and the download is checked before it's installed. What changed: [CHANGELOG.md](CHANGELOG.md).
+The RetroDuck window checks for new versions when it opens. Press **Update…** (or **Check for updates**): your settings, games and emulators are kept, replaced files are backed up first, and the download is checked before it's installed. What changed: [CHANGELOG.md](CHANGELOG.md).
+
+## Support RetroDuck
+
+RetroDuck is free and made by **Zephyrian**. If it brings you and your friends some fun:
+
+- ☕ [Support it on Ko-fi](https://ko-fi.com/zephyrian)
+- ▶ [Zephyrian on YouTube](https://www.youtube.com/@Zephyrian1st)
 
 ## Need help?
 
@@ -111,7 +118,7 @@ The Retro Hub window checks for new versions when it opens. Press **Update…** 
 | The library tab is missing | Press **Unlock library** and enter the owner password. |
 | A friend can't connect | Use the Internet (Cloudflare Tunnel) mode, or see *TURN* in the [advanced guide](README-ADVANCED.md#9-playing-over-the-internet). |
 | The game lags for a friend far away | Try **Ghost** or **Race** mode (no lag), or lower **📶 Stream** quality. |
-| The hub link opens some other page (for example "freej2me-web … Loading…") | Another program uses the same port. Retro Hub refuses to start and names it; close it or change **Port** in **Settings**. |
+| The hub link opens some other page (for example "freej2me-web … Loading…") | Another program uses the same port. RetroDuck refuses to start and names it; close it or change **Port** in **Settings**. |
 | An emulator shows ✖ | The window shows a **Setup needs a look** box with a fix button. |
 | A game is missing from the library | Check its folder in **Settings → Consoles…**, and **Show hidden** in the library. |
 | Lost your account | Import the file from **Export account** on the sign-in page. Without one, make a new account. |
@@ -129,4 +136,4 @@ The Retro Hub window checks for new versions when it opens. Press **Update…** 
 
 ---
 
-Retro Hub contains no games, BIOS files or keys. Only play games you own. GPL-3.0, see [LICENSE](LICENSE).
+RetroDuck contains no games, BIOS files or keys. Only play games you own. GPL-3.0, see [LICENSE](LICENSE).
