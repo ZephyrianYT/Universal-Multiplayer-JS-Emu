@@ -14,6 +14,8 @@
 ---  <img width="1864" height="936" alt="image" src="https://github.com/user-attachments/assets/9c7953fc-b98a-41e1-9f49-c9f56a5f8f2b" />
 
 
+
+**FIRST TIME USERS, PLEASE NOTE, YOU NEED TO ENTER THE PASSWORD FOUND IN YOUR ENV. FILE TO UNLOCK THE LIBRARY ACCESS, OTHERWISE U ONLY ACCESS BROWSER EMUS OVER SINGLE FILE LOAD**
 ## How it works
 
 RetroDuck has two halves:
