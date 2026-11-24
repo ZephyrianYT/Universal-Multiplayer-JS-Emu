@@ -46,7 +46,7 @@ There are three ways to play a game together, and you pick one when you host:
 
 ## Get started (Windows)
 
-1. **Unzip** `RetroHub0.4.4.2.zip` anywhere (for example `C:\Games\retro-hub`).
+1. **Unzip** `RetroHub0.4.4.4.zip` anywhere (for example `C:\Games\retro-hub`).
 2. **Double-click `launch.bat`.**
    - Missing Python or Node.js? It offers to download and install them for you, and checks every download first.
    - It asks whether you want a **desktop shortcut** with the RetroDuck duck. Say yes, and next time just click the duck.
