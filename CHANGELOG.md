@@ -1,5 +1,26 @@
 # Changelog
 
+## 1.33.2 - 2026-11-23
+
+Released as **Retro Hub 0.4.4.2**:
+
+- 🐣 **Pocket Duck**: a little virtual pet (Off Site Games and Big screen > Web players). Feed it, play a left-or-right game,
+  clean up, lights out, medicine; it hatches and grows up in real time, also while the hub is closed. Saved per account in
+  your browser. Keys, mouse, touch or gamepad.
+- 📺 OBS toolkit: DiscordAudioStream (share the pop-out in Discord with sound), gamepadviewer.com and the Awesome OBS Plugin
+  List in the OBS dialog's plugin tips; docs/OBS-STREAMING.md has the Discord-with-sound route.
+- 📖 Setup guide + emulators/ONLINE.md: optional note on the community Pretendo Account Generator for Cemu (with its caveats).
+- Big screen shows your theme's background picture and Wave ribbons.
+- 🌍 Off Site Games: Tamaweb (free virtual pet game).
+- 📺 Big screen layouts (Start > 🧭 Layout): **Crossbar** (consoles across, games centered below), **Panels** (stacked side
+  panels, the selected one opens) and **Dial** (big round console buttons, memory-unit style LCD clock). All clamped for
+  TVs: 5% safe margins, no overflow, focus never clipped, phone-width fallback.
+- 🎨 New themes: **Bootup** (light, late-90s console menu), **Cubic** (indigo + coral red, chunky 3D tiles and press-down
+  buttons) and **RetroHub NetRunner** (hacker HUD: red-tinted black, turquoise, crimson and yellow, bracket frames,
+  scanlines). All original designs.
+- 🕹 **OUYA (Android)** console: OUYA APKs in an `ouya` folder run through the Android console; the hub warns when the
+  OUYA Framework is missing on the device.
+
 ## 1.33.1 - 2026-11-23
 
 Released as **Retro Hub 0.4.4.1**:
