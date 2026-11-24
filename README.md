@@ -1,4 +1,5 @@
 > **RetroDuck 0.4.4.4 is out:** 🌍 one-switch **Internet link** for friends anywhere (no router setup), Check for Emus finds emulators you installed with their installers, a backup-file step for new accounts, drag-and-drop games, plus 0.4.4.3's new 🦆 RetroDuck look. Use the updater or download `RetroDuck0.4.4.4.zip` from Releases.
+<img width="1855" height="929" alt="image" src="https://github.com/user-attachments/assets/ab8651dd-56da-4f98-b4f4-ae50382ab5ce" />
 
 # RetroDuck
 
@@ -10,7 +11,8 @@
 - 📺 **Made for streaming**: an OBS overlay that shows the game, the players and your Twitch / YouTube chat, with viewer effects chat can trigger.
 - 🔒 **Private by design**: your games stay on your PC, accounts live in each player's browser, and the hub's private tools only answer to your own computer.
 
----
+---  <img width="1864" height="936" alt="image" src="https://github.com/user-attachments/assets/9c7953fc-b98a-41e1-9f49-c9f56a5f8f2b" />
+
 
 ## How it works
 
@@ -28,6 +30,7 @@ There are three ways to play a game together, and you pick one when you host:
 | **Co-op** | The host's browser runs the game and streams the picture and sound to everyone. Friends' controllers drive players 2-4. | You want to play *one* game together, like on a couch. Friends don't need the game. |
 | **Ghost** | Everyone runs their own copy of the same game, side by side. Other players show as see-through ghosts over yours. | Single-player games, playing "together" with no lag at all. Everyone needs the game. |
 | **Race / Speedrun** | Ghost mode plus one shared timer, splits and results. Alone, it's a speedrun timer with personal bests. | Racing friends, or practising runs. |
+<img width="1866" height="934" alt="image" src="https://github.com/user-attachments/assets/3928a899-7be8-4cd6-9338-0a3cedec4ae9" />
 
 **Big consoles** (PS2 and newer) are too heavy for a browser, so they run in a real emulator on your PC. The hub starts it for you, your browser captures its window, and from then on it streams to friends exactly like a Co-op game.
 
@@ -68,6 +71,8 @@ Disc games show up once (the `.cue` or `.m3u`, not every track), and BIOS files 
 
 **Friends on the same Wi-Fi** can use the *Copy Wi-Fi link* button. **Friends anywhere** need the Internet mode: in the window, pick **Internet (Cloudflare Tunnel)** before pressing Start. It's free, no account needed. The hub still opens on localhost for you; invite links use the public address. More: [Playing over the internet](docs/README-ADVANCED.md#9-playing-over-the-internet).
 
+<img width="1816" height="876" alt="image" src="https://github.com/user-attachments/assets/9a497f73-2835-4e38-b28e-d4b148dcb4c7" />
+
 In a match: **/** to chat, the 🎙 button for voice, **F2** / **F4** to save and load (co-op host), **📶 Stream** to change the quality. Every shortcut: the **⌨** button.
 
 ## Big consoles (PS2, GameCube, Switch…)
@@ -99,6 +104,7 @@ For OBS: **☰ → 📺 OBS overlay** gives you one Browser Source URL with **th
 | 🎞️📱🗝️🖥️ **Flash, phone games, ScummVM, DOS / Windows 9x** | Off Site Games tab | [Hub players](docs/README-ADVANCED.md#hub-players-flash-phone-games-scummvm-and-pc) |
 | 🔗 **Link play**: GBA link cable, Four Swords GBA screens, Xbox 360 System Link | *Play* tab panels | [GBA link](docs/README-ADVANCED.md#gba-and-game-boy-link-cable-vba-m), [GBA screens](docs/README-ADVANCED.md#four-swords-adventures-gba-screens), [System Link](docs/README-ADVANCED.md#xbox-360-system-link-rooms) |
 | 🎨 **Themes**: 14 looks, launcher styles, or make and share your own | 🎨 Theme in the top bar | [Themes and emotes](docs/README-ADVANCED.md#themes-and-emotes) |
+<img width="1866" height="930" alt="image" src="https://github.com/user-attachments/assets/f4da510e-9b56-4d83-8a1e-22441959908b" />
 
 ## Staying up to date
 
