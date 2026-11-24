@@ -1,6 +1,24 @@
-# Fix log: 1.33.2 (Retro Hub 0.4.4.2)
+# Fix log: 1.33.3 (RetroDuck 0.4.4.3)
 
-Sections 1-9 are the fixes up to 1.19.0. Section 10 covers 1.25.0 (released as 0.3.1), section 11 covers 1.26.0 (released as 0.3.3), sections 12 and 13 cover 1.26.1 and 1.26.2 (both released together as 0.3.5), section 14 covers 1.26.3 (released as 0.3.6), section 15 covers 1.27.0 (released as 0.3.7), section 16 covers 1.30.0 (released as 0.4.1) section 17 covers 1.31.0 (released as 0.4.3) and section 18 covers 1.32.0 to 1.33.2 (released as 0.4.3.2 to 0.4.4.2).
+Sections 1-9 are the fixes up to 1.19.0. Section 10 covers 1.25.0 (released as 0.3.1), section 11 covers 1.26.0 (released as 0.3.3), sections 12 and 13 cover 1.26.1 and 1.26.2 (both released together as 0.3.5), section 14 covers 1.26.3 (released as 0.3.6), section 15 covers 1.27.0 (released as 0.3.7), section 16 covers 1.30.0 (released as 0.4.1) section 17 covers 1.31.0 (released as 0.4.3) and section 18 covers 1.32.0 to 1.33.2 (released as 0.4.3.2 to 0.4.4.2) and section 19 covers 1.33.3 (released as RetroDuck 0.4.4.3).
+
+## 19. 1.33.3 (RetroDuck 0.4.4.3)
+
+- **Big screen: the selected row's highlight was cut off** in Crossbar and Panels (the row was enlarged past its list,
+  which hides overflow), and the selected tile's ring in Cube grid was cut off at the left edge. *Change:* the row no longer
+  grows (its title does), and the grid has a little side room.
+- **Big screen Cube grid: up/down could land in the next column** when the window size didn't match the estimated
+  column count. *Change:* it reads the grid's real column count.
+- Checked (not changed): all 18 themes load their colors and their Match-theme layout with no overflow; every gamepad
+  button and the Play > lobby > back trip work. A non-owner account on the hub's own PC gets a harmless "403" when the
+  hub page offers its theme to the OBS overlay (owner only, as intended).
+- **The RetroDuck window never saw the hub start** (it looked like RetroDuck failed to start): the window waits for
+  launch.py's line "Retro Hub is running:", which the rename changed to "RetroDuck is running:", and the window file
+  itself (.pyw) was missed by the rename. *Change:* the window accepts both wordings (old and new launch.py), and its own
+  text now says RetroDuck. Web player pages' tab-title prefix is read in both spellings too.
+- **Rename:** only visible text changed. Kept on purpose: saved settings and storage keys (rh-*), the X-Retro-Hub
+  header, folder and shortcut file names, the Project64 cheat name "Retro Hub co-op" (renaming it would duplicate cheats),
+  web user agents. The updater accepts release zips named RetroDuck as well as RetroHub.
 
 ## 18. 1.32.0 to 1.33.2 (Retro Hub 0.4.3.2 to 0.4.4.2)
 
