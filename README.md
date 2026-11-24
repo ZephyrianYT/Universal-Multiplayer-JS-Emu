@@ -1,5 +1,4 @@
-<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/5b08d2a0-6854-4e57-b776-60a4f236c24c" />
-> **0.4.4.1 is out:** 📺 Big screen mode for TVs and controllers, plus Triforce arcade games, a BIOS folder that sets your emulators up by itself, MAME 2003-Plus, RetroArch consoles, a clearer home screen and a 📖 Setup guide. Use the updater or download `RetroHub0.4.4.1.zip` from Releases.
+> **0.4.4.2 is out:** 📺 Big screen mode with 4 TV layouts, 3 new themes (Bootup, Cubic, NetRunner), 🐣 Pocket Duck, OUYA games on Android, Discord-with-sound tips, plus 0.4.4's Triforce, BIOS folder, MAME 2003-Plus and RetroArch consoles. Use the updater or download `RetroHub0.4.4.2.zip` from Releases.
 
 # Retro Hub
 
@@ -44,7 +43,7 @@ There are three ways to play a game together, and you pick one when you host:
 
 ## Get started (Windows)
 
-1. **Unzip** `RetroHub0.4.4.1.zip` anywhere (for example `C:\Games\retro-hub`).
+1. **Unzip** `RetroHub0.4.4.2.zip` anywhere (for example `C:\Games\retro-hub`).
 2. **Double-click `launch.bat`.**
    - Missing Python or Node.js? It offers to download and install them for you, and checks every download first.
    - It asks whether you want a **desktop shortcut** with the Retro Hub duck. Say yes, and next time just click the duck.
@@ -77,7 +76,6 @@ In a match: **/** to chat, the 🎙 button for voice, **F2** / **F4** to save an
 2. Press **Check for Emus** in the hub: it shows which ones it found.
 3. Host the game from the hub on your own PC. The first time, a short **setup check** says if anything is missing and sets up controllers for your friends (without touching your own settings).
 4. When the match starts, press **Share the window** once.
-<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/8b29db0a-e026-48f1-a688-c796265d58a9" />
 
 Every emulator, its folder and its quirks: [emulators/README.md](emulators/README.md). How it works: [Native emulators](README-ADVANCED.md#8-native-emulators-and-pc-games). Online play in the emulators themselves (Pretendo, RPCN, Insignia…): the **🌐 Online** button and [Online services](README-ADVANCED.md#online-services).
 
@@ -86,7 +84,6 @@ Every emulator, its folder and its quirks: [emulators/README.md](emulators/READM
 Turn on **Streamer Mode** in a Co-op lobby: viewers wait in line and take turns in the seats (↻ Rotate, 👑 winner stays, optional turn timer), and 🎲 **viewer effects** let them spend points on things like inverted controls or an upside-down screen.
 
 For OBS: **☰ → 📺 OBS overlay** gives you one Browser Source URL with **the game itself**, the players, a clock, pop-ups and your **Twitch or YouTube chat** (read-only, no login), where chat can fire effects with `!flip`, `!mirror`… There's also a control dock for OBS and a 🪟 **pop-out window** for apps that capture a window instead. Full guide: [docs/OBS-STREAMING.md](docs/OBS-STREAMING.md).
-<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/9c721771-b2b5-4ff5-9543-bb0199282778" />
 
 ## More to try
 
@@ -102,7 +99,6 @@ For OBS: **☰ → 📺 OBS overlay** gives you one Browser Source URL with **th
 | 🎞️📱🗝️🖥️ **Flash, phone games, ScummVM, DOS / Windows 9x** | Off Site Games tab | [Hub players](README-ADVANCED.md#hub-players-flash-phone-games-scummvm-and-pc) |
 | 🔗 **Link play**: GBA link cable, Four Swords GBA screens, Xbox 360 System Link | *Play* tab panels | [GBA link](README-ADVANCED.md#gba-and-game-boy-link-cable-vba-m), [GBA screens](README-ADVANCED.md#four-swords-adventures-gba-screens), [System Link](README-ADVANCED.md#xbox-360-system-link-rooms) |
 | 🎨 **Themes**: 14 looks, launcher styles, or make and share your own | 🎨 Theme in the top bar | [Themes and emotes](README-ADVANCED.md#themes-and-emotes) |
-<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/bca7faf1-fd9c-4f89-8bc0-58213d0d60af" />
 
 ## Staying up to date
 
