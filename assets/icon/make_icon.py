@@ -6,7 +6,7 @@
 Writes, next to this file:
   retrohub.svg        vector source (also the browser tab icon: public/icon.svg)
   retrohub.png        512 x 512 (Linux desktop entries, the Retro Hub window)
-  retrohub-<n>.png    16 ... 1024
+  retrohub-64.png     64 x 64 (the Retro Hub window's title bar)
   retrohub.ico        Windows (16, 24, 32, 48, 64, 128, 256)
   retrohub.icns       macOS
 
@@ -124,9 +124,8 @@ def main() -> None:
     from PIL import Image
     (HERE / "retrohub.svg").write_text(svg(), encoding="utf-8")
     master = raster(1024)
-    for n in (16, 24, 32, 48, 64, 128, 256, 512, 1024):
-        master.resize((n, n), Image.LANCZOS).save(HERE / f"retrohub-{n}.png", optimize=True)
-    shutil.copyfile(HERE / "retrohub-512.png", HERE / "retrohub.png")
+    master.resize((512, 512), Image.LANCZOS).save(HERE / "retrohub.png", optimize=True)
+    master.resize((64, 64), Image.LANCZOS).save(HERE / "retrohub-64.png", optimize=True)
     master.save(HERE / "retrohub.ico", sizes=[(n, n) for n in (16, 24, 32, 48, 64, 128, 256)])
     master.save(HERE / "retrohub.icns")
     shutil.copyfile(HERE / "retrohub.svg", ROOT / "public" / "icon.svg")

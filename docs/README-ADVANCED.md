@@ -973,7 +973,7 @@ JSON messages with a `t` field.
 | `core/online/`, `core/patch-catalog.json`, `core/coop-hacks.json`, `core/offsite-games.json` | yes | Online-service info, known patches, co-op hacks, the Off Site list. |
 | `public/obs-*` | yes | OBS overlay (`obs-overlay.*`, incl. the pop-out window), control dock (`obs-dock.*`), game feed (`obs-feed.js`) and the hub's OBS dialog (`obs-setup.js`). |
 | `docs/` | yes | This guide, `CHANGELOG.md` (also the hub's "What's new"), `FIXLOG.md`, and longer guides: OBS streaming, achievements, emulator adapters, local security. |
-| `assets/icon/` | yes | The mascot icon: `retrohub.svg` (source), `.png` sizes, `.ico`, `.icns`, and `make_icon.py` that builds them (needs Pillow; only to change the icon). |
+| `assets/icon/` | yes | The mascot icon: `retrohub.svg` (source), `retrohub.png` / `retrohub-64.png`, `.ico`, `.icns`, and `make_icon.py` that builds them (needs Pillow; only to change the icon). |
 | `setup/deps.ps1` | yes | Windows: finds, downloads, safety-checks and installs Python, Node.js and controller support. |
 | `setup/update.py` | yes | The updater. |
 | `setup/shortcut.py` | yes | The desktop shortcut. |
