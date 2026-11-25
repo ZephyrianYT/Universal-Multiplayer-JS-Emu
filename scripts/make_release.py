@@ -9,7 +9,7 @@ The zip holds every file git tracks, inside one folder "retro-hub-<release>/", t
 games, BIOS files, emulators, caches and node_modules can never end up in a release.
 
 The version comes from package.json: "version" (e.g. 1.26.1) and "release" (e.g. 0.3.4, the number players
-see). notes.md is that version's section of CHANGELOG.md, used as the GitHub release text.
+see). notes.md is that version's section of docs/CHANGELOG.md, used as the GitHub release text.
 
 The GitHub workflow .github/workflows/release.yml runs this and publishes the release, so a release can be made
 from the GitHub website or app (Actions > Release > Run workflow) without a PC. Standard library only.
@@ -63,10 +63,10 @@ def versions() -> tuple[str, str]:
 
 
 def changelog_section(version: str) -> str:
-    text = (ROOT / "CHANGELOG.md").read_text(encoding="utf-8")
+    text = (ROOT / "docs" / "CHANGELOG.md").read_text(encoding="utf-8")
     m = re.search(rf"^## {re.escape(version)}\b.*?$\n(.*?)(?=^## |\Z)", text, re.M | re.S)
     if not m or not m.group(1).strip():
-        fail(f"CHANGELOG.md has no '## {version}' section. Add what changed before releasing.")
+        fail(f"docs/CHANGELOG.md has no '## {version}' section. Add what changed before releasing.")
     return m.group(1).strip() + "\n"
 
 

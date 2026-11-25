@@ -433,7 +433,7 @@ async function scanLibraryNow() {
   return list;
 }
 
-// ---------------------------------------------------------------- "What's new" (CHANGELOG.md sections)
+// ---------------------------------------------------------------- "What's new" (docs/CHANGELOG.md sections)
 const verNum = v => String(v || "").split(".").map(n => parseInt(n, 10) || 0).reduce((a, n) => a * 1000 + n, 0);
 // The changelog's markdown, subset: ### headings, "- " bullets, **bold**, `code`. Everything is escaped first.
 function mdLite(md) {
@@ -453,7 +453,7 @@ function mdLite(md) {
   return html + (list ? "</ul>" : "");
 }
 function whatsNew(since) {
-  let text = ""; try { text = fs.readFileSync(path.join(ROOT, "CHANGELOG.md"), "utf8"); } catch { return []; }
+  let text = ""; try { text = fs.readFileSync(path.join(ROOT, "docs", "CHANGELOG.md"), "utf8"); } catch { return []; }
   const out = [];
   for (const part of text.split(/^## /m).slice(1)) {
     const [head, ...body] = part.split(/\r?\n/);
