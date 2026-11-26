@@ -1,6 +1,27 @@
-# Fix log: 1.35.0 (RetroDuck 0.4.6)
+# Fix log: 1.36.0 (RetroDuck 0.4.7)
 
-Sections 1-9 are the fixes up to 1.19.0. Section 10 covers 1.25.0 (released as 0.3.1), section 11 covers 1.26.0 (released as 0.3.3), sections 12 and 13 cover 1.26.1 and 1.26.2 (both released together as 0.3.5), section 14 covers 1.26.3 (released as 0.3.6), section 15 covers 1.27.0 (released as 0.3.7), section 16 covers 1.30.0 (released as 0.4.1) section 17 covers 1.31.0 (released as 0.4.3) and section 18 covers 1.32.0 to 1.33.2 (released as 0.4.3.2 to 0.4.4.2) section 19 covers 1.33.3 (released as RetroDuck 0.4.4.3) and section 20 covers 1.34.0 and 1.35.0 (released together as RetroDuck 0.4.6; 1.33.4 / 0.4.4.4 added features only, see CHANGELOG.md).
+Sections 1-9 are the fixes up to 1.19.0. Section 10 covers 1.25.0 (released as 0.3.1), section 11 covers 1.26.0 (released as 0.3.3), sections 12 and 13 cover 1.26.1 and 1.26.2 (both released together as 0.3.5), section 14 covers 1.26.3 (released as 0.3.6), section 15 covers 1.27.0 (released as 0.3.7), section 16 covers 1.30.0 (released as 0.4.1) section 17 covers 1.31.0 (released as 0.4.3) and section 18 covers 1.32.0 to 1.33.2 (released as 0.4.3.2 to 0.4.4.2) section 19 covers 1.33.3 (released as RetroDuck 0.4.4.3), section 20 covers 1.34.0 and 1.35.0 (released together as RetroDuck 0.4.6; 1.33.4 / 0.4.4.4 added features only, see CHANGELOG.md) and section 21 covers 1.36.0 (released as RetroDuck 0.4.7).
+
+## 21. 1.36.0 (RetroDuck 0.4.7)
+
+Fixed in this release:
+
+- **Hub-to-hub calls followed redirects** (GBA link seat claims and release, System Link peer calls). A rogue "hub" on
+  the LAN could answer 307/308 and the POST was sent again to an address it picked, this PC's own loopback routes
+  included. Now `redirect: "error"` everywhere, and replies are read through `peerJson()` (at most 64 KB).
+- **IPS patches read anything after `EOF` as a truncate size**: the truncate extension is exactly 3 bytes; EBP's JSON
+  note after `EOF` would have been read as about 8 MB. Now only an exact 3-byte tail truncates.
+- **A GBA link seat stayed taken for 10 minutes** when the joiner's VBA-M failed to start or their PC went away. The seat
+  is given back on a failed start, and hubs that send a heartbeat lose it after about 70 s of silence.
+- **A hub heard on two networks was listed twice**, once per route, with no ping. Now one row on the fastest route.
+
+Found while testing (fixed before release):
+
+- The route timing read the whole reply body; it now drops it unread and never follows redirects.
+- PCSX2 has no `-cfg` / `-cfgdir` (a pasted guide said so); the lock uses `-gamecfg`, checked in PCSX2's source.
+- Flycast's per-game settings beat `-config` (Option::load), so the lock reports them instead of claiming to lock them.
+- Fake test delays on Windows tick in ~16 ms steps (a "20 ms" route measured 30-46 ms): the anti-flap tests use 0/100 ms.
+
 
 ## 20. 1.34.0 and 1.35.0 (RetroDuck 0.4.6)
 
