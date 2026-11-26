@@ -1,5 +1,31 @@
 # Changelog
 
+## 1.36.0 - 2026-11-26
+
+Released as **RetroDuck 0.4.7**: finding things to play together, fair versus rooms, an easy address at home, and a
+security pass.
+
+- 🏝 **Archipelago**: when you pick one of the 32 console games Archipelago supports (A Link to the Past, Super Metroid,
+  SMZ3, Ocarina of Time, Pokémon Emerald, Links Awakening DX, Mega Man 2 and 3 and more), the box under it links straight
+  to that game's options page, Generate Game, its setup guide and game page, plus "How to play it with RetroDuck…": a
+  5-step guide from making your options to patching your ROM and connecting.
+- 🤝 **Co-op projects**: the same box (also for PC games) lists fan projects that add co-op or online play to the game,
+  from the Co-op Anything directory: how far each got, how it was tested, players and how it connects.
+- 🩹 **Patcher**: EarthBound `.ebp` patches work. When a patch can't be applied, it points to Rom Patcher JS and the
+  Hack64 Web Patcher, which read a few more formats.
+- 🤝 **Fair play**: a checkbox in PS2, PS3, Xbox 360, Dreamcast and NAOMI lobbies starts the emulator with cheats, game
+  patches and speed hacks off for that run (PCSX2, RPCS3, Flycast, Xenia), without touching your own settings. Xbox 360
+  System Link rooms always use it, and a hub with a different lock can't take a seat.
+- 🏠 **Wi-Fi name**: ☰ Menu > 🏠 Wi-Fi name lets friends at home open http://yourname.local, with no port to remember.
+- 👥 **Flock List**: the Buddy List is now the Flock List, with tighter privacy: name search needs 2 letters and shows at
+  most 10, a "Let others find me" switch, and typing and away notes only go to flockmates.
+- 🏆 **Luna's Project64**: Project64 with RA_Integration.dll next to it now counts as a RetroAchievements emulator.
+- 🐝 **Friends' hubs**: lobbies from other hubs show their ping. A hub reachable two ways (home network and a VPN) is
+  listed once, on its fastest route, and switches only when another route is clearly faster or the current one stops
+  answering. GBA link seats are freed about a minute after a player's PC goes away, or at once if their VBA-M can't start.
+- 🔒 **Security pass**: calls to other hubs no longer follow redirects and read at most 64 KB of reply; the new route
+  timing answers only other hubs on your network.
+
 ## 1.35.0 - 2026-11-25
 
 Released as **RetroDuck 0.4.6**: the LAN party groundwork, and the first members of the **RetroDuck family**: ducks,
