@@ -36,7 +36,7 @@ This guide covers installing the hub, using it day to day, and how it works insi
 6. [Using the hub](#6-using-the-hub)
    - [Accounts](#accounts) · [Hosting](#hosting-a-game) · [Joining](#joining) · [In the match](#in-the-match) · [Race / speedrun](#race--speedrun-mode) · [RetroAchievements](#retroachievements)
    - [Streamer Mode](#streamer-mode) · [Viewer effects](#viewer-effects-streamer-mode) · [OBS overlay and stream tools](#obs-overlay-and-stream-tools) · [Shuffler](#shuffler)
-   - [Controllers](#controllers-seats-and-odd-devices) · [Guitars, drums, dance mats](#guitars-drum-kits-and-dance-mats) · [Lobby Browser](#lobby-browser) · [Buddy List](#buddy-list-messenger) · [Themes and emotes](#themes-and-emotes)
+   - [Controllers](#controllers-seats-and-odd-devices) · [Guitars, drums, dance mats](#guitars-drum-kits-and-dance-mats) · [Lobby Browser](#lobby-browser) · [Flock List](#flock-list-messenger) · [Themes and emotes](#themes-and-emotes)
    - [Co-op ROM hacks](#co-op-rom-hacks) · [Patches and the Patcher](#patches-variants-and-the-patcher) · [Off Site Games](#off-site-games) · [Flash, phone, ScummVM, PC](#hub-players-flash-phone-games-java-applets-scummvm-and-pc) · [Pass the controller](#pass-the-controller) · [Randomizers](#randomizers-and-co-op-mods-links)
 7. [The ROM library](#7-the-rom-library)
 8. [Native emulators and PC games](#8-native-emulators-and-pc-games)
@@ -109,7 +109,7 @@ One hub on one PC is the everyday case. The same parts scale up to a LAN party: 
 | 🦆👑 **MommaDock** | A hub with `MOMMADOCK=1` (usually Docker on a NAS): the owner-only board of every duck it hears, and the side that adopts nodes and sends them signed commands. [More](#-mommadock-the-nas-as-the-boss-of-your-retroducks) | The main unit of a mesh Wi-Fi system; a control tower. | `MOMMADOCK=1` | 🧪 |
 | 🐣🔗 **Duckling node**, **adoption** | A PC's main hub with `RH_NODE=1`. It calls out to a MommaDock it hears; both owners confirm the same 6-digit code; then it runs only signed, numbered, allowlisted commands (start, stop, status of its stations). [More](#-duckling-nodes-adopt-a-pc-then-run-its-stations-from-the-mommadock) | Adding a mesh Wi-Fi satellite, with a Bluetooth-style pairing code. | `RH_NODE=1` | 🧪 |
 | 🌊 **Pond** | A public join site for an event: quick join, a curated game list, browser games on players' own devices, no owner tools. | A venue's guest Wi-Fi page; a party game joined by QR code. | – | 🗺 |
-| 🪺 **Flock** | Mutual buddies from the [Buddy List](#buddy-list-messenger) as a group: friends-only high score boards, next to the Pond's event boards (station scores marked verified). | A friends-only console leaderboard. | – | 🗺 |
+| 🪺 **Flock** | Mutual flockmates from the [Flock List](#flock-list-messenger) as a group: friends-only high score boards, next to the Pond's event boards (station scores marked verified). | A friends-only console leaderboard. | – | 🗺 |
 | 🛟 **Standby duckling** | A duckling that takes over when another duck stops answering. | A backup generator. | – | 🗺 |
 | 📶 **Remote duckling** | A spare laptop that pairs with your MommaDock and connects home on its own; your phone is the remote. | A smart speaker on a shelf you control from your phone. | – | 🗺 |
 | 🎒 **LanParty** | The event kit: checklist and scripts for 3 PCs × 4 stations plus a MommaDock, fully offline, legal games only. | A stage crew's road cases and run sheet. | – | 🗺 |
@@ -548,20 +548,21 @@ The **Lobby Browser** tab (next to *Play*) is one table of every lobby: this hub
 
 - **Search** matches game, host, console and player names; `|` means *or* (`Mario|Zelda`). Filters: console, mode (Co-op / Ghost / Race), at least N players, open seats, no password, not started, friends in it, this hub only. Filters and sort are remembered in the browser.
 - Columns sort by clicking (game, console, players, ping, where). Lobbies with your friends in them come first, marked 👥 (see *Friends*). Click a row (or Enter) to see who's in it; player names are shown for this hub's lobbies only (other hubs don't share them).
+- **Ping for other hubs**: your hub times its route to every hub it hears on the network every 10 s. A hub reachable two ways (home Wi-Fi and a VPN such as Radmin, ZeroTier or Tailscale) is listed **once**, on its fastest route; it moves to another route only when that one is 15 ms faster three times in a row, or right away when the current route misses two checks. Link-up rooms (GBA link, System Link) get a ⚠ at 60 ms or more. Older hubs show `— ms`.
 - **Join** / **Watch** use the normal join dialog. Other hubs' lobbies open that hub (you make an account there). GBA link sessions point to the link panel on *Play*.
 - **⏳ Wait for a seat** (full lobbies on this hub, or *Wait for a seat* in the join dialog after a *full* answer): the page retries as soon as the lobby list shows a free seat, using the password you typed, and stops if the lobby closes. **🔔 Alert me** saves the current filters; every lobby that opens later and matches them pops up once (sound, and a system notification while the tab is in the background if allowed). Both run while the page is open, in any tab. The server sends player names in the lobby list (`names`) for this.
 
-### Buddy List (Messenger)
+### Flock List (Messenger)
 
-**👥 Buddy List** (top bar) is a classic-style instant messenger built into the hub: draggable windows, groups, away messages, buddy icons and sounds made in the page (no outside service, no AOL names or files).
+**👥 Flock List** (top bar) is a classic-style instant messenger built into the hub: draggable windows, groups, away messages, flock icons and sounds made in the page (no outside service, no AOL names or files).
 
-- **Adding buddies**: by the account ID shown next to each name (*#XXXX-XXXX-XXXX-XXXX*: top bar, player cards, chat), with **＋ Buddy** on a player in a lobby, or **Find a Buddy** (searches people online on this hub by name; hidden people never show).
-- **Mutual only**: two people see each other only when both have added each other. Someone who added you shows under **Buddy Requests** with *Add back* / *Ignore*.
-- **What you see**: online / away / idle, which lobby a buddy is in (game, host, 🔒 when it has a password) or that they're playing. **Join** opens the normal join dialog; from your own lobby **Invite** pops up a Join button on their screen.
-- **Instant messages**: typing indicator, smileys and the duck emotes, Warn, Block, Invite, Join and Get Info in each IM window. IMs that arrive during a match stay minimized with a small pop-up. History lives in this tab only (`sessionStorage`, 100 lines per buddy).
-- **You**: away message (with saved presets; an automatic reply goes out at most once per 2 minutes per person), a profile, a buddy icon (emoji), sounds and pop-ups on or off, **Appear offline**.
+- **Adding flockmates**: by the account ID shown next to each name (*#XXXX-XXXX-XXXX-XXXX*: top bar, player cards, chat), with **＋ Flock** on a player in a lobby, or **Find a Flockmate** (type 2+ letters of a name; shows at most 10 people online on this hub, 8 searches a minute; invisible people and anyone who turned off *Let others find me* never show).
+- **Mutual only**: two people see each other only when both have added each other. Someone who added you shows under **Flock Requests** with *Add back* / *Ignore*.
+- **What you see**: online / away / idle, which lobby a flockmate is in (game, host, 🔒 when it has a password) or that they're playing. **Join** opens the normal join dialog; from your own lobby **Invite** pops up a Join button on their screen.
+- **Instant messages**: typing indicator, smileys and the duck emotes, Warn, Block, Invite, Join and Get Info in each IM window. IMs that arrive during a match stay minimized with a small pop-up. History lives in this tab only (`sessionStorage`, 100 lines per flockmate).
+- **You**: away message (with saved presets; an automatic reply goes out at most once per 2 minutes per person), a profile, a flock icon (emoji), sounds and pop-ups on or off, **Appear offline**.
 - **Limits** (on the hub): 10 IMs per 10 s, 1000 characters each. **Warn** works like the classic one: +10% per warning (once per 5 minutes per sender), it drops 1% a minute, and at 50% that person can send one IM per 5 s.
-- **Privacy**: your list lives in your browser, per account (export the account to move it). The page sends it over its own socket; the hub keeps it in memory only while the page is open and stores nothing. Buddies on other hubs don't show.
+- **Privacy**: your list lives in your browser, per account (export the account to move it). The page sends it over its own socket; the hub keeps it in memory only while the page is open and stores nothing. Flockmates on other hubs don't show.
 
 ### 🦆 RetroDuck look (0.4.4.3)
 
@@ -632,10 +633,11 @@ For translations, quality-of-life hacks, randomizer seats and co-op patches on c
 
 - **🩹 Patcher…** (in the *Patches & variants* box when you pick a library game) shows the ROM's CRC32 / MD5 / SHA-1 and SNES copier header, then:
   - **Online patches**: known patches for this exact ROM (`core/patch-catalog.json`, plus your own `patches/catalog.json`). Each is downloaded only from GitHub over HTTPS and only used if its SHA-256 matches the list.
-  - **Patch file**: IPS, BPS, UPS, PPF, xdelta / VCDIFF, APS (N64 and GBA), BSDiff and Archipelago `.ap*` files (only the plain BSDiff procedure; anything else is refused with its steps named). Checksummed formats are checked against the ROM, and a SNES header is added or removed automatically when the patch needs it.
+  - **Patch file**: IPS, EBP (EarthBound patches), BPS, UPS, PPF, xdelta / VCDIFF, APS (N64 and GBA), BSDiff and Archipelago `.ap*` files (only the plain BSDiff procedure; anything else is refused with its steps named). Checksummed formats are checked against the ROM, and a SNES header is added or removed automatically when the patch needs it.
   - **Combo randomizers**: links to samus.link (SMZ3), archipelago.gg and multiworld.gg; drop the finished ROM they give you to add it, or an `.ap*` file to apply it.
 - The result is a **new file**: `<rom folder>/patched/<coop|randomizer|translation|qol|custom>/<game> [<label>].<ext>` (written to a temporary name, renamed, read back and checked). **The original is never changed.** A copy shows right after its game with a 🩹 badge, and **Launch patched** hosts it. Browser games keep separate saves per copy; native emulators may share saves with the original (Project64 names them by the ROM's internal name).
 - **🧩 Patches & variants** (turn it on per browser): patch files already next to a ROM or in `patches/<console>/<game>/` are found automatically and can be stacked into a variant, cached in `cache/variants/` (safe to delete).
+- When a patch can't be applied, the Patcher links two web patchers that read a few more formats: **Rom Patcher JS** (RUP, xdelta with extra compression; it can also make patches and fix ROM checksums) and the **Hack64 Web Patcher** (N64 hacks, Star Rod `.mod` for Paper Mario). Save their result and add it to your library.
 - Formats are implemented in RetroDuck itself (`core/library/patchfmt.mjs`, `romhack.mjs`, `patcher.mjs`); no outside tool runs. Disc images, archives and files over 128 MB are refused.
 
 ### Off Site Games
@@ -685,6 +687,20 @@ Picking a game in **Host a game** shows **🎲 Randomizers for <game>** when one
 
 - The list is `public/randomizers.json`, built from [The BIG List of Video Game Randomizers](https://randomizers.debigare.com) ([rando-list](https://github.com/video-game-randomizers/rando-list), MIT) by `python scripts/update_randomizers.py` (newest commit, or `--commit <sha>`). Obsolete randomizers and non-web links are left out.
 - Matching is by name: `Legend of Zelda, The - A Link to the Past (USA)` and `The Legend of Zelda: A Link to the Past` are the same game (regions, tags, "The", punctuation and a trailing "Version" are ignored).
+
+### 🏝 Archipelago (multiworld)
+
+When the picked game is one of the console games on [Archipelago's supported list](https://archipelago.gg/games) (A Link to the Past, Super Metroid, Ocarina of Time, Pokémon Emerald, Links Awakening DX and 26 more), the randomizer box shows **🏝 Archipelago supports <game>** with direct links to that game's **options page**, **Generate Game**, its **setup guide** and game page, plus **How to play it with RetroDuck…**, a 5-step guide: make your options (.yaml) → generate the world and create a room → download your patch file and note the room address → patch your ROM in **🧩 Patches & variants > 🩹 Patcher… > Combo randomizers** (or with the Archipelago Launcher) → play in the emulator the setup guide names and `/connect` from the game's Archipelago client.
+
+- RetroDuck only links to archipelago.gg: seeds, rooms and patch files are made there, and the patch is applied to your own ROM.
+- Archipelago's client talks to a native emulator (BizHawk, RetroArch, Dolphin, PCSX2…), so RetroDuck's in-browser player can't connect. A RetroDuck lobby still works for hanging out and streaming while everyone plays their own copy.
+- The table is `public/archipelago.json` (console id + library title keys per game; PC-only games are left out). `python -I scripts/check_archipelago.py` lists games the site added or removed.
+
+### 🤝 Co-op projects (Co-op Anything)
+
+Picking a game (a ROM **or a PC game**) also shows **🤝 N co-op projects for <game>** when fan projects add co-op or online play to it: mods, PC ports from decompilations, forks and emulator add-ons, best first. Each row says how far it got (Playable, Partly works, Alpha, Prototype, Abandoned), how it was tested, players, how it connects (direct IP, a server, a VPN…), whether it's open source and when it was last active. They're off-site: you install them yourself from your own copy of the game.
+
+- The list is `public/coop-directory.json`, built from [Co-op Anything](https://github.com/cranebeaker/coop-anything)'s `data/directory.yaml` (MIT) by `python -I scripts/update_coop_directory.py` (newest commit, or `--commit <sha>`). Only that file is read; gaps, non-web links and "(multiple)" emulator netplay entries are left out. Links are https only.
 
 ---
 
@@ -885,6 +901,8 @@ The panel tells you once when something changes, and a limited console shows a n
 
 Link play runs in **VBA-M**, never in EmulatorJS (its GBA and GB cores can't link). Everyone runs their own RetroDuck and ROM on the same network; see the **GBA / Game Boy link cable** panel. When you pick a GBA, GB or GBC game from the library and VBA-M is installed, **Play in → VBA-M link cable** hosts a link session straight from *Host a game* (remembered; games in VBA-M's own folders default to it). GB / GBC link depends on your VBA-M version's network link support.
 
+Seats: your hub checks in with the host's hub every 20 s while you play, so if your PC goes away the seat frees after about 70 s (hubs older than 0.4.7 keep the old 10 minutes); if your VBA-M can't start, the seat is given back at once.
+
 ### Four Swords Adventures: GBA screens
 
 GameCube games that use Game Boy Advances as controllers (*The Legend of Zelda: Four Swords Adventures*, *Final Fantasy Crystal Chronicles*) can be played two ways; the host form shows a **GBA screens** box when you pick one:
@@ -898,8 +916,22 @@ LAN multiplayer for Xbox 360 games between hubs on the same network (or a virtua
 
 - The host opens a room for a game; others join from the LAN list or by typing the host hub's address. Up to 4 players, Ready, then Start launches Xenia on every PC with System Link on the chosen network adapter (command-line only; your Xenia config isn't touched).
 - **Same game check**: each hub reads the game's title ID, media, version and title update; a different game is refused, a different version or update warns first.
+- **Fair play**: every System Link launch turns Xenia's game patches and plugins off (`--apply_patches=false --allow_plugins=false`), and a hub with a different fair play lock (an older RetroDuck) can't take a seat.
 - The room's peer routes only answer to private network addresses or an address inside one of this PC's own adapter subnets, with no proxy headers, rate-limited.
 - Full details, verified Xenia settings and what isn't tested: [docs/SYSTEM-LINK.md](docs/SYSTEM-LINK.md).
+
+### 🤝 Fair play lock
+
+For versus rooms and races, so everyone plays the same game. Tick **🤝 Fair play** under the emulator steps in a PS2, PS3, Xbox 360, Dreamcast or NAOMI lobby (remembered, off by default); System Link rooms always use it. It only changes **this run**: your own emulator settings files are never edited, and your controller setup keeps working.
+
+| Emulator | How | Locked |
+| --- | --- | --- |
+| PCSX2 | `-gamecfg emulators/.retroduck_online/pcsx2-online.ini` replaces the game's `gamesettings/*.ini` | cheats, widescreen and no-interlace patches, patch/cheat lists off; EE cycle rate and skip 0; 100 % speed |
+| RPCS3 | `--config emulators/.retroduck_online/rpcs3-online.yml` (skips `config.yml` and `custom_configs/`) | your config.yml with Clocks scale 100, Vblank Rate 60 |
+| Flycast | `-config section:key=value` (never saved) | no auto load/save state, no widescreen hacks |
+| Xenia | `--apply_patches=false --allow_plugins=false` | `patches/*.patch.toml`, plugins and trainers |
+
+What can't be switched off from outside is shown when the game starts: RPCS3 patches turned on in *Manage > Game Patches*, Flycast's per-game settings (they beat `-config`) and Flycast's Cheats menu. It keeps honest players on the same settings; it isn't anti-cheat. Details: [docs/EMULATOR-ADAPTERS.md](docs/EMULATOR-ADAPTERS.md).
 
 ### Triforce, RetroArch consoles and OUYA
 
@@ -912,6 +944,10 @@ LAN multiplayer for Xbox 360 games between hubs on the same network (or a virtua
   shows what was found.
 - **OUYA (Android)**: OUYA APKs in an `ouya` folder run through the Android console (adb + an Android emulator); install
   your own copy of the OUYA Framework on the emulator once. See `emulators/README.md`.
+
+### 🏠 Wi-Fi name (yourname.local)
+
+☰ Menu > **🏠 Wi-Fi name** (owner, on the hub's PC) gives your hub a name on your home network, so friends there open `http://yourname.local` instead of an address and port. RetroDuck answers name lookups for that one name only (mDNS, the same thing printers use) with this PC's address on the asker's network, and a small front door on port 80 sends `http://yourname.local/...` on to the hub's real port. Anything else on port 80 gets a 404. If another device already uses the name, RetroDuck says it's taken. `LOCAL_NAME=<name>` fixes it from `.env`, `LOCAL_NAME_SERVICE=0` turns it off. Only the main hub does this (not ducklings), and only on your own network: it isn't an internet address. Windows may ask once to allow RetroDuck on private networks.
 
 ## 9. Playing over the internet
 
@@ -1063,11 +1099,14 @@ Other state, not set through environment variables: `library-folders.json` (per-
 | Shutdown | `POST /api/shutdown` works for (a) loopback requests with the random token from `run/retro-hub.json` (file mode 600), or (b) an owner session with `X-Retro-Hub: shutdown`. |
 | Browser hardening | Strict CSP (own origin only, no inline scripts; `unsafe-eval` only for EmulatorJS's 7-Zip worker), COOP/COEP/CORP, `X-Frame-Options: DENY`, `nosniff`, a tight `Permissions-Policy`. |
 | WebSocket | Session cookie required. 64 KB max message, 200 messages/s flood limit, chat limited to 6 messages per 8 s. |
+| Hub to hub | `/api/swarm/ping` (route timing), link and System Link peer routes answer only other hubs on a private network: no browser markers, no proxy headers, Host must be an address, rate-limited. Calls to other hubs never follow redirects and read at most 64 KB of reply, so a rogue hub can't bounce a request to this PC's own routes or flood memory. |
+| Wi-Fi name | mDNS answers only `A` for the chosen `<name>.local`, 1 answer per second per asker; the port-80 front door redirects only that name, built from the saved name (never from the request); `/api/localname` is owner-on-this-PC. |
+| Fair play files | Lock files are written only inside `emulators/.retroduck_online/` and rewritten before every locked launch. |
 | Native runner | Argument lists, no shell. Only `.exe` files from the registry or catalog. Job Object containment. Keyboard input goes only into the contained windows. |
 | Launcher | The tunnel token goes to `cloudflared` through its environment. The Console tab hides secrets in `env` output. |
 | Updates | GitHub only (HTTPS, host checked after redirects), SHA-256 against GitHub's published checksum, Defender scan, zip checked for unsafe paths, user files never overwritten, replaced files backed up. |
 | OBS overlay, dock, pop-out | Only from the hub's own computer as `localhost` / `127.0.0.1` / `[::1]` with the port (`core/net/localguard.mjs`: loopback source AND Host allowlist against DNS rebinding AND no proxy headers AND not requested by another site), plus a random key. The dock's actions also need its own key and an `X-Retro-Hub` header. Twitch and YouTube chat are read-only with no login (YouTube: requests only to `https://www.youtube.com` from a validated id, capped and rate-limited); chat can only fire the effects the owner ticked, rate-limited, on the lobby hosted from this PC. |
-| Messenger | Buddies see each other only when both added each other. 10 IMs per 10 s, 1000 characters, warning levels slow abusers, Block and Appear offline. Lists aren't stored on the server. |
+| Messenger | Flockmates see each other only when both added each other. 10 IMs per 10 s, 1000 characters, warning levels slow abusers (you can only warn someone for a message they sent you in the last 15 minutes), Block, Appear offline and Let others find me. Lists aren't stored on the server. |
 | ROM patching | Owner only, with an `X-Retro-Hub` header and same-origin check. Patches are parsed by RetroDuck's own code; online patches only from GitHub over HTTPS with a pinned SHA-256; results go to a new file, originals are never written. |
 | Native setup | Settings files are only written when absent or still RetroDuck's own; single keys only at default or RetroDuck's value; backups first. |
 | System Link / LAN | Peer routes only from private or same-subnet addresses, no proxy headers, rate-limited; the owner's routes need owner + same origin + header. |
@@ -1144,6 +1183,7 @@ JSON messages with a `t` field.
 | `core/library/rules.mjs` | yes | Scanner rules: what counts as a game; the disc zip for the browser. |
 | `core/net/` | yes | LAN discovery, link cable, RetroAchievements, cover art, local-only guard (`localguard.mjs`), read-only Twitch chat (`twitchchat.mjs`) and YouTube chat (`youtubechat.mjs`). |
 | `core/streaming/streamtools.mjs` | yes | Stream tools: chat points and commands, channel-point rewards, the speedrun timer. |
+| `public/archipelago.json`, `public/coop-directory.json` | yes | Archipelago's console games and Co-op Anything's co-op projects (refresh: `scripts/check_archipelago.py`, `scripts/update_coop_directory.py`). |
 | `public/ruffle/`, `public/v86/`, `public/j2me/`, `public/scummvm/` | yes | The Flash, PC, phone-game and ScummVM players (each with its license). |
 | `core/online/`, `core/patch-catalog.json`, `core/coop-hacks.json`, `core/offsite-games.json` | yes | Online-service info, known patches, co-op hacks, the Off Site list. |
 | `public/obs-*` | yes | OBS overlay (`obs-overlay.*`, incl. the pop-out window), control dock (`obs-dock.*`), game feed (`obs-feed.js`) and the hub's OBS dialog (`obs-setup.js`). |
@@ -1166,6 +1206,7 @@ JSON messages with a `t` field.
 | `bios/` | created | BIOS files you supply (e.g. `gba_bios.bin` for GBA screens). Kept by the updater, never shipped. |
 | `<rom folder>/patched/` | created | Patched copies made by the Patcher (originals untouched). |
 | `cache/variants/`, `cache/coop/` | created | Stacked patch variants and co-op ROM copies (safe to delete). |
+| `emulators/.retroduck_online/` | created | Fair play lock files (PCSX2 game settings, RPCS3 config), rewritten before every locked launch. |
 | `emulators/provision.json` | created | What the setup wizard wrote, so it never overwrites your own changes. |
 | `cache/scummvm/` | created | ScummVM engine files, downloaded on first use and checked. |
 | `cache/stream-chat.json` | created | Stream chat settings: Twitch channel, YouTube channel / video, commands, effects, points, linked rewards. |
