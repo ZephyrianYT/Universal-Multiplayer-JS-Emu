@@ -1,4 +1,4 @@
-> **RetroDuck 0.4.6 is out:** 🐣 **Ducklings**: run more RetroDuck servers from one folder, each on its own port, for more lobbies at once, sharing your library and sign-in. New for LAN parties and switched off unless you turn them on: 🖥 one play station per monitor with its own controller, and 🦆 **MommaDock**, a board of every duck on your network that can adopt PCs and start their stations. Use the updater or download `RetroDuck0.4.6.zip` from Releases.
+> **RetroDuck 0.4.7 is out:** 🏝 **Archipelago** links and a step-by-step guide for the games it supports, 🤝 **co-op projects** for your games (from Co-op Anything), a 🤝 **Fair play** switch for versus rooms, a 🏠 **Wi-Fi name** for your hub (`http://yourname.local`, no port), the 👥 **Flock List**, faster routes to friends' hubs, and a security pass. Use the updater or download `RetroDuck0.4.7.zip` from Releases.
 
 # RetroDuck
 
@@ -6,7 +6,7 @@
 
 - 🎮 **Browser consoles**: NES, SNES, N64, Game Boy, Game Boy Color, GBA, DS, PS1, PSP, Genesis, Saturn, arcade and more.
 - 🖥️ **Big consoles** (PS2, GameCube, Wii, Wii U, Switch, 3DS, Xbox, Xbox 360, PS3, Dreamcast, arcade…) and **Android games** run in real emulators on your PC and stream to your friends.
-- 🏁 **Race / speedrun mode**, 🏆 **RetroAchievements**, voice chat, save states, a 👥 buddy list, and a link cable for GBA.
+- 🏁 **Race / speedrun mode**, 🏆 **RetroAchievements**, voice chat, save states, a 👥 Flock List, and a link cable for GBA.
 - 📺 **Made for streaming**: an OBS overlay that shows the game, the players and your Twitch / YouTube chat, with viewer effects chat can trigger.
 - 🔒 **Private by design**: your games stay on your PC, accounts live in each player's browser, and the hub's private tools only answer to your own computer.
 
@@ -56,7 +56,7 @@ RetroDuck grew from one hub into a small family of parts that work together, fro
 | 🦆👑 **MommaDock** | The boss duck, usually in Docker on a NAS: one board of every duck and duckling on the network, and the one that adopts PCs and starts their stations. | The main unit of a mesh Wi-Fi system, or an airport's control tower. | 🧪 |
 | 🐣🔗 **Duckling node** / **adoption** | A PC a MommaDock has adopted, after both screens showed the same 6-digit code. The MommaDock can then start and stop its stations, nothing else. | Adding a satellite to a mesh Wi-Fi system, with a pairing code like Bluetooth. | 🧪 |
 | 🌊 **Pond** | A public join site for an event: people scan a QR code and play on their own phone or laptop. | A venue's guest Wi-Fi page, or a party game you join by scanning a code. | 🗺 |
-| 🪺 **Flock** | Your friends: mutual buddies from the Buddy List, with friends-only high score boards. | A friends-only leaderboard on a console. | 🗺 |
+| 🪺 **Flock** | Your friends: mutual flockmates from the Flock List, with friends-only high score boards. | A friends-only leaderboard on a console. | 🗺 |
 | 🎒 **LanParty** | The event kit: a checklist and scripts for several PCs × stations plus a MommaDock, fully offline. | A stage crew's road cases and run sheet. | 🗺 |
 | 🌊🦆 **SeaDuck** | RetroDuck's own website. | A project's home page. | 💡 |
 
@@ -66,7 +66,7 @@ RetroDuck grew from one hub into a small family of parts that work together, fro
 
 ## Get started (Windows)
 
-1. **Unzip** `RetroDuck0.4.6.zip` anywhere (for example `C:\Games\RetroDuck`).
+1. **Unzip** `RetroDuck0.4.7.zip` anywhere (for example `C:\Games\RetroDuck`).
 2. **Double-click `launch.bat`.**
    - Missing Python or Node.js? It offers to download and install them for you, and checks every download first.
    - It asks whether you want a **desktop shortcut** with the RetroDuck duck. Say yes, and next time just click the duck.
@@ -125,9 +125,12 @@ The full how-to, and how each part is kept safe: [Ducklings](README-ADVANCED.md#
 | --- | --- | --- |
 | 🔀 **Shuffler**: 2-8 games, it jumps between them at random right where you left each one | link under *Host a game*, or the 🔀 Shuffle mode | [Shuffler](README-ADVANCED.md#shuffler) |
 | 🏆 **RetroAchievements**: progress and unlocks in the match | 🏆 in the top bar | [RetroAchievements](README-ADVANCED.md#retroachievements), [docs/ACHIEVEMENTS.md](docs/ACHIEVEMENTS.md) |
-| 👥 **Buddy List**: a classic messenger: see who's on, IM, join their lobby | 👥 in the top bar | [Buddy List](README-ADVANCED.md#buddy-list-messenger) |
+| 👥 **Flock List**: a classic messenger: see who's on, IM, join their lobby | 👥 in the top bar | [Flock List](README-ADVANCED.md#flock-list-messenger) |
 | 🔎 **Lobby Browser**: every lobby here and on nearby hubs, ⏳ wait for a seat, 🔔 alerts | tab next to *Play* | [Lobby Browser](README-ADVANCED.md#lobby-browser) |
 | 🩹 **Patcher**: translations, hacks, randomizers, co-op patches (makes a copy, never changes the original) | *Patches & variants* when you pick a library game | [Patches and the Patcher](README-ADVANCED.md#patches-variants-and-the-patcher) |
+| 🏝 **Archipelago + co-op projects**: for the picked game, links to its Archipelago options and a 5-step guide, plus known co-op mods and PC ports | the box under the picked game in *Host a game* | [Archipelago](README-ADVANCED.md#-archipelago-multiworld), [Co-op projects](README-ADVANCED.md#-co-op-projects-co-op-anything) |
+| 🤝 **Fair play**: cheats, game patches and speed hacks off for a versus room (PS2, PS3, Xbox 360, Dreamcast, NAOMI) | checkbox under the emulator steps in a lobby | [Fair play lock](README-ADVANCED.md#-fair-play-lock) |
+| 🏠 **Wi-Fi name**: friends at home open `http://yourname.local`, no numbers to remember | ☰ Menu > 🏠 Wi-Fi name | [Wi-Fi name](README-ADVANCED.md#-wi-fi-name-yournamelocal) |
 | 🤝 **Co-op ROM hacks**: 2-4 player N64 hacks, set up in one click | *Host a game* with a known N64 ROM | [Co-op ROM hacks](README-ADVANCED.md#co-op-rom-hacks) |
 | 🎸💃 **Guitars, drum kits, dance mats** for friends over the stream | 🎸 Instruments (☰) | [Guitars, drums, dance mats](README-ADVANCED.md#guitars-drum-kits-and-dance-mats) |
 | 🎞️📱🗝️🖥️ **Flash, phone games, ScummVM, DOS / Windows 9x** | Off Site Games tab | [Hub players](README-ADVANCED.md#hub-players-flash-phone-games-java-applets-scummvm-and-pc) |
