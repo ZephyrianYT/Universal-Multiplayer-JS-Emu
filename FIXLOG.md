@@ -1,0 +1,233 @@
+# Fix log: 1.35.0 (RetroDuck 0.4.6)
+
+Sections 1-9 are the fixes up to 1.19.0. Section 10 covers 1.25.0 (released as 0.3.1), section 11 covers 1.26.0 (released as 0.3.3), sections 12 and 13 cover 1.26.1 and 1.26.2 (both released together as 0.3.5), section 14 covers 1.26.3 (released as 0.3.6), section 15 covers 1.27.0 (released as 0.3.7), section 16 covers 1.30.0 (released as 0.4.1) section 17 covers 1.31.0 (released as 0.4.3) and section 18 covers 1.32.0 to 1.33.2 (released as 0.4.3.2 to 0.4.4.2) section 19 covers 1.33.3 (released as RetroDuck 0.4.4.3) and section 20 covers 1.34.0 and 1.35.0 (released together as RetroDuck 0.4.6; 1.33.4 / 0.4.4.4 added features only, see CHANGELOG.md).
+
+## 20. 1.34.0 and 1.35.0 (RetroDuck 0.4.6)
+
+Words used here (duck, duckling, station, MommaDock, node): [README, The RetroDuck family](README.md#the-retroduck-family).
+
+- **`stop.py` ignored its arguments**: `python stop.py --help`, or any typo, stopped the running hub. *Change:* real
+  options (`--instance NAME`, `--all`, `--list`); an unknown option prints the help and stops nothing; a bad duckling
+  name stops nothing (exit code 2). `python stop.py` alone still stops the main hub.
+- **Two servers starting at the same moment could make two different sign-in keys** (`cache/session.key`), so an account
+  signed in on one wasn't signed in on the other; the OBS overlay and dock keys had the same race. *Change:* each key is
+  created once with an exclusive create; a server that loses the race uses the other's key.
+- **Resetting the OBS overlay key on one server didn't cancel the old link on another server from the same folder.**
+  *Change:* every server re-reads the key when the file changes.
+- **Cover, bezel and RetroAchievements downloads shared one temporary file name**, so two servers downloading the same
+  file at once could leave a broken file. *Change:* one temporary file per process.
+- **Docker: "What's new" was always empty**: the image didn't contain CHANGELOG.md. *Change:* it does.
+- **Release number**: a fourth number (0.4.4.5) looks the same as 0.4.4.4 to updaters before 0.4.3.2, which read only
+  three numbers, so those players would never be offered it. *Change:* this release is 0.4.6 (0.4.5 was built and checked
+  but never published; its changes are in 0.4.6).
+
+Found while testing the new LAN-party parts, fixed before release (never shipped):
+
+- **Station: the controller only woke up on its second movement** after being claimed: its first frame arrived before
+  the "you are playing" message, which the page ignored. *Change:* the message always goes first.
+- **Station: a button held when the pad router stopped stayed held.** *Change:* a station lets go of its controller when
+  the router has been quiet for 1 second.
+- **Station: restarting a duckling left its old window open** with a seat token that no longer matched, so it never got
+  its controller. *Change:* `stations.py start` closes that window and opens a new one.
+- **MommaDock: a main hub showed up as a duck named "null"** (an empty name in its announcement). *Change:* names must be
+  text and match the duckling name rule.
+- **Node adoption (security): after Forget, the node still counted its earlier Accept**, so an Approve on the MommaDock
+  alone adopted it again. *Change:* a forgotten node needs a new Accept on the PC, after a new code check.
+
+Checked, no change needed: with nothing switched on, a hub answers exactly as before (the station, MommaDock and node
+routes stay closed); a fresh unzip starts through `launch.py`; 0.4.4.4's own updater installs 0.4.6 and keeps `.env`,
+library settings, the sign-in key, ROMs and emulators byte for byte; updaters old and new see 0.4.6 as newer.
+
+## 19. 1.33.3 (RetroDuck 0.4.4.3)
+
+- **Big screen: the selected row's highlight was cut off** in Crossbar and Panels (the row was enlarged past its list,
+  which hides overflow), and the selected tile's ring in Cube grid was cut off at the left edge. *Change:* the row no longer
+  grows (its title does), and the grid has a little side room.
+- **Big screen Cube grid: up/down could land in the next column** when the window size didn't match the estimated
+  column count. *Change:* it reads the grid's real column count.
+- Checked (not changed): all 18 themes load their colors and their Match-theme layout with no overflow; every gamepad
+  button and the Play > lobby > back trip work. A non-owner account on the hub's own PC gets a harmless "403" when the
+  hub page offers its theme to the OBS overlay (owner only, as intended).
+- **The RetroDuck window never saw the hub start** (it looked like RetroDuck failed to start): the window waits for
+  launch.py's line "Retro Hub is running:", which the rename changed to "RetroDuck is running:", and the window file
+  itself (.pyw) was missed by the rename. *Change:* the window accepts both wordings (old and new launch.py), and its own
+  text now says RetroDuck. Web player pages' tab-title prefix is read in both spellings too.
+- **Rename:** only visible text changed. Kept on purpose: saved settings and storage keys (rh-*), the X-Retro-Hub
+  header, folder and shortcut file names, the Project64 cheat name "Retro Hub co-op" (renaming it would duplicate cheats),
+  web user agents. The updater accepts release zips named RetroDuck as well as RetroHub.
+
+## 18. 1.32.0 to 1.33.2 (Retro Hub 0.4.3.2 to 0.4.4.2)
+
+- **Web page lobbies typed guests' keys into any tab titled "Retro Hub · …".** A website could name itself that way.
+  *Change:* each lobby makes a random key that only this computer's own game pages hear (same-origin channel); keys go
+  only to a browser window whose title shows "🔑 <key>". Malformed keys are refused.
+- **A web page lobby's host lost the share steps after a page reload** (and the page hit an error). *Change:* the rejoin
+  restores the web page game from the lobby's own name.
+- **A stray .zip in an unrelated folder was listed as an N-Gage game.** *Change:* N-Gage only takes zips from its own folders.
+- **The Dreamcast folder's chdman.exe and .bat files showed up as DOS games** once the DOS console existed. *Change:*
+  RetroArch consoles (and other "folderOnly" consoles) list games only from their own folders.
+- **Triforce games couldn't start the arcade board**: the hub's controller-port settings override Dolphin's automatic
+  Triforce baseboard. *Change:* Triforce launches skip those settings.
+- **NAOMI / Atomiswave games had no BIOS** although the owner's arcade BIOS folder had naomi.zip / awbios.zip. *Change:*
+  they are copied into Flycast's data folder (never overwriting).
+- **Release zips had duplicate entries** (every RetroArch console shares emulators/retroarch/). *Change:* the builder
+  keeps one entry per name.
+- Big screen: thumbnails whose cover failed stayed blank (now initials); the theme's background picture and Wave ribbons
+  didn't show (now they do).
+- Checked after a "no picture" report: NES, SNES, N64, FBNeo, MAME 2003-Plus and a guest stream all render; a hub still
+  running old server code with new page files can show nothing until it is restarted and the page is reloaded (Ctrl+F5).
+
+## 17. 1.31.0 (Retro Hub 0.4.3)
+
+No bug fixes in this release; it adds the OBS overlay's 🪟 pop-out capture window and RetroAchievements support (see CHANGELOG.md). Notes on how the pop-out avoids known capture problems:
+
+- **Window captures of a covered or unfocused browser window froze timers.** Browsers slow a hidden window's timers to once a second (Chrome: once a minute after 5 minutes). *Change:* in the pop-out only, the overlay's clock tick, chat fade, pop-up removal and reconnect run on a Web Worker timer (50 ms, with a 250 ms page timer as fallback). OBS Browser Sources keep the plain timers, as before.
+- **Black or blank frames in Windows Graphics Capture / BitBlt** from `backdrop-filter`, 3D transforms or WebGL without `preserveDrawingBuffer`. *Change:* the pop-out uses flat colours and 2D transforms only; mirror / flip are `scaleX(-1)` / `scaleY(-1)` on one wrapper.
+- **Frame layout with mirror / flip on:** the frame's cut-outs came from `getBoundingClientRect`, which reports flipped positions. *Change:* `rect()` maps them back before the clip path is drawn.
+- If the browser itself stops drawing a fully covered window, that's outside the page: docs/OBS-STREAMING.md lists the Chrome / Edge and Firefox settings.
+
+## 16. 1.30.0 (Retro Hub 0.4.1)
+
+- **A signed-in user could stop the hub** (security). *Cause:* the WebSocket servers had no `error` listener, so any message over the size limit (lobby `/ws` 64 KB, Android view 256 B, native input 1 KB) threw an unhandled error and ended the process. *Change:* `ws.on("error", () => {})` on every connection in `server.mjs`, `core/streaming/android-mirror.mjs` and `core/streaming/native.mjs`; now only that connection closes. Found by the OBS stream-tools tests.
+- **Pedals and handbrakes held Up + Left on P1 for the whole game.** *Cause:* devices that rest at full deflection (axes at -1) were read as a held stick / D-pad. *Change:* `public/input.js` `attachGamepads` marks axes first seen beyond 0.9 as "pinned" and ignores them for stick and D-pad. Found live with a USB handbrake as gamepad 0.
+- **New option, not a fix:** *Real controllers get seats first* (lobby → Sound, controls & stream; off by default): standard gamepads get P1, P2… first; wheels, pedals and handbrakes only get a seat once used. Reassigning a device releases its held buttons on the old seat.
+- **OBS overlay feed after a host page reload:** the overlay re-asks the host whenever the host's connection changes (a resume keeps the same host object with a new socket), so the game reconnects by itself.
+
+## 15. 1.27.0 (Retro Hub 0.3.7)
+
+Native emulator adapters (`core/runner/adapters/`, design in `docs/EMULATOR-ADAPTERS.md`).
+
+- **Guest seats P2-P4 had no controls in Dolphin and Cemu until mapped by hand.** *Cause:* `apps.py run` passed only the game; Dolphin's ports 2-4 default to "None" and Cemu has no profile for controllers 2-4. *Change:* `build_command` asks the emulator's adapter for a plan (seat n = XInput n-1) and applies it before the process starts; `native.mjs` passes `--players` (host + highest guest seat with a virtual pad).
+- **Headless Dolphin could hang on "Stop emulation?" / panic pop-ups nobody can see.** `-C Dolphin.Interface.ConfirmStop=False` (+ `UsePanicHandlers=False` when headless), command-line layer only.
+- **Launch failed late for missing BIOS/firmware/keys.** Pre-flight checks (blocking ones disable *Set up and start*): PCSX2 BIOS, RPCS3 `dev_flash` version, Ryujinx/Eden `prod.keys`, xemu toml paths, TeknoParrot `GamePath`, .NET 4.8, VC++ x64.
+- Ownership rules: whole files only when absent or still Retro Hub's (sha-256), single keys only at default or Retro Hub's value, backups in `backup/provision-*`. A provisioning error never blocks a launch (`{"t":"provision","error":...}` is logged).
+- Values checked against source: Cemu `EmulatedController::type_to_string`, `ProController::ButtonId`, `XInputController::raw_state` (bit i = button i, +Y up); Dolphin `MainSettings.cpp` keys; TeknoParrot's shipped `GameProfiles/*.xml`.
+
+## 14. 1.26.3 (Retro Hub 0.3.6)
+
+Fixes for the CodeQL code-scanning alerts on `main`.
+
+- **XSS in lobby lists.** *Cause:* `public/app.js` built the hub lobby list, the LAN/master-pool list and the Lobby Browser with `innerHTML`, and `players`/`max`/`spectators`/`current_players`/`max_players`/`open` from other hubs went in unescaped. *Change:* `num()` turns them into numbers; `safeHttp()` re-checks other-hub links before `href` / `window.open`; `SRC_LABEL` escaped.
+- **Login `?next=` redirect.** `public/login.js` resolves it against `location.origin` and keeps only same-origin paths (also catches `/\t/host`, which browsers read as `//host`).
+- **Socket handler lookup.** `sock.handlers[m.t]` only when `Object.hasOwn(sock.handlers, m.t)`.
+- **Password compare.** `server.mjs same()`: scrypt under a random per-process salt, the configured secret's digest cached (was SHA-256, then HMAC; CodeQL counts both as fast hashes).
+- **ReDoS in `cleanGameName`.** Input capped at 300 characters before any regex; the `, The` swap uses `indexOf` instead of a lazy `(.+?)` pattern. *Tested:* same output for No-Intro style names, Wii U title-id prefixes and plain names.
+- **Double unescaping.** `core/library/rules.mjs xmlText()` decodes the five XML entities in one pass.
+- **Regex escaping.** `core/online/check.mjs yamlKey()` escapes every regex metacharacter.
+- **Clear-text logging.** `launch.py` prints where `ADMIN_PASSWORD` / `ACCESS_PASSWORD` are (`.env`, or the `--access-password` flag), not their values.
+- Not changed: `public/ruffle/ruffle.js` (bundled third-party Ruffle) and `public/emotes.js` (false positive: image paths come from a fixed list, text is added as text nodes).
+
+## 13. 1.26.2 (Retro Hub 0.3.5)
+
+- **Git checkout / Download ZIP missing shipped files.** *Cause:* `.gitignore` patterns `*.zip`, `*.bin`, `bios/`, `offsite-games.json` and `roms/*` also matched `public/j2me/init.zip`, `public/v86/seabios.bin`, `public/v86/vgabios.bin`, `core/offsite-games.json`, `bios/README.txt` and `roms/{j2me,scummvm,swf,x86}/.gitkeep`, which the release zips had. *Change:* exceptions for those paths (`/offsite-games.json` now only means the owner's file in the main folder); files added from the 0.3.3 zip. *Tested:* tracked files equal the 0.3.3 zip's file list (plus `docs/`); `git check-ignore` still ignores `roms/snes/game.sfc`, `bios/gba_bios.bin` and `offsite-games.json`.
+- **Release automation.** `scripts/make_release.py` (tracked files under `retro-hub-<release>/`, fixed timestamps, refuses on version mismatch, missing CHANGELOG section or an untracked must-ship file) and `.github/workflows/release.yml` (manual run: syntax checks, build, unzip + `npm ci` + start the hub + `/api/instance` and `/` → 302, then `gh release create RetroHub<release>` with the CHANGELOG section; stops if the release exists). *Tested:* the built zip passes `setup/update.py safe_members`, and unzipped it installs and serves the hub; the workflow file parses. The workflow itself first runs on GitHub.
+- **Phone layout / first visit.** *Causes:* `aim.js` opened the Buddy List on load unless it had been closed before (`aimBlOpen !== false`), 250×470 px over a 390 px screen; the hub tab row (`.tabs` buttons, `white-space: nowrap`, 12 px padding) was 394 px wide. *Changes:* auto-open when `aimBlOpen === true`, or on a first visit with `innerWidth >= 1400`; `.hub-tabs` scrolls instead of widening the page and uses 9 px padding under 480 px. *Tested (Chromium, iPhone 13 and 1280/1500 px):* no element wider than the page on the hub, J2ME, Flash, ScummVM, PC and Shuffler pages; Buddy List closed on a phone's first visit, open after tapping it and after a reload, open on a 1500 px first visit.
+- **403 on every hub load.** *Cause:* `online.js` asks `GET /api/online` to decide whether to show 🌐, and non-owners got 403. *Change:* 200 `{available:false, reason}`; `online.js` treats it as "no button". POST routes still 403. *Tested:* no console errors on any page for a player; the owner (unlocked, on localhost) still gets the data and the 🌐 button.
+- **Sign-in Back button** hidden when the browser has no accounts.
+- **Port taken: offer another one (window).** `RetroHub.pyw`: `TAKEN_RE`/`TITLE_RE` catch the launcher's and server's "Port N is already … by another program" lines; when the server then exits non-zero, `offer_other_port()` finds the next port free on both loopback addresses, asks, writes `PORT` to `.env` (other settings kept), updates the Settings field and starts. *Tested:* both messages parsed (port and title); with 8140 and 8141 taken it chose 8142, wrote only `PORT`, and started (dialogs stubbed: no display in the test container).
+
+## 12. 1.26.1 (in Retro Hub 0.3.5)
+
+- **Launch opened "freej2me-web … Loading…" instead of the hub.**
+  - *Symptom:* on Windows with Firefox (fresh profile, or after clearing site data), pressing Start opened `http://localhost:8080` showing a grey page titled *freej2me-web* with "Loading…" that never finished. With an existing account and cache it could go unnoticed, so 0.3.3 shipped with it.
+  - *Cause:* `server.mjs` listened on `HOST=0.0.0.0` (IPv4 only), and `launch.py port_free()` / `RetroHub.pyw port_open()` only connected to `127.0.0.1`. Browsers resolve `localhost` to `::1` first (Firefox always; Chrome/Edge on Windows). A second web server holding `[::1]:8080` (by the page it showed, a freej2me-web server: freej2me-web's own index page is that exact page) got every `localhost` request while the hub sat unused on IPv4, and no check could see it. The page stays on "Loading…" because, served from that program, freej2me's launcher never gets past start-up. The hub's own `/j2me/` route was not involved: it is only served under `/j2me/`, and `/` always gives `public/index.html` (checked in a browser).
+  - *Change:*
+    - `server.mjs`: `HOST` defaults to `::` (dual-stack); without IPv6 (`EAFNOSUPPORT`/`EADDRNOTAVAIL`) it falls back to `0.0.0.0`. With a loopback `HOST` (launcher's localhost-only and tunnel modes) a second listener on the other loopback address shares the request and WebSocket handlers. New public `GET /api/instance` (`{app, version, instance}`; the instance id is random per run, not a secret). After listening, `verifyLocalhost()` asks `127.0.0.1` and `::1` for it: refused / no such address is fine (browsers skip it), anything else that isn't this run stops the server with a message naming the address, the other program's page title, and `netstat`/`lsof` to find it. `EADDRINUSE` on either address gives the same message. The run file is written only after this check and now holds `instance` and `launch`. IPv4-mapped peers (`::ffff:1.2.3.4`) are normalised (`peerAddr`) for rate limits, nearby hubs and the link cable.
+    - `launch.py`: `port_user()` checks `127.0.0.1` and `::1`; `wait_for_ready()` waits until the run file carries this launch's token (`RH_LAUNCH_ID`; not the PID, since a Node shim like volta or nvm runs node as a child) instead of only waiting for the port to open.
+    - `RetroHub.pyw`: `port_open()` checks both addresses; `hub_answers()` requires `/api/instance` from Retro Hub (and the run file's instance) before showing "already running" or keeping the Open hub button live.
+  - *Tested (Linux container, no IPv6 there, so the `::` → `0.0.0.0` fallback ran):* normal `launch.py` start (run file has `instance` and `launch`, `/` → login → hub in Chromium); another server already on the port → `launch.py` and `server.mjs` both refuse with the message; hub on `127.0.0.2` with a freej2me-web server on `127.0.0.1` → stops with *"it answers with a page titled "freej2me-web""*; `hub_answers()` true for the real hub, false for the other server and for a stale run file. Not tested on Windows or with a real IPv6 listener; the IPv6 path is the same code with `::1`.
+
+
+## 11. 1.26.0 (Retro Hub 0.3.3)
+
+- **Cemu folder rule.** *Cause:* the Pretendo check counted `otp.bin`/`seeprom.bin` next to Cemu.exe, but Cemu 2.x reads them from its data folder only: `portable/`, else (Windows) the exe folder when a `settings.xml` is next to it (old portable layout), else `%APPDATA%\Cemu` (`src/gui/wxgui/CemuApp.cpp DeterminePaths`). *Change:* `apps.py cemu_paths` follows that rule; files next to Cemu.exe that Cemu doesn't read are reported with a Copy button. *Tested:* both layouts on scratch copies.
+- **Online mode switch ignored.** *Change:* `<Account><OnlineEnabled>` is checked and set together with the per-account `SelectedService` and the old `ActiveService`. *Tested:* scratch copy.
+- **New POST routes answered 405.** *Cause:* POST handlers placed after the GET-only gate in `server.mjs`. *Change:* moved before it. *Tested:* the Online panel's Cemu buttons.
+- **Theme cards overflowed.** *Cause:* the global button `white-space: nowrap`. *Change:* `.theme-card` wraps.
+
+## 10. 1.25.0 (Retro Hub 0.3.1)
+
+- **ScummVM couldn't find its data.** *Cause:* the ScummVM web build asks for its virtual `/data` folder at the site root (`/data/index.json`), where EmulatorJS's files also live, and asks for engine plugins as `/scummvm//data/plugins/…`. *Change:* `/data/…` requests that come from the ScummVM page (Referer) go to ScummVM, everything else stays EmulatorJS's; leading slashes after `/scummvm/` are dropped. *Tested:* Flight of the Amazon Queen detected and its intro played; EmulatorJS's `loader.js` / `emulator.min.js` still load from hub pages.
+- **J2ME pages stuck on "Loading…".** *Cause:* CheerpJ also loads a stylesheet and a frame from its host, which the CSP blocked, and its frame sends no COEP header, which `require-corp` blocks. *Change:* for `/j2me/*` only, the CSP allows CheerpJ's host for scripts, styles, workers, connections and frames, and COEP is `unsafe-none`. *Tested:* God of War Betrayal boots to its audio prompt.
+- **Flash page: the Ruffle link showed as a big block mid-sentence.** *Change:* plain link. *Tested:* in the pane.
+- **Messenger group headers were centered.** *Cause:* the hub's global button style. *Change:* `justify-content: flex-start` on `.aim-ghead`.
+
+Fixes since 1.7.0 (1.8.0: sections 1-3; 1.19.0: sections 4-9), with the cause, the change and how each was tested. The user-facing summary is in CHANGELOG.md.
+
+## 1. Quotes in emulator launch options broke the game path
+
+- **Symptom:** an emulator added with `apps.py` (for example Xenia with launch options `--fullscreen "{game}"`) opened without a game, or showed a "file not found" error.
+- **Cause:** `apps.py` split the typed options on spaces and kept the quote marks. The program is started with an argument list, and Windows quotes each argument itself, so the emulator received the quotes as part of the path (`"Z:\Games\Halo 3.iso"`, quotes included).
+- **Fix (`apps.py`):** new `unquote()` and `split_args()`. Typed options are split with quoted parts kept together (backslashes untouched), and the outer quotes are removed. `build_command()` also cleans entries already saved in `emulators/apps.json`, so existing setups work without being re-added.
+- **Tested:** a stand-in emulator registered with `--fullscreen "{game}"` and launched on `My Games/Halo 3 (USA).iso` received exactly `--fullscreen` plus the path as one clean argument. An `apps.json` entry with literal `"{game}"` and `'--fullscreen'` gave the same result.
+
+## 2. The page didn't notice when the emulator closed
+
+- **Symptom:** if the emulator crashed on start, was closed, or the game quit, the host's page kept saying "Share the window" with no error.
+- **Cause:** the runner (`apps.py run`) reported `exited` with the exit code, but the server only logged it, and the page never asked again after the launch.
+- **Fix:**
+  - `core/streaming/native.mjs`: a program that closes by itself is recorded as `lastExit` (`name`, `emulator`, `code`, `at`, `quick`), and `running` is cleared at once. `quick` means it closed within 10 seconds of starting. `GET /api/native` returns it. A new launch clears it.
+  - `public/app.js`: `watchExit()` asks `/api/native` every 3 seconds while the program runs. When it has closed, the loading board shows the error and exit code with **Retry**. A quick close says it probably can't open the file or needs setup (BIOS, keys, first-run settings). Leaving the lobby stops the check.
+- **Tested:** the server module with the stand-in emulator exiting with code 3: `running` became `null` and `lastExit` was `{ code: 3, quick: true }`. The browser side was syntax-checked; the full lobby flow was not clicked through.
+
+## 3. Xbox 360 `.zar` files weren't listed
+
+- **Cause:** the Xbox 360 console only knew `.xex` (plus `.iso` and other shared extensions inside an `xbox360` folder).
+- **Fix (`core/runner/catalog.json`):** `.zar` added. Xenia Canary opens it.
+
+## 4. Xbox (xemu) wasn't found
+
+- **Cause:** the catalog only looked in `emulators/xemu/`; the usual folder name is `emulators/xbox/`, so the console showed as not installed and "Check for Emus" listed `xbox` as an unknown folder.
+- **Fix (`core/runner/catalog.json`):** xemu is looked for in `xemu/`, `xbox/` and `originalxbox/`. Xbox game folders also match `xboxog` and `xemu`.
+- **Tested:** `python apps.py status` shows xemu installed from `emulators/xbox/xemu.exe`; `MicrosoftXbox/Xbox/Games/x.iso` is Xbox and `MicrosoftXbox/Xbox360/Games/x.iso` stays Xbox 360.
+
+## 5. melonDS / Azahar (community report)
+
+- **Cause:** melonDS wasn't in the catalog at all, and a melonDS build renamed to `Azahar.exe` counted as Azahar (it would then be launched with 3DS games).
+- **Fix:**
+  - `apps.py`: emulators can list `product` names. On Windows the exe's ProductName must match when it has one, and an exe with a matching ProductName is found in any `emulators/` subfolder whatever its file name.
+  - `catalog.json`: new **melonDS** emulator and **Nintendo DS (melonDS)** console (`ndsnative`). `.nds` files still play in the browser by default; games in a `melonDS` / `ndsnative` folder (or that console's library folder) run in melonDS. `.dsi`/`.srl` go to melonDS. Azahar also checks `3ds/`, `n3ds/`; `.3dsx` added.
+  - `server.mjs`: the first console to claim an extension keeps it, so a native alternative never takes over a browser console's files.
+- **Tested:** status shows melonDS installed (found by ProductName in `emulators/Azahar/`), Azahar not installed.
+
+## 6. Guest controllers plugged in after the emulator had started
+
+- **Cause:** the virtual pads were created when the host pressed "Share the window", after the emulator booted. Emulators that don't hot-plug (xemu, melonDS, Dolphin bindings) never saw P2-P4.
+- **Fix:** the host page opens the input bridge before launching; `input_bridge.py` prints `{"t":"pads"}` once the pads exist and `native.mjs` sends `ready` only then. The page waits for it (9 s max) before starting the emulator.
+- **Tested:** bridge prints the pads line in keyboard mode. Gamepad mode not tested here (vgamepad/ViGEmBus not installed on this PC).
+
+## 7. LAN lobby discovery and master lobby pool (new)
+
+- `core/net/discovery.mjs`: while a hub has lobbies it multicasts a beacon to `239.255.43.21:37115` every 5 s (TTL 1). Hubs keep others' lobbies for 15 s; the join link is built from the packet's source IP, never from its contents. Shown under **Other hubs nearby**, only to browsers on a private network. `LAN_DISCOVERY=0` turns it off; loopback-only hubs (tunnel mode) listen but don't send.
+- Master pool: `MASTER_SERVER_URL=<origin>` sends heartbeats (needs `PUBLIC_URL`) every 30 s and reads the pool's list while the lobby page is open. `MASTER_SERVER=1` makes a hub serve `POST /api/master/heartbeat` and `GET /api/master/lobbies` (in memory, 90 s expiry, 5 hubs per IP, 1000 max).
+- **Tested:** two discovery instances on this PC saw each other's lobby over multicast, closing it cleared it at once; heartbeat + pool list through a running server with `MASTER_SERVER=1`. Two physical PCs not tested.
+
+## 8. GBA link cable sessions (VBA-M, new)
+
+- Each player runs their own Retro Hub and their own copy of the ROM in **VBA-M** on their own PC (same network). Only link-cable traffic crosses the network, directly between the VBA-M instances (TCP 5738, `LINK_PORT`).
+- `core/runner/catalog.json`: **VBA-M** emulator (`emulators/vbam/`, also found by ProductName) and console **Game Boy Advance (VBA-M link)** (`gbalink`, folders `vbam`/`gbalink`). Its `link` block adds `GBA/LinkType=1 GBA/LinkProto=0 GBA/LinkHost=… GBA/LinkPort=… preferences/LinkNumPlayers=…` (VBA-M reads `NAME=VALUE` arguments as settings). VBA-M also saves them to its own `vbam.ini`.
+- `apps.py run --link host=… port=… players=… role=…` (values checked); a path containing `=` is refused for VBA-M (it would be read as a setting).
+- `core/net/link.mjs` + `server.mjs`: host (P1, server) picks a .gba game and 2-4 players; the session goes out in the LAN beacon with the ROM's SHA-1 and size. A joining hub finds the same ROM by SHA-1 in its own library, claims P2-P4 from the host's hub (`POST /api/link/claim`, direct LAN connections only, 30/min per address), and starts VBA-M as a client pointed at the host's IP. Closing VBA-M ends/leaves the session.
+- Page: **GBA link cable** panel (owner on the hub PC) and **Join link** on link sessions under *Other hubs nearby*.
+- **Limit:** VBA-M can't start a network link by itself (its "link at boot" option rejects network modes), so each player still opens Options > Link > Start Network Link and presses Start/Connect; everything is pre-filled. VBA-M numbers link players by connection order.
+- **Tested:** seat logic (re-claim, wrong ROM, full, release), link data through LAN discovery, endpoint refusals on a running server, `apps.py` command line with a stand-in exe. Not tested: real VBA-M, two PCs, the browser panel.
+
+## 9. Pretendo Network for Wii U (Cemu, new)
+
+- Cemu 2.0+ has Pretendo built in (network service 2, stored as `<AccountService><SelectedService PersistentId=… Service="2"/>` in `settings.xml`; its account server is `account.pretendo.cc`). No hosts-file, DNS or proxy change is needed or made.
+- `apps.py pretendo-status`: finds Cemu's data folder (`<exe>/portable/` or `%APPDATA%\Cemu`), checks `otp.bin`, `seeprom.bin`, the active account's `account.dat` (and its network ID / PNID), the selected service, and flags a Cemu 1.x install. Returns `ready` and a list of problems in plain words.
+- `apps.py pretendo-enable`: sets the active account's service to Pretendo; keeps `settings.xml.bak-retrohub` first. Only on the owner's request (**Use Pretendo** on the warning), and refused while Cemu runs.
+- `server.mjs`: `GET /api/pretendo`, `POST /api/pretendo/enable` (owner on the hub PC). Wii U lobbies whose host is Pretendo-ready carry `netplay_mode: "pretendo"` in LAN beacons and master-pool heartbeats, shown as a **Pretendo** badge.
+- Page: hosting a Wii U game checks readiness first and says either "online through Pretendo as <PNID>" or what is missing; local co-op through the hub works either way.
+- **Not done:** 3DS (Azahar 2126+ supports Pretendo's Nimbus URL rules inside the emulated system; nothing to set from outside). Pretendo friend codes / room tokens: matchmaking happens inside the game on Pretendo's servers and has no public room API, so the pool only shows the badge.
+- **Tested:** status on this PC (reports Cemu 1.x, missing dumps, no settings.xml) and on a mock portable Cemu (Nintendo -> enable -> Pretendo, ready, backup written); endpoint refusals on a running server. Not tested: real Cemu 2.x online.
+
+## Checked, no change needed
+
+- **Paths with spaces:** already passed correctly (argument list, no shell).
+- **Working folder:** emulators already run from their own `.exe` folder, so Xenia finds its config.
+- **Process tracking:** the runner already holds the emulator and everything it starts in a Windows Job Object, and Stop closes the windows politely.
+
+## Files changed
+
+`apps.py`, `core/streaming/native.mjs`, `core/streaming/input_bridge.py`, `core/net/discovery.mjs` (new), `core/net/link.mjs` (new), `server.mjs`, `public/app.js`, `public/index.html`, `public/style.css`, `core/runner/catalog.json`. Version 1.8.0 in `package.json`, `package-lock.json`, `Dockerfile` and `docker-compose.yml`. `CHANGELOG.md`, and this file.
