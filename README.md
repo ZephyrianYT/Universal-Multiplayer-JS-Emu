@@ -1,3 +1,5 @@
+<img width="1873" height="943" alt="image" src="https://github.com/user-attachments/assets/ff57b2db-55bb-4838-a94d-c6667d740181" />
+
 > **New in RetroDuck 0.4.8:** 🌊 the **Pond**: guests scan a QR code and play your picked games on their own phone or laptop, and on a LAN it lists the open rooms on every RetroDuck around. 🏆 high score boards, 🖼 auto covers work again, 👥 3-4 players on SNES and PlayStation, simpler Linux and macOS, and a 🐣 **[beginners' guide](NEWBIE.md)** for every setup: home, arcade cabinet, LAN party, NAS. Use the updater or download `RetroDuck0.4.8.zip` from Releases.
 
 # RetroDuck
@@ -12,7 +14,8 @@
 - 📺 **Made for streaming**: an OBS overlay that shows the game, the players and your Twitch / YouTube chat, with viewer effects chat can trigger.
 - 🔒 **Private by design**: your games stay on your PC, accounts live in each player's browser, and the hub's private tools only answer to your own computer.
 
----
+---<img width="1861" height="921" alt="image" src="https://github.com/user-attachments/assets/e83b0951-c8ea-4556-a23d-e6d8a9d84a63" />
+
 
 ## How it works
 
@@ -109,6 +112,7 @@ In a match: **/** to chat, the 🎙 button for voice, **F2** / **F4** to save an
 2. Press **Check for Emus** in the hub: it shows which ones it found.
 3. Host the game from the hub on your own PC. The first time, a short **setup check** says if anything is missing and sets up controllers for your friends (without touching your own settings).
 4. When the match starts, press **Share the window** once.
+<img width="1794" height="886" alt="image" src="https://github.com/user-attachments/assets/71f0ee8c-efb8-4bc8-9c8a-40a58ca1b169" />
 
 Every emulator, its folder and its quirks: [emulators/README.md](emulators/README.md). How it works: [Native emulators](README-ADVANCED.md#8-native-emulators-and-pc-games). Online play in the emulators themselves (Pretendo, RPCN, Insignia…): the **🌐 Online** button and [Online services](README-ADVANCED.md#online-services).
 
@@ -149,6 +153,7 @@ The full how-to, and how each part is kept safe: [Ducklings](README-ADVANCED.md#
 | 🎞️📱🗝️🖥️ **Flash, phone games, ScummVM, DOS / Windows 9x** | Off Site Games tab | [Hub players](README-ADVANCED.md#hub-players-flash-phone-games-java-applets-scummvm-and-pc) |
 | 🔗 **Link play**: GBA link cable, Four Swords GBA screens, Xbox 360 System Link | *Play* tab panels | [GBA link](README-ADVANCED.md#gba-and-game-boy-link-cable-vba-m), [GBA screens](README-ADVANCED.md#four-swords-adventures-gba-screens), [System Link](README-ADVANCED.md#xbox-360-system-link-rooms) |
 | 🎨 **Themes**: 14 looks, launcher styles, or make and share your own | 🎨 Theme in the top bar | [Themes and emotes](README-ADVANCED.md#themes-and-emotes) |
+<img width="993" height="734" alt="image" src="https://github.com/user-attachments/assets/ef780cf6-df69-44c5-9eab-cf4487008d8d" />
 
 ## Staying up to date
 
@@ -177,6 +182,7 @@ RetroDuck is free and made by **Zephyrian**. If it brings you and your friends s
 | A PC never shows up on the MommaDock | Both must be on the same network, the PC needs `RH_NODE=1`, and on Unraid the MommaDock container must be on `br0` (Docker's default network can't hear the other ducks). |
 | Phones can't open the Pond's link | The page warns when its link only works on the hub PC. Turn on ☰ Menu > 🏠 **Wi-Fi name**, open the Pond page from another device, or use the 🌍 Internet link. |
 | Auto covers stopped arriving | `thumbnails.libretro.com` went empty in November 2026; this version gets covers from libretro's GitHub repos instead. Restart the hub. |
+<img width="1870" height="933" alt="image" src="https://github.com/user-attachments/assets/78034088-2d15-4875-840c-d9a11431aa38" />
 
 **Where to find everything else**
 
