@@ -1,5 +1,56 @@
 # Changelog
 
+## 1.37.0 - 2026-11-27
+
+Released as **RetroDuck 0.4.8**: the Pond (guests play on their own phones, and see every open room on the LAN), high score boards, auto covers working again, 3-4 players on SNES and PlayStation, simpler Linux and macOS, and a beginners' guide. If you're coming from 0.4.6, this also brings everything in 0.4.7 below.
+
+- 🐣 **Beginners' guide** (`NEWBIE.md`): which setup fits you (just you and friends, home Wi-Fi, an arcade cabinet,
+  several screens on one PC, a LAN party with a MommaDock, or only a NAS), why ducklings and a MommaDock beat a separate
+  RetroDuck on every PC, and each setup step by step. The advanced guide gained "Choosing a setup" and a LAN party run
+  sheet.
+- 🔒 **Duckling nodes: old commands stay dead after Forget.** After Forget (or Leave) and a new adoption, command
+  numbers started again at 1, so a station command signed during the old adoption could be replayed on the LAN and
+  run again. The MommaDock now numbers commands from the clock and each node remembers its highest number per
+  MommaDock (`cache/node-seen.json`), so old commands are refused. Update the MommaDock and its nodes together.
+- 🏆 **High score boards** (🧪): **🏆 Scores** under each Pond game, and ☰ People > 🏆 Flock high scores in the Flock
+  List. One board per exact ROM (console + CRC32 the hub computes), each player's best, ties to the first. Two views:
+  everyone on this hub, or your Flock (only people you both added). Typed-in scores are always **Unverified** and
+  can be hidden with **✔ Verified only**; verified scores (read from the game) come later for picked games.
+- Fixed: right after the hub started, a Pond could look empty (and adding a game failed) until the first library
+  scan finished.
+- 🖼 **Fixed: auto covers stopped downloading.** thumbnails.libretro.com went empty (every console folder answers
+  404), so no new box art arrived. Covers now come from libretro's own GitHub repos (libretro-thumbnails), with the old
+  site as a fallback. Each console's list of names is fetched from GitHub at most once a week and kept in the cover
+  cache. Restart the hub to pick it up; games that failed today are retried then.
+- 🌊 **Pond** (🧪): an event join page (☰ Menu > 🌊 Pond, `/pond.html`). People scan its QR code, make an account with
+  one tap and play the owner's picked browser games on their own phone or laptop, or join an open game. The owner
+  picks up to 60 games; native consoles (PS2, GameCube…), PC games and hidden games can't be added. While the Pond is
+  open, players without library access see only those games (ROMs, covers and arcade BIOS too); other ROMs and covers,
+  path tricks and owner tools stay blocked, and closing the Pond takes the access away at once. 📺 Show on a TV (`?tv=1`) gives a big code and the live games for a venue screen; a link that only
+  works on the hub PC is flagged. Settings: `pond.json` (kept by updates, never shipped or committed). QR codes:
+  qrcode-generator 1.4.4 (MIT) in `public/vendor`, drawn on the page. Restart a running hub to get it.
+- 🐧🍎 **Linux and macOS, simpler**: `launch.sh`, `stop.sh` and `launch-tunnel.sh` had Windows line endings and failed with
+  "bad interpreter" on Linux and macOS; they're fixed, and the release zips now always ship them with Unix line endings.
+  New `RetroDuck.command`: double-click to start on macOS. Check for Emus (`apps.py discover`) now also finds Flatpak
+  emulators (Steam Deck / Flathub), programs from apt, pacman or Homebrew on PATH, loose AppImages and macOS `.app`
+  bundles (also a `.app` dropped in `emulators/<name>/`). KDE's Dolphin file manager is never picked as the emulator.
+  README has the steps, plus the `flatpak override` line for ROM folders a Flatpak can't see.
+- 🌊 **Pond on the LAN** (🧪): the Pond now also lists **On this network**: open rooms on other RetroDucks the hub
+  hears on the LAN (a MommaDock, ducklings, a cabinet, a laptop running a duckling) with **Join**, **In use** when every
+  seat is taken or **🔒 Locked**, and idle ducks as open units with **Play here** (that duck's own Pond). It refreshes
+  every few seconds. Read-only: it only links to each duck. The list is sent only to people on the LAN itself, never
+  through the 🌍 Internet link, and addresses stay in the links, never on screen.
+- 🖥 **Stations**: `stations.py plan` and the key list at the top of `stations.py` now say plainly that a station's
+  `audio` speakers are saved but not used yet (sound plays on the PC's default speakers). Before, `plan` printed the
+  speaker name as if it were applied. Per-station speakers aren't built.
+- 📖 **Known limits**: one list of what doesn't work yet, at the top of the advanced guide's troubleshooting section
+  (linked from the README).
+- 👥 **3-4 players on SNES and PlayStation**: browser lobbies now plug in a multitap when seat 3 or 4 is in use at the
+  start (SNES: RetroArch port 2 = multitap; PlayStation: pcsx_rearmed multitap on port 1). Before, P3 and P4 did nothing.
+  Two-player games are left as they were, since some games misread pads through a multitap.
+- 🔌 **Dropped guests let go**: when a guest's connection drops, the host now releases everything they were holding
+  (browser games, native games and web pages) instead of keeping it pressed until the hub notices they left.
+
 ## 1.36.0 - 2026-11-26
 
 Released as **RetroDuck 0.4.7**: finding things to play together, fair versus rooms, an easy address at home, and a
