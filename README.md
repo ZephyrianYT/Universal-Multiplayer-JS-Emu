@@ -1,8 +1,10 @@
-> **RetroDuck 0.4.7 is out:** 🏝 **Archipelago** links and a step-by-step guide for the games it supports, 🤝 **co-op projects** for your games (from Co-op Anything), a 🤝 **Fair play** switch for versus rooms, a 🏠 **Wi-Fi name** for your hub (`http://yourname.local`, no port), the 👥 **Flock List**, faster routes to friends' hubs, and a security pass. Use the updater or download `RetroDuck0.4.7.zip` from Releases.
+> **New in RetroDuck 0.4.8:** 🌊 the **Pond**: guests scan a QR code and play your picked games on their own phone or laptop, and on a LAN it lists the open rooms on every RetroDuck around. 🏆 high score boards, 🖼 auto covers work again, 👥 3-4 players on SNES and PlayStation, simpler Linux and macOS, and a 🐣 **[beginners' guide](NEWBIE.md)** for every setup: home, arcade cabinet, LAN party, NAS. Use the updater or download `RetroDuck0.4.8.zip` from Releases.
 
 # RetroDuck
 
 **Play retro games with your friends from a link.** You run RetroDuck on your PC, friends open the link in their browser, and you play together: co-op, races, or side by side as ghosts. Nothing to install for your friends, and no games are ever uploaded anywhere.
+
+**New here?** [NEWBIE.md](NEWBIE.md) helps you pick a setup (just you and friends, home Wi-Fi, an arcade cabinet, several screens, a LAN party with a MommaDock, or a NAS) and walks you through it.
 
 - 🎮 **Browser consoles**: NES, SNES, N64, Game Boy, Game Boy Color, GBA, DS, PS1, PSP, Genesis, Saturn, arcade and more.
 - 🖥️ **Big consoles** (PS2, GameCube, Wii, Wii U, Switch, 3DS, Xbox, Xbox 360, PS3, Dreamcast, arcade…) and **Android games** run in real emulators on your PC and stream to your friends.
@@ -55,12 +57,12 @@ RetroDuck grew from one hub into a small family of parts that work together, fro
 | 📡 **Presence** | A duck saying "I'm here" on the network every few seconds, even when idle. Off for a normal hub. | The green "online" dot in a chat app. | 🧪 |
 | 🦆👑 **MommaDock** | The boss duck, usually in Docker on a NAS: one board of every duck and duckling on the network, and the one that adopts PCs and starts their stations. | The main unit of a mesh Wi-Fi system, or an airport's control tower. | 🧪 |
 | 🐣🔗 **Duckling node** / **adoption** | A PC a MommaDock has adopted, after both screens showed the same 6-digit code. The MommaDock can then start and stop its stations, nothing else. | Adding a satellite to a mesh Wi-Fi system, with a pairing code like Bluetooth. | 🧪 |
-| 🌊 **Pond** | A public join site for an event: people scan a QR code and play on their own phone or laptop. | A venue's guest Wi-Fi page, or a party game you join by scanning a code. | 🗺 |
-| 🪺 **Flock** | Your friends: mutual flockmates from the Flock List, with friends-only high score boards. | A friends-only leaderboard on a console. | 🗺 |
+| 🌊 **Pond** | A public join site for an event: people scan a QR code and play the owner's picked browser games on their own phone or laptop. | A venue's guest Wi-Fi page, or a party game you join by scanning a code. | 🧪 ☰ Menu > 🌊 Pond |
+| 🪺 **Flock** | Your friends: mutual flockmates from the Flock List, with friends-only high score boards (typed-in scores, marked Unverified, for now). | A friends-only leaderboard on a console. | 🧪 |
 | 🎒 **LanParty** | The event kit: a checklist and scripts for several PCs × stations plus a MommaDock, fully offline. | A stage crew's road cases and run sheet. | 🗺 |
 | 🌊🦆 **SeaDuck** | RetroDuck's own website. | A project's home page. | 💡 |
 
-✅ works · 🧪 in 0.4.6, **off until you switch it on**, tested on one PC with test servers but not yet with real controllers, several PCs or a NAS · 🗺 planned · 💡 idea. The details for each: [The RetroDuck family](README-ADVANCED.md#the-retroduck-family-words-used-in-this-guide) in the advanced guide.
+✅ works · 🧪 new and **off until you switch it on** (stations, MommaDock and nodes since 0.4.6; Pond and score boards since 0.4.8), tested on one PC with test servers but not yet with real controllers, phones, several PCs or a NAS · 🗺 planned · 💡 idea. The details for each: [The RetroDuck family](README-ADVANCED.md#the-retroduck-family-words-used-in-this-guide) in the advanced guide.
 
 ---
 
@@ -73,7 +75,15 @@ RetroDuck grew from one hub into a small family of parts that work together, fro
 3. In the RetroDuck window, press **▶ Start**. Your browser opens the hub.
 4. Type a name to **make your account** (one click, no password). Then **Export account** from the top bar and keep the file somewhere safe: it's the only way to move or restore your account.
 
-**macOS / Linux:** install Python 3 and Node.js 18+, then run `python3 RetroHub.pyw` (or `./launch.sh`) in the folder. **Docker / NAS:** see the [advanced guide](README-ADVANCED.md#10-docker-and-nas).
+**macOS / Linux:** install Python 3 and Node.js 18+ (macOS: `brew install python node`; Linux: your package manager, e.g. `sudo apt install python3 nodejs npm`). Then:
+- **macOS:** double-click **`RetroDuck.command`**. The first time, macOS may block it: right-click it > **Open** > **Open**.
+- **Linux:** run `sh launch.sh` in the folder (or `./launch.sh`), or `python3 RetroHub.pyw` for the RetroDuck window.
+- **Emulators you already installed are found for you** (**Check for Emus**, or `python3 apps.py discover`): Flatpak apps (Steam Deck / Flathub), programs from apt, pacman or Homebrew, AppImages in `~/Applications`, and macOS apps in `/Applications`. Press **Use it** to pick one.
+- Flatpak emulators can only open folders they're allowed to. If a game won't load, give it your ROM folder once, e.g. `flatpak override --user --filesystem=/path/to/roms org.DolphinEmu.dolphin-emu`.
+
+**Docker / NAS:** see the [advanced guide](README-ADVANCED.md#10-docker-and-nas).
+
+**What doesn't work yet:** see [Known limits](README-ADVANCED.md#known-limits).
 
 ## Add your games
 
@@ -110,14 +120,17 @@ For OBS: **☰ → 📺 OBS overlay** gives you one Browser Source URL with **th
 
 ## More screens and LAN parties (new)
 
+Not sure which parts you need, or why ducklings and a MommaDock beat a separate RetroDuck on every PC? [NEWBIE.md](NEWBIE.md) compares them and has a step-by-step for an arcade cabinet, several screens on one PC, a LAN party and a NAS.
+
 Everything here is **off until you switch it on**; a normal hub works exactly as before. It is new, so tell us how it goes.
 
 1. **Ducklings**: more lobbies from one PC. `python launch.py --instance duck1 --port 8081` starts one; `python stop.py --list` shows what is running, `python stop.py --instance duck1` stops it.
-2. **Stations**: one play station per monitor. `python stations.py init --count 2` writes `stations.json`, `python stations.py start --windowed` opens them in normal windows the first time (sign in once on each), then `python stations.py start` runs them full screen. Each station's controller is its player 1, even while another window has focus (Xbox-style controllers; others through Steam Input).
+2. **Stations**: one play station per monitor. `python stations.py init --count 2` writes `stations.json`, `python stations.py start --windowed` opens them in normal windows the first time (sign in once on each), then `python stations.py start` runs them full screen. Each station's controller is its player 1, even while another window has focus (Xbox-style controllers; others through Steam Input). Sound plays on the PC's default speakers: a speaker per station isn't built yet.
 3. **MommaDock**: on your NAS (Unraid: Docker on `br0`) or any PC, set `MOMMADOCK=1`. The owner gets ☰ Menu > 🦆 **MommaDock**: every duck on the network, up / down / stopped, who is playing.
 4. **Duckling nodes**: on each event PC set `RH_NODE=1`. It shows up on the MommaDock with a 6-digit code: **Approve** there, then **Accept** on the PC (☰ > 🐣 Duckling node) if it shows the same code. From then on the MommaDock can start and stop that PC's stations.
+5. **Pond**: ☰ Menu > 🌊 **Pond**, pick up to 60 browser games and switch **Pond is open** on. Guests scan the QR code, make an account with one tap and play on their own phone or laptop; players without library access see only those games, and closing the Pond takes that away at once. **📺 Show on a TV** puts the code on a big screen. On the LAN it also lists **On this network**: open rooms and idle ducks (cabinets, laptops) on your other RetroDucks, one tap to join.
 
-The full how-to, and how each part is kept safe: [Ducklings](README-ADVANCED.md#-ducklings-more-servers-from-one-folder), [Stations](README-ADVANCED.md#-stations-several-screens-on-one-pc), [MommaDock](README-ADVANCED.md#-mommadock-the-nas-as-the-boss-of-your-retroducks), [Duckling nodes](README-ADVANCED.md#-duckling-nodes-adopt-a-pc-then-run-its-stations-from-the-mommadock).
+The full how-to, and how each part is kept safe: [Ducklings](README-ADVANCED.md#-ducklings-more-servers-from-one-folder), [Stations](README-ADVANCED.md#-stations-several-screens-on-one-pc), [MommaDock](README-ADVANCED.md#-mommadock-the-nas-as-the-boss-of-your-retroducks), [Duckling nodes](README-ADVANCED.md#-duckling-nodes-adopt-a-pc-then-run-its-stations-from-the-mommadock), [Pond](README-ADVANCED.md#-pond-event-join-page).
 
 ## More to try
 
@@ -162,11 +175,14 @@ RetroDuck is free and made by **Zephyrian**. If it brings you and your friends s
 | A duckling says it can't change library folders | That's on purpose: change them on the main hub; ducklings follow within a few seconds. |
 | A station ignores my controller | The pad router reads Xbox-style controllers; use Steam Input (or DS4Windows) for others. In player mode, sign in first, then press A. |
 | A PC never shows up on the MommaDock | Both must be on the same network, the PC needs `RH_NODE=1`, and on Unraid the MommaDock container must be on `br0` (Docker's default network can't hear the other ducks). |
+| Phones can't open the Pond's link | The page warns when its link only works on the hub PC. Turn on ☰ Menu > 🏠 **Wi-Fi name**, open the Pond page from another device, or use the 🌍 Internet link. |
+| Auto covers stopped arriving | `thumbnails.libretro.com` went empty in November 2026; this version gets covers from libretro's GitHub repos instead. Restart the hub. |
 
 **Where to find everything else**
 
 | You want… | Go to |
 | --- | --- |
+| Which setup fits you, step by step (home, cabinet, LAN party, NAS) | [NEWBIE.md](NEWBIE.md) |
 | Every setting, the window's tabs, the command-line launcher | [Advanced guide §4-5, §11](README-ADVANCED.md#4-the-retroduck-window-launcher-and-admin-panel) |
 | How lobbies, streaming, input and accounts work inside | [Architecture](README-ADVANCED.md#1-architecture-at-a-glance), [Internals](README-ADVANCED.md#13-internals-api-websocket-protocol-webrtc) |
 | What's protected and how | [Security model](README-ADVANCED.md#12-security-model), [docs/SECURITY-LOCAL.md](docs/SECURITY-LOCAL.md) |
@@ -177,4 +193,4 @@ RetroDuck is free and made by **Zephyrian**. If it brings you and your friends s
 
 ---
 
-RetroDuck contains no games, BIOS files or keys. Only play games you own. GPL-3.0, see [LICENSE](LICENSE).
+RetroDuck contains no games, BIOS files or keys. Only play games you own. GPL-3.0, see [LICENSE](LICENSE). Bundled libraries (EmulatorJS, TweetNaCl.js, qrcode-generator) keep their own licenses: see [Legal and license](README-ADVANCED.md#16-legal-and-license).
