@@ -1,6 +1,6 @@
 # RetroDuck: advanced guide
 
-> New here? [README.md](README.md) is the short version: install, start, invite friends.
+> New here? [README.md](README.md) is the short version: install, start, invite friends. [NEWBIE.md](NEWBIE.md) helps you pick a setup (home, arcade cabinet, LAN party, NAS) step by step.
 
 RetroDuck is a self-hosted game hub for playing retro and modern console games with friends. One person (the **owner**) runs the hub on their PC or home server. Friends open a link in their browser, make an account with one click, and join a lobby.
 
@@ -26,7 +26,7 @@ This guide covers installing the hub, using it day to day, and how it works insi
 ## Contents
 
 1. [Architecture at a glance](#1-architecture-at-a-glance)
-   - [The RetroDuck family (words used in this guide)](#the-retroduck-family-words-used-in-this-guide)
+   - [The RetroDuck family (words used in this guide)](#the-retroduck-family-words-used-in-this-guide) · [Choosing a setup](#choosing-a-setup-standalone-cabinet-lan-party-nas) · [LAN party run sheet](#lan-party-run-sheet)
 2. [Requirements](#2-requirements)
 3. [Installing (fresh install)](#3-installing-fresh-install)
 4. [The RetroDuck window (launcher and admin panel)](#4-the-retroduck-window-launcher-and-admin-panel)
@@ -49,7 +49,7 @@ This guide covers installing the hub, using it day to day, and how it works insi
 12. [Security model](#12-security-model)
 13. [Internals: API, WebSocket protocol, WebRTC](#13-internals-api-websocket-protocol-webrtc)
 14. [Files and folders](#14-files-and-folders)
-15. [Troubleshooting](#15-troubleshooting)
+15. [Troubleshooting](#15-troubleshooting) · [Known limits](#known-limits)
 16. [Legal and license](#16-legal-and-license)
 
 ---
@@ -96,7 +96,7 @@ Game media (video, audio and input) travels **directly between browsers** over W
 
 ### The RetroDuck family (words used in this guide)
 
-One hub on one PC is the everyday case. The same parts scale up to a LAN party: several PCs, each running several stations, watched and started from one MommaDock. ✅ works · 🧪 in 0.4.6, **off until you switch it on**, tested on one PC with test servers but not yet with real controllers, several PCs or a NAS · 🗺 planned · 💡 idea.
+One hub on one PC is the everyday case. The same parts scale up to a LAN party: several PCs, each running several stations, watched and started from one MommaDock. ✅ works · 🧪 new and **off until you switch it on** (stations, MommaDock and nodes since 0.4.6; Pond and score boards since 0.4.8), tested on one PC with test servers but not yet with real controllers, phones, several PCs or a NAS · 🗺 planned · 💡 idea.
 
 | Word | What it is, technically | Closest real-world example | How to turn it on | |
 | --- | --- | --- | --- | --- |
@@ -108,8 +108,8 @@ One hub on one PC is the everyday case. The same parts scale up to a LAN party: 
 | 📡 **Presence** | An "I'm here" LAN beacon every 5 s even with no lobbies (plus a goodbye when stopping), so a board can tell idle, down and stopped apart. | The green "online" dot in a chat app. | On for ducklings, MommaDock and nodes; `LAN_PRESENCE=1` for a main hub | 🧪 |
 | 🦆👑 **MommaDock** | A hub with `MOMMADOCK=1` (usually Docker on a NAS): the owner-only board of every duck it hears, and the side that adopts nodes and sends them signed commands. [More](#-mommadock-the-nas-as-the-boss-of-your-retroducks) | The main unit of a mesh Wi-Fi system; a control tower. | `MOMMADOCK=1` | 🧪 |
 | 🐣🔗 **Duckling node**, **adoption** | A PC's main hub with `RH_NODE=1`. It calls out to a MommaDock it hears; both owners confirm the same 6-digit code; then it runs only signed, numbered, allowlisted commands (start, stop, status of its stations). [More](#-duckling-nodes-adopt-a-pc-then-run-its-stations-from-the-mommadock) | Adding a mesh Wi-Fi satellite, with a Bluetooth-style pairing code. | `RH_NODE=1` | 🧪 |
-| 🌊 **Pond** | A public join site for an event: quick join, a curated game list, browser games on players' own devices, no owner tools. | A venue's guest Wi-Fi page; a party game joined by QR code. | – | 🗺 |
-| 🪺 **Flock** | Mutual flockmates from the [Flock List](#flock-list-messenger) as a group: friends-only high score boards, next to the Pond's event boards (station scores marked verified). | A friends-only console leaderboard. | – | 🗺 |
+| 🌊 **Pond** | A public join site for an event: quick join, a curated game list, browser games on players' own devices, no owner tools. | A venue's guest Wi-Fi page; a party game joined by QR code. | ☰ Menu > 🌊 Pond > **Pond is open** | 🧪 [Pond](#-pond-event-join-page) |
+| 🪺 **Flock** | Mutual flockmates from the [Flock List](#flock-list-messenger) as a group: friends-only high score boards next to the Pond's event boards. Scores are typed in (Unverified) for now; scores read from the game, and station scores marked verified, are planned. | A friends-only console leaderboard. | ☰ People > 🏆 Flock high scores | 🧪 |
 | 🛟 **Standby duckling** | A duckling that takes over when another duck stops answering. | A backup generator. | – | 🗺 |
 | 📶 **Remote duckling** | A spare laptop that pairs with your MommaDock and connects home on its own; your phone is the remote. | A smart speaker on a shelf you control from your phone. | – | 🗺 |
 | 🎒 **LanParty** | The event kit: checklist and scripts for 3 PCs × 4 stations plus a MommaDock, fully offline, legal games only. | A stage crew's road cases and run sheet. | – | 🗺 |
@@ -133,6 +133,52 @@ How the LAN-party parts fit together:
   |                 per monitor                                 |
   +-------------------------------------------------------------+
 ```
+
+### Choosing a setup (standalone, cabinet, LAN party, NAS)
+
+The beginners' version, with every step: [NEWBIE.md](NEWBIE.md). The same setups in short:
+
+| Setup | Runs on | Switch on | Details |
+| --- | --- | --- | --- |
+| **Standalone** | one PC | nothing; 🌍 Internet link for friends far away | [section 9](#9-playing-over-the-internet) |
+| **Home Wi-Fi + TV** | one PC | ☰ 🏠 Wi-Fi name, ☰ 📺 Big screen, optionally the 🌊 Pond | [Wi-Fi name](#-wi-fi-name-yournamelocal), [Big screen](#-big-screen-mode), [Pond](#-pond-event-join-page) |
+| **Arcade cabinet** | one Windows PC, one monitor, one XInput controller | `stations.json` with one station in `"seat"` mode, `python stations.py start` | [Stations](#-stations-several-screens-on-one-pc) |
+| **Several screens on one PC** | one Windows PC, up to 4 monitors and XInput controllers | `python stations.py init --count N`, player or seat mode per station | [Stations](#-stations-several-screens-on-one-pc) |
+| **LAN party** | several PCs + a NAS (Docker on `br0` / host network) or one Windows PC as the MommaDock | `MOMMADOCK=1` on the boss, `RH_NODE=1` (+ `RH_NAME`) on each PC, stations on each PC, Pond on the MommaDock | [MommaDock](#-mommadock-the-nas-as-the-boss-of-your-retroducks), [Duckling nodes](#-duckling-nodes-adopt-a-pc-then-run-its-stations-from-the-mommadock), [run sheet](#lan-party-run-sheet) |
+| **NAS only** | Docker | `docker compose up -d --build`; browser consoles only (no native emulators in the image); Pond for phones | [section 10](#10-docker-and-nas) |
+
+Why ducklings and a MommaDock instead of a separate RetroDuck on every PC: ducklings share one folder's library,
+emulators, covers, cores and sign-in key, so a PC is set up once and one account works on all its stations; stations give
+each screen its own controller as player 1; and the MommaDock gives one board for every duck on the network, starts and
+stops stations on adopted PCs, and its Pond lists every open room on the LAN for phones. A separate hub per PC works,
+but each needs its own setup, accounts and link.
+
+### LAN party run sheet
+
+Before the party, with internet:
+
+1. Every PC: install, add the games, set up its stations (`python stations.py init --count N`, then `start --windowed` once
+   to sign in on each station). Set `RH_NODE=1` and `RH_NAME=<a name>` in its `.env`.
+2. Every machine: play each console you'll use once. Browser cores download from the EmulatorJS CDN the first time and
+   are then cached (`cache/cores`), so the party can run without internet. Ducklings share their PC's cache.
+3. The MommaDock: `MOMMADOCK=1`. On Unraid the container goes on `br0` with its own LAN address and no port mapping (or
+   `network_mode: host` on another Linux NAS); Docker Desktop on Windows or macOS can't hear the LAN, so use a Windows hub
+   there. Set `LAN_PRESENCE=1` on any normal main hub you want on the board while it's idle.
+4. Keep the MommaDock and every PC on the same RetroDuck version.
+
+At the party (own switch or router, everything on one network):
+
+1. Start the MommaDock, then each PC. Every PC appears under **Duckling nodes** on ☰ Menu > 🦆 MommaDock.
+2. Pair each PC once: **Approve** on the MommaDock, check that ☰ Menu > 🐣 Duckling node on the PC shows the **same
+   6-digit code**, then **Accept** there. A different code: don't accept.
+3. **Status**, then **Start stations** from the board; watch the station windows open and each controller reach its own
+   station. **Stop stations** closes them, and no button stays held.
+4. Open the 🌊 Pond on the MommaDock through its LAN address or 🏠 Wi-Fi name (not `localhost`), switch it on, and put
+   **📺 Show on a TV** on a screen. Phones on the Wi-Fi see the open rooms and idle ducks under **On this network**.
+
+If a station command fails, look at the node PC's RetroDuck log first: a refused command (not signed by this MommaDock,
+an old number, or not on the list), or a station window or pad router that was already running. **Forget** / **Leave**
+and pairing again fixes a stale pairing.
 
 ---
 
@@ -194,7 +240,7 @@ The question comes once (the answer is saved as `"promptedDesktopShortcut": true
 
 **Server → Check for updates** (also checked quietly when the window opens) installs the newest GitHub release of `UPDATE_REPO` into this folder (`setup/update.py`):
 
-- **Kept**: `.env`, `library-folders.json`, `library-hidden.json`, `.retrohub-config.json`, `emulators/` (your builds and `apps.json`; only its README / KEYBOARD / INSTRUMENTS docs update), `roms/`, `cache/`, `run/`, `node_modules/`.
+- **Kept**: `.env`, `library-folders.json`, `library-hidden.json`, `pond.json`, `stations.json`, `.retrohub-config.json`, `emulators/` (your builds and `apps.json`; only its README / KEYBOARD / INSTRUMENTS docs update), `roms/`, `cache/`, `run/`, `node_modules/`.
 - **Backed up**: every file it replaces goes to `backup/<date-time>-before-<release>/` first.
 - **Checked** before anything changes: downloaded only from GitHub over HTTPS, SHA-256 against the checksum GitHub publishes for the file, a Microsoft Defender scan (Windows), and the zip itself (no paths outside its folder, must contain `server.mjs`, `package.json`, `apps.py`). A failed check deletes the download and changes nothing.
 - **Newer?** It compares release numbers: this install's (`"release"` in `package.json`) against the newest release's name or tag (e.g. `RetroHub0.3.3`, `v0.3.3`). Release zips may have the RetroDuck folder at any depth.
@@ -366,7 +412,7 @@ python stations.py stop                # close the windows and stop the duckling
 | `page` | `big.html` (Big screen, default) or `""` for the hub. |
 | `mode` | `"player"` (default): sign in, then claim player 1 with your controller. `"seat"`: controller `pad` is always player 1, no sign-in needed for the controller. |
 | `pad` | 1-4: the controller for seat mode. |
-| `audio` | Speakers for this station (saved; per-station audio is not built yet). |
+| `audio` | Speakers for this station. Saved, but not used yet: sound plays on the PC's default speakers, and `plan` says so. |
 
 Each station window has its own browser profile (`cache/ducklings/<name>/browser`), so you sign in once per station and it stays signed in. Station windows keep running their game when another station has focus. `stop` closes only windows that `stations.py` opened itself. Station ducklings use `HOST` from `.env`, so friends on your network can join their lobbies too.
 
@@ -381,7 +427,11 @@ Windows has 4 XInput slots, so up to 4 stations per PC get a controller. PlaySta
 
 Security: each start makes new random secrets. The router proves itself to its duckling with one (only from this PC, never from a web page); the station window has another after the `#` of its address, which browsers never send to a server (`public/station.js` keeps it for that tab and removes it from the address bar). Another computer, or another browser on this one, that opens a station's page gets no controller input. If the router stops, a station lets go of its controller within a second, so no button stays held.
 
-Not done yet: per-station speakers, and starting stations from the RetroDuck window.
+Not done yet: per-station speakers (the `audio` key is only saved), and starting stations from the RetroDuck window.
+
+Not tested yet with real hardware: player mode vs seat mode with real controllers (claiming, and letting go on sign-out
+or stop), PlayStation / Switch pads through Steam Input or DS4Windows, and stations started from a MommaDock on
+another PC.
 
 ---
 
@@ -594,6 +644,60 @@ owner on the hub's PC the **🪟 OBS pop-out** and **📌 overlay on screen** (u
 screen uses the active theme, its background picture and Wave ribbons. The lobby page itself still needs a mouse or
 keyboard, and native games need a click for *Share the window*.
 
+### 🌊 Pond (event join page)
+
+**☰ Menu > 🌊 Pond** (`/pond.html`) is a page for an event: people scan its QR code, make an account with one tap
+and play on their own phone or laptop. The owner sets it up on the same page (only the owner sees that part):
+
+- **Pond is open**: switches it on and off. Closed, guests see "The Pond is closed" and nothing else.
+- **Event name**: shown as the page title.
+- **Games**: search your library and **+ Add** up to 60 **browser** games (native consoles like PS2 or GameCube
+  can't be added: Pond games run on each player's own device).
+
+What a guest gets while the Pond is open: the QR code and link, **Join a game** (open lobbies of Pond games, live,
+with Join or Watch when full) and **Start a game** (a tile per game; it opens a lobby hosted on their device, so
+friends can join it). A player without library access sees **only** the Pond's games: in the hub, in `/api/library`,
+and for ROM, cover and arcade BIOS downloads. Everything else stays owner-only, and owner tools stay blocked on the
+server. Closing the Pond takes that access away again at once.
+
+**On this network** (🧪): rooms and idle ducks on other RetroDucks this hub hears on the LAN (the same beacons the
+Lobby Browser and the MommaDock board use), so a Pond on a MommaDock shows the whole party:
+
+- A room on another duck (a cabinet, a laptop running a duckling, another PC): game, console, which duck, host and
+  seats, with **Join** (opens that duck's lobby), **In use** when every seat is taken, or **🔒 Locked**. GBA link and
+  System Link rooms aren't listed (they need the game on your own PC).
+- An idle duck that announces itself (ducklings and MommaDocks do; a main hub with `LAN_PRESENCE=1`): **Play here**
+  opens that duck's own Pond, which needs its own Pond to be open.
+- Read-only: the Pond only links to each duck; joining happens on that duck, with an account there.
+- Sent only to someone on the LAN itself: a private address, not relayed by the 🌍 Internet link or a proxy, and the
+  page opened by an address or a LAN-only name. Addresses stay in the links and are never shown as text, so a TV or
+  stream of the Pond shows no IP addresses. The page refreshes it every 6 seconds while it's visible.
+
+How it is kept safe:
+
+- It uses the hub's normal library access rules: the owner and players with library access see everything as
+  before. The Pond only adds its own games for players without access, and only while it is open.
+- Only games that run in the player's browser can be in it: no native consoles, no PC games, no hidden games (hiding
+  a game later takes it out of the Pond too), at most 60.
+- Other ROMs and covers, `..` path tricks and owner routes stay blocked for Pond guests; only the signed-in owner can
+  change the Pond, from the hub's own page.
+- Tested on a test hub with a guest account (Pond games answered, everything else 403, a closed Pond 403) and at
+  phone width in the browser. Not tested yet on real phones or a second PC over Wi-Fi.
+
+- **📺 Show on a TV** (`/pond.html?tv=1`): a big QR code, the event name and the live games, for a screen at the venue.
+- The QR code is drawn on the page by qrcode-generator 1.4.4 (MIT, `public/vendor`); the link isn't sent to any QR
+  service. It uses the hub's public link (🌍 Internet link) when there is one, else the 🏠 Wi-Fi name when the page is
+  opened on the hub PC, else the address the page was opened from. A link that only works on the hub PC is flagged.
+- Settings live in `pond.json` next to `library-hidden.json` (kept by updates, never shipped). Ducklings use the main hub's.
+- **🏆 Scores** under each game opens its high score board (`/scores.html`): **🌊 Everyone** on this hub, or **🪺 Flock**
+  (you and people you both added in the Flock List; also in the Flock List's ☰ People menu > 🏆 Flock high scores).
+  A board is one exact ROM: console + the CRC32 the hub computes from the file, so hacks and other dumps never share a
+  board. It shows each player's best (a tie goes to whoever got it first). Scores are typed in by the players for now,
+  so every one shows **Unverified**, and **✔ Verified only** hides them (for prizes). Scores RetroDuck reads from the
+  game itself are planned for a few picked games. Stored in `cache/scores.json`; up to 8 scores a minute per player.
+- Not built yet: verified scores read from the game (waiting for the owner to pick the first few games), and a Pond
+  tie-in for Duckling stations and the MommaDock. A hub that was already running needs a restart to get the Pond.
+
 ### 🐣 Pocket Duck
 
 A small virtual pet (Off Site Games, or Big screen > Web players): feed it, play a left-or-right game, clean up, turn the
@@ -778,7 +882,7 @@ How it works:
 
 Besides covers next to the ROM (above, always used first), the owner can:
 
-- **Auto covers**: in the library, *Covers: auto (libretro)* fetches box art from the libretro-thumbnails project (`thumbnails.libretro.com`, the set RetroArch uses) in the background, matched by file name: exact No-Intro names in one request, others by title against that console's list (USA / World / Europe preferred). Saved in `cache/covers/<console>/`; misses are retried after a day. Off by default.
+- **Auto covers**: in the library, *Covers: auto (libretro)* fetches box art from the libretro-thumbnails project (libretro's `libretro-thumbnails` repos on GitHub, the set RetroArch uses; `thumbnails.libretro.com` as a fallback) in the background, matched by file name: exact No-Intro names in one request, others by title against that console's list (USA / World / Europe preferred; that list comes from GitHub at most once a week and is kept in `cache/covers/`). Saved in `cache/covers/<console>/`; misses are retried after a day. Off by default.
 - **Your own cover**: right-click a game → *Set cover from an image file…*, or drop a PNG / JPEG / WebP onto it. It replaces the auto cover; *Remove my cover* undoes it.
 - **TheCoverProject**: right-click → *Find a cover on TheCoverProject* opens its search for that game. The site sits behind a browser check that automated tools must not get around, so the hub doesn't download from it; save the scan and drop it on the game. Wrap-around scans (back, spine, front) show their front half.
 
@@ -1034,7 +1138,7 @@ How it is kept safe:
 
 - Each side has its own key (`cache/mommadock.key`, `cache/node.key`). The code is made from **both** public keys, so someone who swaps a key on the network (ARP spoofing at a LAN party) makes the two screens show different codes. Both owners confirm, the same idea as Bluetooth pairing.
 - The node only ever calls **out** to the MommaDock, so no new port opens on the PC. Calls must come from a private LAN address and never from a web page. Each call signs a one-time number from the previous answer, so recorded calls can't be replayed. Calls are limited to 200 a minute per address.
-- After adoption the node pins that MommaDock's key (`cache/node-adoption.json`) and runs only commands that are **signed by it, numbered higher than the last one, and on the allowlist**: start, stop and status of `stations.py`. The node runs those with fixed arguments and never runs anything sent over the network, so even a stolen MommaDock can't run programs, read files or change settings on a node.
+- After adoption the node pins that MommaDock's key (`cache/node-adoption.json`) and runs only commands that are **signed by it, numbered higher than the last one, and on the allowlist**: start, stop and status of `stations.py`. The highest number it ran is kept per MommaDock (`cache/node-seen.json`) even after Forget or Leave, so commands from an earlier adoption can't be replayed; keep the MommaDock and its nodes on the same version. The node runs those with fixed arguments and never runs anything sent over the network, so even a stolen MommaDock can't run programs, read files or change settings on a node.
 
 ---
 
@@ -1177,7 +1281,7 @@ JSON messages with a `t` field.
 | `stations.py` | yes | Stations: monitors, `stations.json`, start / stop, the pad router. |
 | `apps.py` | yes | Native app registry and runner. |
 | `server.mjs`, `package.json`, `package-lock.json` | yes | Server. |
-| `public/` | yes | Web client. `public/data` is EmulatorJS 4.2.3, `public/vendor` is TweetNaCl. |
+| `public/` | yes | Web client. `public/data` is EmulatorJS 4.2.3, `public/vendor` is TweetNaCl and qrcode-generator. |
 | `core/runner/catalog.json` | yes | Built-in native consoles and emulators. |
 | `core/browser-systems.json` | yes | Browser (EmulatorJS) consoles: names, file types, folder names. |
 | `core/library/rules.mjs` | yes | Scanner rules: what counts as a game; the disc zip for the browser. |
@@ -1213,10 +1317,13 @@ JSON messages with a `t` field.
 | `run/retro-hub.json` | created | PID, port and shutdown token while running. |
 | `run/retro-hub.<name>.json`, `cache/ducklings/<name>/` | created | The same for a duckling, and its own stream chat / overlay theme. |
 | `stations.json` | created | Your stations (kept by the updater, never shipped). |
+| `pond.json` | created | The Pond: open or closed, event name, its games (kept by the updater, never shipped or committed). |
+| `cache/scores.json` | created | High scores for the Pond and Flock boards. |
+| `cache/covers/<console>/`, `cache/covers/_list-*.json` | created | Auto covers, and each console's cover name list (refreshed at most weekly). |
 | `run/stations-state.json`, `run/stations/*.log` | created | What `stations.py` started (window and router PIDs, this start's station secrets) and the ducklings' logs. |
 | `cache/ducklings/<name>/browser/` | created | A station window's own browser profile (its sign-in). |
 | `cache/mommadock.key`, `cache/momma-nodes.json` | created | A MommaDock's private key and its adopted nodes. |
-| `cache/node.key`, `cache/node-adoption.json` | created | A node's private key and the MommaDock key it pinned. Delete `node-adoption.json` (or press Leave) to free the PC. |
+| `cache/node.key`, `cache/node-adoption.json`, `cache/node-seen.json` | created | A node's private key, the MommaDock key it pinned, and the highest command number it ran per MommaDock. Delete `node-adoption.json` (or press Leave) to free the PC; keep `node-seen.json`. |
 | `library-folders.json` | created | Per-console library folders. |
 | `library-hidden.json` | created | Games the owner hid. |
 | `emulators/apps.json` | created | Your emulators, PC games and the emulator picked per console. |
@@ -1229,6 +1336,24 @@ Back up `.env`, `library-folders.json`, `library-hidden.json`, `emulators/apps.j
 ---
 
 ## 15. Troubleshooting
+
+### Known limits
+
+What doesn't work out of the box, in one place (details are in the sections linked).
+
+- **Browser games (EmulatorJS)** have no RetroAchievements: its maintainers marked it "not planned". Heavier consoles run in a native emulator on the host's PC, not in the browser ([section 8](#8-native-emulators-and-pc-games)).
+- **3-4 players on SNES and PlayStation** (browser): RetroDuck plugs in a multitap when seat 3 or 4 is in use at the start, but the game itself has to support one.
+- **Firefox guests on a plain `http://192.168…` address get no controllers** (Firefox only allows them on secure pages). Chrome and Edge work. Use the 🌍 Internet link (https) for Firefox players.
+- **Web page lobbies** (Flash, J2ME, Java applets, ScummVM, PC pages): guest controls work on **Windows hosts only**, every seat presses the same keys, and only while the game page showing its 🔑 key is the window in front.
+- **Stations** (🧪): the pad router reads up to 4 Xbox-style (XInput) pads; PlayStation, Switch and other pads need Steam Input or DS4Windows. Per-station speakers aren't built (the `audio` setting is saved but not used), and stations can't be started from the RetroDuck window yet.
+- **MommaDock and Duckling nodes** are 🧪 and off until switched on. Docker Desktop on Windows or macOS can't hear LAN multicast, so the board needs Linux / Unraid (`br0` or host networking) or a normal Windows hub ([section 10](#10-docker-and-nas)).
+- **System Link over Tailscale** doesn't work: Tailscale doesn't carry broadcasts. Radmin, ZeroTier or Hamachi do.
+- **Docker image**: server and web pages only. No Python, launcher window or native emulators.
+- **Pond** (🧪): browser games only (each player's own device), up to 60, and not tested yet on real phones or a second PC over Wi-Fi. A QR link that only works on the hub PC is flagged on the page. High scores (Pond and 🪺 Flock boards) are typed in by players (Unverified); RetroDuck doesn't read them from games yet. Ducklings show the boards but scores are added on the main hub. No tie-in with stations or the MommaDock yet.
+- **LanParty** (🗺): the event kit (checklist and scripts for several PCs × stations plus a MommaDock) isn't built; the parts above are used one by one for now.
+- **Linux and macOS** are supported but barely tested: please report what Check for Emus finds and what breaks.
+
+### Problems and fixes
 
 | Problem | Fix |
 | --- | --- |
@@ -1258,6 +1383,6 @@ Back up `.env`, `library-folders.json`, `library-hidden.json`, `emulators/apps.j
 
 RetroDuck contains **no games, BIOS files, firmware or keys**. Only play games you own and dump your own system files. ROMs never leave the owner's server or the host's computer.
 
-GPL-3.0. See [LICENSE](LICENSE). Bundles [EmulatorJS](https://github.com/EmulatorJS/EmulatorJS) 4.2.3 (GPL-3.0) in `public/data` and [TweetNaCl.js](https://github.com/dchest/tweetnacl-js) 1.0.3 (public domain) in `public/vendor`. The YouTube chat reader follows the approach of [youtube-chat](https://github.com/LinaTsukusu/youtube-chat) (MIT, (c) 2021 LinaTsukusu). Emulator cores and native emulators are licensed by their own authors.
+GPL-3.0. See [LICENSE](LICENSE). Bundles [EmulatorJS](https://github.com/EmulatorJS/EmulatorJS) 4.2.3 (GPL-3.0) in `public/data` and [TweetNaCl.js](https://github.com/dchest/tweetnacl-js) 1.0.3 (public domain) and [qrcode-generator](https://github.com/kazuhikoarase/qrcode-generator) 1.4.4 (MIT, (c) 2009 Kazuhiko Arase) in `public/vendor`. The YouTube chat reader follows the approach of [youtube-chat](https://github.com/LinaTsukusu/youtube-chat) (MIT, (c) 2021 LinaTsukusu). Emulator cores and native emulators are licensed by their own authors.
 
 Release notes: [CHANGELOG.md](CHANGELOG.md).
