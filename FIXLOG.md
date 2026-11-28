@@ -1,6 +1,38 @@
-# Fix log: 1.36.0 (RetroDuck 0.4.7)
+# Fix log: 1.37.0 (RetroDuck 0.4.8)
 
-Sections 1-9 are the fixes up to 1.19.0. Section 10 covers 1.25.0 (released as 0.3.1), section 11 covers 1.26.0 (released as 0.3.3), sections 12 and 13 cover 1.26.1 and 1.26.2 (both released together as 0.3.5), section 14 covers 1.26.3 (released as 0.3.6), section 15 covers 1.27.0 (released as 0.3.7), section 16 covers 1.30.0 (released as 0.4.1) section 17 covers 1.31.0 (released as 0.4.3) and section 18 covers 1.32.0 to 1.33.2 (released as 0.4.3.2 to 0.4.4.2) section 19 covers 1.33.3 (released as RetroDuck 0.4.4.3), section 20 covers 1.34.0 and 1.35.0 (released together as RetroDuck 0.4.6; 1.33.4 / 0.4.4.4 added features only, see CHANGELOG.md) and section 21 covers 1.36.0 (released as RetroDuck 0.4.7).
+Sections 1-9 are the fixes up to 1.19.0. Section 10 covers 1.25.0 (released as 0.3.1), section 11 covers 1.26.0 (released as 0.3.3), sections 12 and 13 cover 1.26.1 and 1.26.2 (both released together as 0.3.5), section 14 covers 1.26.3 (released as 0.3.6), section 15 covers 1.27.0 (released as 0.3.7), section 16 covers 1.30.0 (released as 0.4.1) section 17 covers 1.31.0 (released as 0.4.3) and section 18 covers 1.32.0 to 1.33.2 (released as 0.4.3.2 to 0.4.4.2) section 19 covers 1.33.3 (released as RetroDuck 0.4.4.3), section 20 covers 1.34.0 and 1.35.0 (released together as RetroDuck 0.4.6; 1.33.4 / 0.4.4.4 added features only, see CHANGELOG.md), section 21 covers 1.36.0 (released as RetroDuck 0.4.7) and section 22 covers 1.37.0 (released as RetroDuck 0.4.8).
+
+## 22. 1.37.0 (RetroDuck 0.4.8)
+
+Fixed in this release:
+
+- **Auto covers stopped downloading**: `thumbnails.libretro.com` went empty (every console folder answers 404).
+  `core/net/covers.mjs` now takes covers from libretro's `libretro-thumbnails` repos on GitHub, and each console's list
+  of names from the GitHub tree API (2 calls per console, cached on disk for a week; GitHub allows 60 an hour without
+  a login). The old site is still tried as a fallback. A cover that wasn't found is retried after a day, as before.
+- **Duckling nodes: commands from an earlier adoption could run again.** After Forget (or Leave) and a new adoption,
+  command numbers started again at 1, and a command the MommaDock signed during the old adoption still had a valid
+  signature, so a recorded one replayed on the LAN ran again. *Change:* the MommaDock numbers commands from the clock,
+  and each node keeps the highest number it ran per MommaDock in `cache/node-seen.json`, also after Forget or Leave.
+  Update the MommaDock and its nodes together.
+- **A Pond could look empty right after the hub started** (and adding a game failed) until the first library scan
+  finished. It now waits for that scan.
+- **A guest whose connection dropped kept their buttons pressed** until the hub noticed they had left. A dropped,
+  failed or closed WebRTC connection now releases their input at once (browser games, native games, web pages).
+- **Players 3 and 4 did nothing in SNES and PlayStation browser games**: no multitap was plugged in. One is now when
+  seat 3 or 4 is in use at the start (two-player games are left as they were).
+- **`launch.sh`, `stop.sh` and `launch-tunnel.sh` failed on Linux and macOS** ("bad interpreter"): they had Windows line
+  endings. They're LF now, `.gitattributes` keeps them that way, and both zip builders write them with Unix endings.
+- **`stations.py plan` showed a station's `audio` speakers as if they were used.** It now says they're saved and that
+  sound plays on the PC's default speakers.
+
+Checked:
+
+- Pond, with a guest account on a test hub: only the Pond's games answered (ROMs, covers); other ROMs and covers,
+  `..` paths and owner POSTs got 403, and so did everything once the Pond was closed. A native console (PS2) was refused.
+- Duckling nodes: pair, command, Forget, replay of 3 recorded commands, re-adopt, MommaDock restart: 25/25 on one PC;
+  the same test fails 7 checks on the old code. Not yet run on two real PCs or a NAS.
+- Linux and macOS emulator finding (Flatpak, PATH, AppImages, `.app`) was simulated on Windows only.
 
 ## 21. 1.36.0 (RetroDuck 0.4.7)
 
