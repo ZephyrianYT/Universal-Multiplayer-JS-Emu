@@ -68,7 +68,7 @@ RetroDuck grew from one hub into a small family of parts that work together, fro
 
 ## Get started (Windows)
 
-1. **Unzip** `RetroDuck0.4.7.zip` anywhere (for example `C:\Games\RetroDuck`).
+1. **Unzip** `RetroDuck0.4.8.zip` anywhere (for example `C:\Games\RetroDuck`).
 2. **Double-click `launch.bat`.**
    - Missing Python or Node.js? It offers to download and install them for you, and checks every download first.
    - It asks whether you want a **desktop shortcut** with the RetroDuck duck. Say yes, and next time just click the duck.
